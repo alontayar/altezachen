@@ -60,7 +60,7 @@ img{max-width:100%;height:auto;display:block;margin:0 auto;box-shadow:none}
 /* Weight labels */
 .weight{font-size:clamp(16px,2.4vw,28px);font-weight:700;margin-bottom:8px;color:#000}
 
-/* Specimen blocks: tigher vertical spacing */
+/* Specimen blocks: tighter vertical spacing */
 .section.spec{padding-top:min(8vh,72px);padding-bottom:min(8vh,72px)}
 
 /* Images grid */
@@ -71,14 +71,19 @@ img{max-width:100%;height:auto;display:block;margin:0 auto;box-shadow:none}
 @media (max-width:900px){.img-grid{grid-template-columns:1fr}}
 
 /* ===== Glyph Showcase (Grilli-style) ===== */
+/* Glyphs section has minimal side padding & full width on large screens */
+.section.glyphs-section{ padding-left:clamp(6px,1.8vw,14px); padding-right:clamp(6px,1.8vw,14px); }
+.wrap-glyph{ max-width:none; width:100%; }
+
+/* Layout: sticky preview LEFT, grid RIGHT */
 .glyphs-wrap{
   display:grid;
-  grid-template-columns:minmax(280px, 40vw) 1fr;  /* Left sticky preview, right grid */
-  gap:clamp(12px,3vw,28px);
+  grid-template-columns:minmax(340px, 46vw) 1fr; /* larger sticky */
+  gap:clamp(12px,2.2vw,24px);
   align-items:start;
 }
 
-/* Sticky preview (left) */
+/* Sticky preview (LEFT) */
 .glyph-preview{
   position:sticky; top:clamp(12px,2.5vw,24px);
   display:grid; gap:10px;
@@ -90,8 +95,8 @@ img{max-width:100%;height:auto;display:block;margin:0 auto;box-shadow:none}
 .preview-glyph{
   font-family:"AlteZachen Normal","AlteZachen Wide",system-ui;
   line-height:1; text-align:center;
-  font-size:clamp(90px, 22vw, 360px);
-  transform:translateY(-1%); /* tiny optical correction */
+  font-size:clamp(120px, 28vw, 520px);   /* bigger */
+  transform:translateY(-1%);             /* tiny optical center */
 }
 .preview-meta{
   display:flex; justify-content:space-between; align-items:center;
@@ -100,41 +105,47 @@ img{max-width:100%;height:auto;display:block;margin:0 auto;box-shadow:none}
 .meta-left{text-align:left;}
 .meta-right{text-align:right;}
 
-/* Weight tabs (black/white only) */
+/* Weight tabs (black/white only, bigger text) */
 .tabs{ display:grid; grid-auto-flow:column; gap:0; border:1px solid #000 }
 .tab{
-  appearance:none; border:0; margin:0; padding:.55em 1em;
-  background:#fff; color:#000; cursor:pointer; font-size:14px; font-weight:700;
+  appearance:none; border:0; margin:0; padding:.6em 1.1em;
+  background:#fff; color:#000; cursor:pointer; font-weight:700;
+  font-size:clamp(14px,1.8vw,22px);
   border-inline-end:1px solid #000;
 }
 .tab:last-child{border-inline-end:0}
 .tab.active{background:#000;color:#fff}
 
-/* Grids (right) */
-.glyph-cells{ justify-self:end; width:min(1200px,100%); }
+/* Right side grids — stick to edges & add columns on big screens */
+.glyph-cells{ justify-self:stretch; width:100%; }
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(88px,1fr));
+  grid-template-columns:repeat(auto-fill, minmax(72px,1fr)); /* more columns */
   gap:10px; padding:6px;
   justify-items:center; align-items:center; overflow:visible;
 }
+@media (min-width:1600px){
+  .grid{ grid-template-columns:repeat(auto-fill, minmax(68px,1fr)); }
+}
 .grid.rtl{direction:rtl}
-.grid-gap{height:12px}
+.grid-gap{height:14px} /* small gap between groups */
 
 /* Cells & glyphs */
 .cell{
   width:100%; aspect-ratio:1/1; border:1px solid #dcdcdc; background:#fff;
   display:flex; align-items:center; justify-content:center;   /* center */
-  transform-origin:center; transition:transform .07s ease,border-color .07s ease;
+  transform-origin:center; transition:background-color .05s ease, color .05s ease, border-color .05s ease;
 }
+/* Negative effect on hover (no floating zoom box) */
+.cell:hover{ background:#000; border-color:#000; }
+.cell:hover .glyph{ color:#fff; }
+
 .glyph{
+  color:#000;
   font-family:"AlteZachen Normal",system-ui,sans-serif;
   font-size:52px; line-height:1;
   display:flex; align-items:center; justify-content:center;   /* center */
-  transform-origin:center; transition:transform .07s ease;
 }
-.cell:hover{ transform:scale(3.9); z-index:12; border-color:#000 }
-.cell:hover .glyph{ transform:scale(1.06) }
 
 /* About */
 .about{
@@ -199,10 +210,10 @@ img{max-width:100%;height:auto;display:block;margin:0 auto;box-shadow:none}
   </div>
 </section>
 
-<!-- ===== GLYPHS: sticky preview + grid ===== -->
-<section class="section white" id="glyphs">
-  <div class="wrap glyphs-wrap">
-    <!-- Sticky Preview (left) -->
+<!-- ===== GLYPHS: sticky preview LEFT + grid RIGHT ===== -->
+<section class="section white glyphs-section" id="glyphs">
+  <div class="wrap wrap-glyph glyphs-wrap">
+    <!-- Sticky Preview (LEFT) -->
     <aside class="glyph-preview">
       <div class="preview-box">
         <div id="bigGlyph" class="preview-glyph" aria-live="polite">א</div>
@@ -219,7 +230,7 @@ img{max-width:100%;height:auto;display:block;margin:0 auto;box-shadow:none}
       </div>
     </aside>
 
-    <!-- Grids (right) -->
+    <!-- Grids (RIGHT) -->
     <div class="glyph-cells">
       <div class="grid rtl" id="gridHeb" dir="rtl"></div>
       <div class="grid-gap"></div>
@@ -266,12 +277,6 @@ const GROUPS = {
 const HEB_NAMES = {"א":"HEBREW LETTER ALEF","ב":"HEBREW LETTER BET","ג":"HEBREW LETTER GIMEL","ד":"HEBREW LETTER DALET","ה":"HEBREW LETTER HE","ו":"HEBREW LETTER VAV","ז":"HEBREW LETTER ZAYIN","ח":"HEBREW LETTER HET","ט":"HEBREW LETTER TET","י":"HEBREW LETTER YOD","כ":"HEBREW LETTER KAF","ך":"HEBREW LETTER FINAL KAF","ל":"HEBREW LETTER LAMED","מ":"HEBREW LETTER MEM","ם":"HEBREW LETTER FINAL MEM","נ":"HEBREW LETTER NUN","ן":"HEBREW LETTER FINAL NUN","ס":"HEBREW LETTER SAMEKH","ע":"HEBREW LETTER AYIN","פ":"HEBREW LETTER PE","ף":"HEBREW LETTER FINAL PE","צ":"HEBREW LETTER TSADI","ץ":"HEBREW LETTER FINAL TSADI","ק":"HEBREW LETTER QOF","ר":"HEBREW LETTER RESH","ש":"HEBREW LETTER SHIN","ת":"HEBREW LETTER TAV"};
 const SYM_NAMES = {"©":"COPYRIGHT SIGN","®":"REGISTERED SIGN","™":"TRADE MARK SIGN","€":"EURO SIGN","£":"POUND SIGN","¥":"YEN SIGN","$":"DOLLAR SIGN","½":"VULGAR FRACTION ONE HALF","¼":"VULGAR FRACTION ONE QUARTER","¾":"VULGAR FRACTION THREE QUARTERS","⅓":"VULGAR FRACTION ONE THIRD","⅔":"VULGAR FRACTION TWO THIRDS","-":"HYPHEN-MINUS","–":"EN DASH","—":"EM DASH","•":"BULLET","‹":"SINGLE LEFT-POINTING ANGLE QUOTE","›":"SINGLE RIGHT-POINTING ANGLE QUOTE","«":"LEFT-POINTING DOUBLE ANGLE QUOTE","»":"RIGHT-POINTING DOUBLE ANGLE QUOTE","!":"EXCLAMATION MARK","?":"QUESTION MARK","@":"COMMERCIAL AT","%":"PERCENT SIGN","‰":"PER MILLE SIGN","+":"PLUS SIGN","−":"MINUS SIGN","×":"MULTIPLICATION SIGN","÷":"DIVISION SIGN","=":"EQUALS SIGN","<":"LESS-THAN SIGN",">":"GREATER-THAN SIGN","≤":"LESS-THAN OR EQUAL TO","≥":"GREATER-THAN OR EQUAL TO","(":"LEFT PARENTHESIS",")":"RIGHT PARENTHESIS","[":"LEFT SQUARE BRACKET","]":"RIGHT SQUARE BRACKET","{":"LEFT CURLY BRACKET","}":"RIGHT CURLY BRACKET","/":"SOLIDUS","\\":"REVERSE SOLIDUS","|":"VERTICAL LINE","^":"CIRCUMFLEX ACCENT","~":"TILDE","°":"DEGREE SIGN","¶":"PILCROW SIGN","§":"SECTION SIGN","·":"MIDDLE DOT"};
 
-function unicodeName(ch){
-  if(HEB_NAMES[ch]) return HEBREW_NAMES[ch]; // safeguard if typo below; fixed next line
-}
-</script>
-<script>
-/* fix: proper function (above line kept no-op for safety) */
 function unicodeName(ch){
   if(HEB_NAMES[ch]) return HEB_NAMES[ch];
   if(SYM_NAMES[ch]) return SYM_NAMES[ch];
@@ -336,6 +341,10 @@ document.querySelectorAll('.tabs .tab').forEach(btn=>{
     rebuildAll();
   });
 });
+
+/* Scroll reveal activate */
+const sections=document.querySelectorAll('.section');
+sections.forEach(el=>io.observe(el));
 </script>
 </body>
 </html>
