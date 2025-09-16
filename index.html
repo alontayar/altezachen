@@ -7,43 +7,43 @@
 <meta name="description" content="Alte Zachen — Hebrew & Latin display family (Normal, HalfWide, Wide, Random). By Alon Tayar / Hafontia." />
 <meta name="theme-color" content="#ff0000" />
 
-<!-- ===== PRELOADS (catch path issues fast) ===== -->
-<link rel="preload" href="./fonts/AlteZachen-Wide.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="./fonts/AlteZachen-HalfWide.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="./fonts/AlteZachen-Normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="./fonts/AlteZachen-Random.woff2" as="font" type="font/woff2" crossorigin>
+<!-- ===== PRELOADS (root files, no folders) ===== -->
+<link rel="preload" href="AlteZachen-Wide.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="AlteZachen-HalfWide.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="AlteZachen-Normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="AlteZachen-Random.woff2" as="font" type="font/woff2" crossorigin>
 
-<!-- (Optional) hero image preloads: harmless if missing -->
-<link rel="preload" as="image" href="./img/Logo_Header.jpg">
-<link rel="preload" as="image" href="./img/AZ.jpg">
+<!-- Optional image preloads (root) -->
+<link rel="preload" as="image" href="Logo_Header.jpg">
+<link rel="preload" as="image" href="AZ.jpg">
 
 <style>
-/* ===== FONTS (relative paths; case-sensitive) ===== */
+/* ===== FONTS (root paths; case-sensitive) ===== */
 @font-face{
   font-family:"AlteZachen Normal";
-  src:url("./fonts/AlteZachen-Normal.woff2") format("woff2"),
-      url("./fonts/AlteZachen-Normal.woff") format("woff");
+  src:url("AlteZachen-Normal.woff2") format("woff2"),
+      url("AlteZachen-Normal.woff") format("woff");
   font-weight:400; font-style:normal; font-display:swap;
   font-synthesis-weight:none; font-synthesis-style:none;
 }
 @font-face{
   font-family:"AlteZachen HalfWide";
-  src:url("./fonts/AlteZachen-HalfWide.woff2") format("woff2"),
-      url("./fonts/AlteZachen-HalfWide.woff") format("woff");
+  src:url("AlteZachen-HalfWide.woff2") format("woff2"),
+      url("AlteZachen-HalfWide.woff") format("woff");
   font-weight:400; font-style:normal; font-display:swap;
   font-synthesis-weight:none; font-synthesis-style:none;
 }
 @font-face{
   font-family:"AlteZachen Wide";
-  src:url("./fonts/AlteZachen-Wide.woff2") format("woff2"),
-      url("./fonts/AlteZachen-Wide.woff") format("woff");
+  src:url("AlteZachen-Wide.woff2") format("woff2"),
+      url("AlteZachen-Wide.woff") format("woff");
   font-weight:400; font-style:normal; font-display:swap;
   font-synthesis-weight:none; font-synthesis-style:none;
 }
 @font-face{
   font-family:"AlteZachen Random";
-  src:url("./fonts/AlteZachen-Random.woff2") format("woff2"),
-      url("./fonts/AlteZachen-Random.woff") format("woff");
+  src:url("AlteZachen-Random.woff2") format("woff2"),
+      url("AlteZachen-Random.woff") format("woff");
   font-weight:400; font-style:normal; font-display:swap;
   font-synthesis-weight:none; font-synthesis-style:none;
 }
@@ -64,7 +64,7 @@ body{
 a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(0,0,0,.2)}
 img{max-width:100%;height:auto;display:block}
 
-/* ===== HEADER (sticky, text-only; logo is BIG in hero) ===== */
+/* ===== HEADER (sticky; logo is BIG in hero) ===== */
 .header{
   position:sticky; top:0; z-index:50;
   backdrop-filter:saturate(140%) blur(6px);
@@ -152,7 +152,7 @@ select,button{appearance:none;border:1px solid #ddd;background:#fff;border-radiu
 </head>
 <body>
 
-<!-- ===== HEADER (text only) ===== -->
+<!-- ===== HEADER ===== -->
 <header class="header">
   <div class="inner">
     <div class="brand"><span>Alte Zachen</span></div>
@@ -174,7 +174,7 @@ select,button{appearance:none;border:1px solid #ddd;background:#fff;border-radiu
 <!-- ===== HERO (BIG LOGO + Title) ===== -->
 <section class="section red" id="specimen">
   <div class="hero-logo">
-    <img src="./img/Logo_Header.jpg" alt="Alte Zachen logo hero">
+    <img src="Logo_Header.jpg" alt="Alte Zachen logo hero">
   </div>
   <div class="rule"></div>
   <div class="poster" style="font-family:'AlteZachen Wide','AlteZachen Normal',system-ui">
@@ -216,10 +216,10 @@ select,button{appearance:none;border:1px solid #ddd;background:#fff;border-radiu
   </div>
 </section>
 
-<!-- (Optional) Poster image from specimen refs -->
+<!-- (Optional) Poster image -->
 <section class="section white">
   <figure style="margin:0">
-    <img src="./img/AZ.jpg" alt="Specimen poster" loading="lazy">
+    <img src="AZ.jpg" alt="Specimen poster" loading="lazy">
   </figure>
 </section>
 
