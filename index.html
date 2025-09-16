@@ -28,7 +28,11 @@
   font-weight:400;font-style:normal;font-display:swap}
 
 /* ===== Core ===== */
-:root{ --red:#ff0000; --black:#000; --white:#fff; --pad:clamp(14px,4.5vw,56px); }
+:root{
+  --red:#ff0000; --black:#000; --white:#fff;
+  --pad:clamp(10px,2.2vw,28px); /* מרווח צד עקבי לכל האתר */
+  --guide:#cfcfcf;
+}
 *{box-sizing:border-box}
 html,body{height:100%}
 html{scroll-behavior:smooth}
@@ -41,7 +45,7 @@ img{max-width:100%;height:auto;display:block;margin:0 auto;box-shadow:none}
 
 /* Sections */
 .section{
-  padding:min(12vh,120px) var(--pad);
+  padding:min(11vh,110px) var(--pad);
   opacity:0; transform:translateY(50px);
   transition:opacity .6s ease, transform .6s cubic-bezier(.2,.8,.2,1);
 }
@@ -49,7 +53,7 @@ img{max-width:100%;height:auto;display:block;margin:0 auto;box-shadow:none}
 .section.red{background:var(--red);color:var(--white)}
 .section.white{background:var(--white);color:var(--black)}
 .section.black{background:var(--black);color:var(--white)}
-.wrap{max-width:1400px;margin:0 auto}
+.wrap{max-width:1320px;margin:0 auto}
 .spacer{height:min(6vh,60px)}
 
 /* Sizes */
@@ -60,16 +64,16 @@ img{max-width:100%;height:auto;display:block;margin:0 auto;box-shadow:none}
 /* Weight labels */
 .weight{font-size:clamp(16px,2.4vw,28px);font-weight:700;margin-bottom:8px;color:#000}
 
-/* Specimen blocks: tighter vertical spacing */
-.section.spec{padding-top:min(8vh,72px);padding-bottom:min(8vh,72px)}
+/* Specimen blocks */
+.section.spec{padding-top:min(7vh,64px);padding-bottom:min(7vh,64px)}
 
-/* ===== Glyph Showcase (Grilli-style) ===== */
-.section.glyphs-section{ padding-left:clamp(6px,1.2vw,12px); padding-right:clamp(6px,1.2vw,12px); }
-.wrap-glyph{ max-width:none; width:100%; }
+/* ===== Glyph Showcase ===== */
+.section.glyphs-section{ padding-left:var(--pad); padding-right:var(--pad); }
+.wrap-glyph{ max-width:1500px; margin:0 auto; }
 
 .glyphs-wrap{
   display:grid;
-  grid-template-columns:minmax(380px, 50vw) 1fr; /* sticky left bigger */
+  grid-template-columns:minmax(390px, 50vw) 1fr; /* sticky left גדול */
   gap:clamp(12px,2vw,22px);
   align-items:start;
 }
@@ -80,14 +84,27 @@ img{max-width:100%;height:auto;display:block;margin:0 auto;box-shadow:none}
   display:grid; gap:10px;
 }
 .preview-box{
-  width:100%; aspect-ratio:1/1; border:1px solid #dcdcdc; background:#fff;
+  position:relative;
+  width:100%; aspect-ratio:1/1; background:#fff;
+  border:1px solid var(--guide);
   display:flex; align-items:center; justify-content:center;
 }
+/* Guides (כמו ברפרנס) */
+.guides{position:absolute; inset:0; pointer-events:none; font:12px/1 Arial,Helvetica,sans-serif; color:#111}
+.guide{position:absolute; left:0; right:0; border-top:1px solid var(--guide)}
+.guide .label{position:absolute; left:10px; top:-10px; background:#fff; padding:0 .25em}
+.guide.caps{top:18%}
+.guide.shoulder{top:38%}     /* "shoulder height" לעברית */
+.guide.x{top:50%}
+.guide.base{top:72%}
+.guide.desc{bottom:6%}
+
 .preview-glyph{
+  color:var(--red);
   font-family:"AlteZachen Normal","AlteZachen Wide",system-ui;
   line-height:1; text-align:center;
   font-size:clamp(140px, 32vw, 600px);
-  transform:translateY(-1%); /* tiny optical center */
+  transform:translateY(-2.5%); /* אופטית למרכז */
 }
 .preview-meta{
   display:flex; justify-content:space-between; align-items:center;
@@ -99,7 +116,7 @@ img{max-width:100%;height:auto;display:block;margin:0 auto;box-shadow:none}
 /* Weight tabs (no Random) */
 .tabs{ display:grid; grid-auto-flow:column; gap:0; border:1px solid #000 }
 .tab{
-  appearance:none; border:0; margin:0; padding:.6em 1.1em;
+  appearance:none; border:0; margin:0; padding:.62em 1.1em;
   background:#fff; color:#000; cursor:pointer; font-weight:700;
   font-size:clamp(14px,1.8vw,22px);
   border-inline-end:1px solid #000;
@@ -107,34 +124,36 @@ img{max-width:100%;height:auto;display:block;margin:0 auto;box-shadow:none}
 .tab:last-child{border-inline-end:0}
 .tab.active{background:#000;color:#fff}
 
-/* Right rows — edge-to-edge on large screens */
+/* Right rows — גריד צפוף ונצמד */
 .glyph-cells{ justify-self:stretch; width:100%; }
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(64px,1fr));
-  gap:10px; padding:6px;
+  grid-template-columns:repeat(auto-fill, minmax(60px,1fr));
+  gap:10px; padding:4px;
   justify-items:center; align-items:center;
 }
 @media (min-width:1600px){
-  .grid{ grid-template-columns:repeat(auto-fill, minmax(60px,1fr)); }
+  .grid{ grid-template-columns:repeat(auto-fill, minmax(56px,1fr)); }
 }
 .grid.rtl{direction:rtl}
 
-/* gaps: small between rows, larger between categories */
+/* gaps */
 .row-gap{ height:8px }
 .group-gap{ height:16px }
 
-/* Cells & glyphs */
+/* Cells & glyphs — מרכז אמיתי + הרמה אופטית */
 .cell{
-  width:100%; aspect-ratio:1/1; border:1px solid #dcdcdc; background:#fff;
+  width:100%; aspect-ratio:1/1; border:1px solid var(--guide); background:#fff;
   display:flex; align-items:center; justify-content:center;
   transition:background-color .05s ease, color .05s ease, border-color .05s ease;
 }
 .glyph{
   color:#000;
   font-family:"AlteZachen Normal",system-ui,sans-serif;
-  font-size:52px; line-height:1;
+  font-size:52px;
+  line-height:1;
   display:flex; align-items:center; justify-content:center;
+  transform:translateY(-6%);           /* מרים קצת כדי להראות באמצע */
 }
 /* Hover = negative */
 .cell:hover{ background:#000; border-color:#000 }
@@ -199,6 +218,14 @@ img{max-width:100%;height:auto;display:block;margin:0 auto;box-shadow:none}
     <!-- Sticky Preview (LEFT) -->
     <aside class="glyph-preview">
       <div class="preview-box">
+        <!-- guides overlay -->
+        <div class="guides">
+          <div class="guide caps"><span class="label">CAPS HEIGHT</span></div>
+          <div class="guide shoulder"><span class="label">SHOULDER HEIGHT</span></div>
+          <div class="guide x"><span class="label">X-HEIGHT</span></div>
+          <div class="guide base"><span class="label">BASELINE</span></div>
+          <div class="guide desc"><span class="label">DESCENDER HEIGHT</span></div>
+        </div>
         <div id="bigGlyph" class="preview-glyph" aria-live="polite">א</div>
       </div>
       <div class="preview-meta">
@@ -246,7 +273,7 @@ const ROW_LAT_AZ = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const ROW_LAT_EXT_1 = "Á Ă Â Ä À Ā Å Ã Æ Ć Ç Č Ď Đ É Ě Ê Ë È Ē Ė Ə Ğ Ġ Ģ Ĥ";
 const ROW_LAT_EXT_2 = "Í Ĭ Î Ï Ì İ Į Ĵ Ķ Ĺ Ľ Ł Ń Ň Ñ Ŋ Ó Ô Ö Ò Ō Õ Œ Þ Ŕ Ř Ŗ Ś Ş Ș ß Ť Ţ Ú Û Ü Ù Ū Ů Ű Ų Ŵ Ŷ Ÿ Ý Ź Ž Ż Ǐ Ĺ Ń";
 
-const ROW_CYR_1 = "А Б В Г Д Е Ё Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ Ъ Ы Ь Э Ю Я Є Ї І Ґ";
+const ROW_CYR_1 = "А Б В Г Д Е Ё Ж З И Й ק ל מ נ О П Р С Т У Ф Х Ц Ч Ш Щ Ъ Ы Ь Э Ю Я Є Ї І Ґ".replace('ק','К').replace('ל','Л').replace('מ','М').replace('נ','Н'); // תיקון הדבקה אם דמוי-עברית
 
 const ROW_NUM_1 = "0 1 2 3 4 5 6 7 8 9";
 const ROW_NUM_2 = "0 1 2 3 4 5 6 7 8 9";
@@ -286,14 +313,14 @@ const bigGlyph = document.getElementById('bigGlyph');
 const glyphName = document.getElementById('glyphName');
 const glyphCode = document.getElementById('glyphCode');
 
-/* Build a row: iterate **per character** (fixes ABCD… issue) */
+/* Build a row: iterate per character (fixes ABCD… issue) */
 function makeRow(charsString, dir='ltr', featureSettings=null){
   const row = document.createElement('div');
   row.className = 'grid' + (dir==='rtl' ? ' rtl' : '');
   row.setAttribute('dir', dir);
 
-  for(const ch of Array.from(charsString)){   // per code point
-    if(/\s/.test(ch)) { continue; }           // keep your manual gaps
+  for(const ch of Array.from(charsString)){
+    if(/\s/.test(ch)) continue;  // משאיר את הרווחים שנתת
     if(!document.fonts.check(`40px "${faceDefault}"`, ch)) continue;
     const cell = document.createElement('div'); cell.className = 'cell';
     const span = document.createElement('span'); span.className = 'glyph';
@@ -319,7 +346,7 @@ function rebuildFaces(){
   bigGlyph.style.fontFamily = `"${currentFace}","AlteZachen Wide",system-ui`;
 }
 
-/* Build in your exact order */
+/* Build in the exact order */
 document.fonts.ready.then(()=>{
   makeRow(ROW_HEB_1, 'rtl'); addGap('row');
   makeRow(ROW_HEB_PRES_1, 'rtl'); addGap('group');
@@ -343,10 +370,10 @@ document.fonts.ready.then(()=>{
   makeRow(ROW_ARROWS, 'ltr'); addGap('group');
   makeRow(ROW_MATH, 'ltr');
 
-  showGlyph('א'); // default
+  showGlyph('א');
 });
 
-/* Weight tabs (no Random) */
+/* Weight tabs (no Random in grid) */
 document.querySelectorAll('.tabs .tab').forEach(btn=>{
   btn.addEventListener('click', ()=>{
     document.querySelectorAll('.tabs .tab').forEach(b=>b.classList.remove('active'));
