@@ -10,10 +10,9 @@
 <link rel="preload" href="AlteZachen-Wide.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="AlteZachen-HalfWide.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="AlteZachen-Normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="AlteZachen-Random.woff2" as="font" type="font/woff2" crossorigin>
 
 <style>
-/* ===== Fonts (root-level) ===== */
+/* ===== Fonts ===== */
 @font-face{font-family:"AlteZachen Normal";
   src:url("AlteZachen-Normal.woff2") format("woff2"),url("AlteZachen-Normal.woff") format("woff");
   font-weight:400;font-style:normal;font-display:swap}
@@ -23,15 +22,11 @@
 @font-face{font-family:"AlteZachen Wide";
   src:url("AlteZachen-Wide.woff2") format("woff2"),url("AlteZachen-Wide.woff") format("woff");
   font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:"AlteZachen Random";
-  src:url("AlteZachen-Random.woff2") format("woff2"),url("AlteZachen-Random.woff") format("woff");
-  font-weight:400;font-style:normal;font-display:swap}
 
 /* ===== Core ===== */
 :root{
-  --red:#ff0000; --black:#000; --white:#fff;
-  --pad:clamp(10px,2.2vw,28px); /* מרווח צד עקבי לכל האתר */
-  --guide:#cfcfcf;
+  --red:#ff0000; --black:#000; --white:#fff; --guide:#cfcfcf;
+  --pad:clamp(10px,1.6vw,24px);
 }
 *{box-sizing:border-box}
 html,body{height:100%}
@@ -41,7 +36,7 @@ body{
   font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",Arial;
   line-height:1.2;text-align:center;
 }
-img{max-width:100%;height:auto;display:block;margin:0 auto;box-shadow:none}
+img{max-width:100%;height:auto;display:block;margin:0 auto}
 
 /* Sections */
 .section{
@@ -54,26 +49,22 @@ img{max-width:100%;height:auto;display:block;margin:0 auto;box-shadow:none}
 .section.white{background:var(--white);color:var(--black)}
 .section.black{background:var(--black);color:var(--white)}
 .wrap{max-width:1320px;margin:0 auto}
-.spacer{height:min(6vh,60px)}
 
 /* Sizes */
 .huge{font-size:clamp(44px,10vw,160px);line-height:.88;margin:0}
 .big {font-size:clamp(38px,10.5vw,170px);line-height:.9;margin:.06em 0}
 .mid {font-size:clamp(26px,6.2vw,86px); line-height:.96;margin:.1em 0}
-
-/* Weight labels */
 .weight{font-size:clamp(16px,2.4vw,28px);font-weight:700;margin-bottom:8px;color:#000}
-
-/* Specimen blocks */
 .section.spec{padding-top:min(7vh,64px);padding-bottom:min(7vh,64px)}
 
 /* ===== Glyph Showcase ===== */
 .section.glyphs-section{ padding-left:var(--pad); padding-right:var(--pad); }
-.wrap-glyph{ max-width:1500px; margin:0 auto; }
-
+.wrap-glyph{ width:100%; max-width:none; margin:0 } /* edge-to-edge */
 .glyphs-wrap{
+  /* חשוב: LTR כדי שהטור הראשון יהיה תמיד בשמאל, גם באתר RTL */
+  direction:ltr;
   display:grid;
-  grid-template-columns:minmax(390px, 50vw) 1fr; /* sticky left גדול */
+  grid-template-columns: clamp(360px, 42%, 700px) 1fr; /* יחס לקונטיינר, לא vw */
   gap:clamp(12px,2vw,22px);
   align-items:start;
 }
@@ -89,15 +80,11 @@ img{max-width:100%;height:auto;display:block;margin:0 auto;box-shadow:none}
   border:1px solid var(--guide);
   display:flex; align-items:center; justify-content:center;
 }
-/* Guides (כמו ברפרנס) */
 .guides{position:absolute; inset:0; pointer-events:none; font:12px/1 Arial,Helvetica,sans-serif; color:#111}
 .guide{position:absolute; left:0; right:0; border-top:1px solid var(--guide)}
 .guide .label{position:absolute; left:10px; top:-10px; background:#fff; padding:0 .25em}
-.guide.caps{top:18%}
-.guide.shoulder{top:38%}     /* "shoulder height" לעברית */
-.guide.x{top:50%}
-.guide.base{top:72%}
-.guide.desc{bottom:6%}
+.guide.caps{top:14%}        /* CAP HEIGHT בלבד */
+.guide.base{bottom:8%}       /* BASELINE בלבד */
 
 .preview-glyph{
   color:var(--red);
@@ -110,8 +97,6 @@ img{max-width:100%;height:auto;display:block;margin:0 auto;box-shadow:none}
   display:flex; justify-content:space-between; align-items:center;
   font: 13px/1.2 Arial, Helvetica, sans-serif; color:#000;
 }
-.meta-left{text-align:left;}
-.meta-right{text-align:right;}
 
 /* Weight tabs (no Random) */
 .tabs{ display:grid; grid-auto-flow:column; gap:0; border:1px solid #000 }
@@ -124,20 +109,15 @@ img{max-width:100%;height:auto;display:block;margin:0 auto;box-shadow:none}
 .tab:last-child{border-inline-end:0}
 .tab.active{background:#000;color:#fff}
 
-/* Right rows — גריד צפוף ונצמד */
-.glyph-cells{ justify-self:stretch; width:100%; }
+/* Right rows (the grids) */
+.glyph-cells{ justify-self:stretch; width:100%; min-width:0 } /* no overflow squeeze */
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(60px,1fr));
+  grid-template-columns:repeat(auto-fit, minmax(56px,1fr)); /* לא יקרוס לעמודה אחת */
   gap:10px; padding:4px;
   justify-items:center; align-items:center;
 }
-@media (min-width:1600px){
-  .grid{ grid-template-columns:repeat(auto-fill, minmax(56px,1fr)); }
-}
 .grid.rtl{direction:rtl}
-
-/* gaps */
 .row-gap{ height:8px }
 .group-gap{ height:16px }
 
@@ -153,9 +133,8 @@ img{max-width:100%;height:auto;display:block;margin:0 auto;box-shadow:none}
   font-size:52px;
   line-height:1;
   display:flex; align-items:center; justify-content:center;
-  transform:translateY(-6%);           /* מרים קצת כדי להראות באמצע */
+  transform:translateY(-6%); /* מעט למעלה כדי להיראות באמצע */
 }
-/* Hover = negative */
 .cell:hover{ background:#000; border-color:#000 }
 .cell:hover .glyph{ color:#fff }
 
@@ -204,33 +183,21 @@ img{max-width:100%;height:auto;display:block;margin:0 auto;box-shadow:none}
   </div>
 </section>
 
-<!-- RANDOM (מחוץ לגריד מותר להישאר) -->
-<section class="section white spec">
-  <div class="wrap">
-    <div class="weight" style="font-family:'AlteZachen Random'">רנדום</div>
-    <div class="big"   style="font-family:'AlteZachen Random'">אלטע זאכן — כותרות, כרזות, מסכי פתיחה</div>
-  </div>
-</section>
-
-<!-- ===== GLYPHS: sticky preview LEFT + rows RIGHT ===== -->
+<!-- ===== GLYPHS: sticky LEFT + rows RIGHT ===== -->
 <section class="section white glyphs-section" id="glyphs">
-  <div class="wrap wrap-glyph glyphs-wrap">
+  <div class="wrap-glyph glyphs-wrap">
     <!-- Sticky Preview (LEFT) -->
     <aside class="glyph-preview">
       <div class="preview-box">
-        <!-- guides overlay -->
         <div class="guides">
-          <div class="guide caps"><span class="label">CAPS HEIGHT</span></div>
-          <div class="guide shoulder"><span class="label">SHOULDER HEIGHT</span></div>
-          <div class="guide x"><span class="label">X-HEIGHT</span></div>
+          <div class="guide caps"><span class="label">CAP HEIGHT</span></div>
           <div class="guide base"><span class="label">BASELINE</span></div>
-          <div class="guide desc"><span class="label">DESCENDER HEIGHT</span></div>
         </div>
         <div id="bigGlyph" class="preview-glyph" aria-live="polite">א</div>
       </div>
       <div class="preview-meta">
-        <span id="glyphName" class="meta-left">HEBREW LETTER ALEF</span>
-        <span id="glyphCode" class="meta-right">U+05D0</span>
+        <span id="glyphName">HEBREW LETTER ALEF</span>
+        <span id="glyphCode">U+05D0</span>
       </div>
       <div class="tabs" role="tablist" aria-label="Weights">
         <button class="tab active" data-face="AlteZachen Normal"  style="font-family:'AlteZachen Normal'">נורמל</button>
@@ -254,8 +221,7 @@ img{max-width:100%;height:auto;display:block;margin:0 auto;box-shadow:none}
     </p>
     <p class="about">
       הפונט משלב שלושה משקלים עיקריים – רגיל, חצי־רחב ורחב – שנבנו מתוך מחקר צורני של טיפוגרפיה ישנה,
-      אך הותאמו לשפה עכשווית. לצד שלושת המשקלים קיים גם משקל <strong>רנדום</strong> המאפשר ערבוב חופשי ביניהם
-      ויוצר וריאציות טקסטורליות בטקסט, בדומה ללטרינג ידני.
+      אך הותאמו לשפה עכשווית.
     </p>
   </div>
 </section>
@@ -273,7 +239,8 @@ const ROW_LAT_AZ = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const ROW_LAT_EXT_1 = "Á Ă Â Ä À Ā Å Ã Æ Ć Ç Č Ď Đ É Ě Ê Ë È Ē Ė Ə Ğ Ġ Ģ Ĥ";
 const ROW_LAT_EXT_2 = "Í Ĭ Î Ï Ì İ Į Ĵ Ķ Ĺ Ľ Ł Ń Ň Ñ Ŋ Ó Ô Ö Ò Ō Õ Œ Þ Ŕ Ř Ŗ Ś Ş Ș ß Ť Ţ Ú Û Ü Ù Ū Ů Ű Ų Ŵ Ŷ Ÿ Ý Ź Ž Ż Ǐ Ĺ Ń";
 
-const ROW_CYR_1 = "А Б В Г Д Е Ё Ж З И Й ק ל מ נ О П Р С Т У Ф Х Ц Ч Ш Щ Ъ Ы Ь Э Ю Я Є Ї І Ґ".replace('ק','К').replace('ל','Л').replace('מ','М').replace('נ','Н'); // תיקון הדבקה אם דמוי-עברית
+/* Cyrillic — תיקון הדבקות דומות לעברית אם קרה */
+const ROW_CYR_1 = "А Б В Г Д Е Ё Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ Ъ Ы Ь Э Ю Я Є Ї І Ґ";
 
 const ROW_NUM_1 = "0 1 2 3 4 5 6 7 8 9";
 const ROW_NUM_2 = "0 1 2 3 4 5 6 7 8 9";
@@ -313,14 +280,14 @@ const bigGlyph = document.getElementById('bigGlyph');
 const glyphName = document.getElementById('glyphName');
 const glyphCode = document.getElementById('glyphCode');
 
-/* Build a row: iterate per character (fixes ABCD… issue) */
+/* Build a row: iterate per character (לא שוברים ABC) */
 function makeRow(charsString, dir='ltr', featureSettings=null){
   const row = document.createElement('div');
   row.className = 'grid' + (dir==='rtl' ? ' rtl' : '');
   row.setAttribute('dir', dir);
 
   for(const ch of Array.from(charsString)){
-    if(/\s/.test(ch)) continue;  // משאיר את הרווחים שנתת
+    if(/\s/.test(ch)) continue;
     if(!document.fonts.check(`40px "${faceDefault}"`, ch)) continue;
     const cell = document.createElement('div'); cell.className = 'cell';
     const span = document.createElement('span'); span.className = 'glyph';
@@ -346,7 +313,7 @@ function rebuildFaces(){
   bigGlyph.style.fontFamily = `"${currentFace}","AlteZachen Wide",system-ui`;
 }
 
-/* Build in the exact order */
+/* Build rows באותו סדר */
 document.fonts.ready.then(()=>{
   makeRow(ROW_HEB_1, 'rtl'); addGap('row');
   makeRow(ROW_HEB_PRES_1, 'rtl'); addGap('group');
@@ -373,7 +340,7 @@ document.fonts.ready.then(()=>{
   showGlyph('א');
 });
 
-/* Weight tabs (no Random in grid) */
+/* Weight tabs */
 document.querySelectorAll('.tabs .tab').forEach(btn=>{
   btn.addEventListener('click', ()=>{
     document.querySelectorAll('.tabs .tab').forEach(b=>b.classList.remove('active'));
