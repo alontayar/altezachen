@@ -71,15 +71,15 @@ img{max-width:100%;height:auto;display:block;margin:0 auto;box-shadow:none}
 @media (max-width:900px){.img-grid{grid-template-columns:1fr}}
 
 /* ===== Glyph Showcase (Grilli-style) ===== */
-/* Glyphs section has minimal side padding & full width on large screens */
+/* Glyphs section minimal side padding & full width on large screens */
 .section.glyphs-section{ padding-left:clamp(6px,1.8vw,14px); padding-right:clamp(6px,1.8vw,14px); }
 .wrap-glyph{ max-width:none; width:100%; }
 
 /* Layout: sticky preview LEFT, grid RIGHT */
 .glyphs-wrap{
   display:grid;
-  grid-template-columns:minmax(340px, 46vw) 1fr; /* larger sticky */
-  gap:clamp(12px,2.2vw,24px);
+  grid-template-columns:minmax(380px, 50vw) 1fr; /* larger sticky */
+  gap:clamp(12px,2vw,22px);
   align-items:start;
 }
 
@@ -95,7 +95,7 @@ img{max-width:100%;height:auto;display:block;margin:0 auto;box-shadow:none}
 .preview-glyph{
   font-family:"AlteZachen Normal","AlteZachen Wide",system-ui;
   line-height:1; text-align:center;
-  font-size:clamp(120px, 28vw, 520px);   /* bigger */
+  font-size:clamp(140px, 32vw, 600px);   /* bigger */
   transform:translateY(-1%);             /* tiny optical center */
 }
 .preview-meta{
@@ -116,7 +116,7 @@ img{max-width:100%;height:auto;display:block;margin:0 auto;box-shadow:none}
 .tab:last-child{border-inline-end:0}
 .tab.active{background:#000;color:#fff}
 
-/* Right side grids — stick to edges & add columns on big screens */
+/* Right side rows — stick to edges & add columns on big screens */
 .glyph-cells{ justify-self:stretch; width:100%; }
 .grid{
   display:grid;
@@ -125,27 +125,29 @@ img{max-width:100%;height:auto;display:block;margin:0 auto;box-shadow:none}
   justify-items:center; align-items:center; overflow:visible;
 }
 @media (min-width:1600px){
-  .grid{ grid-template-columns:repeat(auto-fill, minmax(68px,1fr)); }
+  .grid{ grid-template-columns:repeat(auto-fill, minmax(64px,1fr)); }
 }
 .grid.rtl{direction:rtl}
-.grid-gap{height:14px} /* small gap between groups */
+
+/* gaps: small between rows, larger between categories */
+.row-gap{ height:8px }
+.group-gap{ height:16px }
 
 /* Cells & glyphs */
 .cell{
   width:100%; aspect-ratio:1/1; border:1px solid #dcdcdc; background:#fff;
   display:flex; align-items:center; justify-content:center;   /* center */
-  transform-origin:center; transition:background-color .05s ease, color .05s ease, border-color .05s ease;
+  transition:background-color .05s ease, color .05s ease, border-color .05s ease;
 }
-/* Negative effect on hover (no floating zoom box) */
-.cell:hover{ background:#000; border-color:#000; }
-.cell:hover .glyph{ color:#fff; }
-
 .glyph{
   color:#000;
   font-family:"AlteZachen Normal",system-ui,sans-serif;
   font-size:52px; line-height:1;
   display:flex; align-items:center; justify-content:center;   /* center */
 }
+/* Negative effect on hover (no floating zoom box) */
+.cell:hover{ background:#000; border-color:#000 }
+.cell:hover .glyph{ color:#fff }
 
 /* About */
 .about{
@@ -200,17 +202,7 @@ img{max-width:100%;height:auto;display:block;margin:0 auto;box-shadow:none}
   </div>
 </section>
 
-<!-- IMAGES (optional, 2-up) -->
-<section class="section white">
-  <div class="wrap img-grid">
-    <img src="AZ.jpg"  alt="Specimen 1">
-    <img src="AZ5.jpg" alt="Specimen 2">
-    <img src="AZ6.jpg" alt="Specimen 3">
-    <img src="AZ7.jpg" alt="Specimen 4">
-  </div>
-</section>
-
-<!-- ===== GLYPHS: sticky preview LEFT + grid RIGHT ===== -->
+<!-- ===== GLYPHS: sticky preview LEFT + rows RIGHT ===== -->
 <section class="section white glyphs-section" id="glyphs">
   <div class="wrap wrap-glyph glyphs-wrap">
     <!-- Sticky Preview (LEFT) -->
@@ -230,16 +222,8 @@ img{max-width:100%;height:auto;display:block;margin:0 auto;box-shadow:none}
       </div>
     </aside>
 
-    <!-- Grids (RIGHT) -->
-    <div class="glyph-cells">
-      <div class="grid rtl" id="gridHeb" dir="rtl"></div>
-      <div class="grid-gap"></div>
-      <div class="grid" id="gridLat" dir="ltr"></div>
-      <div class="grid-gap"></div>
-      <div class="grid" id="gridCyr" dir="ltr"></div>
-      <div class="grid-gap"></div>
-      <div class="grid" id="gridNum" dir="ltr"></div>
-    </div>
+    <!-- Rows (RIGHT) -->
+    <div class="glyph-cells" id="glyphRows"></div>
   </div>
 </section>
 
@@ -264,19 +248,46 @@ img{max-width:100%;height:auto;display:block;margin:0 auto;box-shadow:none}
 const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('reveal');io.unobserve(e.target)}})},{threshold:.15});
 document.querySelectorAll('.section').forEach(el=>io.observe(el));
 
-/* ===== Glyph data ===== */
-const GROUPS = {
-  heb: "אבגדהוזחטיכלמנסעפצקרשתךםןףץ",
-  lat: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" +
-       "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØŒŠÙÚÛÜÝŸŽ" +
-       "àáâãäåæçèéêëìíîïðñòóôõöøœšùúûüýÿž",
-  cyr: "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯЇІЄҐ" +
-       "абвгдеёжзийклмнопрстуфхцчшщъыьэюяїієґ",
-  num: "0123456789 ½¼¾⅓⅔ - – — • ‹› «» ! ? @ © ® ™ $ € £ ¥ % ‰ + − × ÷ = < > ≤ ≥ ( ) [ ] { } / \\ | ^ ~ ° ¶ § ·"
-};
-const HEB_NAMES = {"א":"HEBREW LETTER ALEF","ב":"HEBREW LETTER BET","ג":"HEBREW LETTER GIMEL","ד":"HEBREW LETTER DALET","ה":"HEBREW LETTER HE","ו":"HEBREW LETTER VAV","ז":"HEBREW LETTER ZAYIN","ח":"HEBREW LETTER HET","ט":"HEBREW LETTER TET","י":"HEBREW LETTER YOD","כ":"HEBREW LETTER KAF","ך":"HEBREW LETTER FINAL KAF","ל":"HEBREW LETTER LAMED","מ":"HEBREW LETTER MEM","ם":"HEBREW LETTER FINAL MEM","נ":"HEBREW LETTER NUN","ן":"HEBREW LETTER FINAL NUN","ס":"HEBREW LETTER SAMEKH","ע":"HEBREW LETTER AYIN","פ":"HEBREW LETTER PE","ף":"HEBREW LETTER FINAL PE","צ":"HEBREW LETTER TSADI","ץ":"HEBREW LETTER FINAL TSADI","ק":"HEBREW LETTER QOF","ר":"HEBREW LETTER RESH","ש":"HEBREW LETTER SHIN","ת":"HEBREW LETTER TAV"};
-const SYM_NAMES = {"©":"COPYRIGHT SIGN","®":"REGISTERED SIGN","™":"TRADE MARK SIGN","€":"EURO SIGN","£":"POUND SIGN","¥":"YEN SIGN","$":"DOLLAR SIGN","½":"VULGAR FRACTION ONE HALF","¼":"VULGAR FRACTION ONE QUARTER","¾":"VULGAR FRACTION THREE QUARTERS","⅓":"VULGAR FRACTION ONE THIRD","⅔":"VULGAR FRACTION TWO THIRDS","-":"HYPHEN-MINUS","–":"EN DASH","—":"EM DASH","•":"BULLET","‹":"SINGLE LEFT-POINTING ANGLE QUOTE","›":"SINGLE RIGHT-POINTING ANGLE QUOTE","«":"LEFT-POINTING DOUBLE ANGLE QUOTE","»":"RIGHT-POINTING DOUBLE ANGLE QUOTE","!":"EXCLAMATION MARK","?":"QUESTION MARK","@":"COMMERCIAL AT","%":"PERCENT SIGN","‰":"PER MILLE SIGN","+":"PLUS SIGN","−":"MINUS SIGN","×":"MULTIPLICATION SIGN","÷":"DIVISION SIGN","=":"EQUALS SIGN","<":"LESS-THAN SIGN",">":"GREATER-THAN SIGN","≤":"LESS-THAN OR EQUAL TO","≥":"GREATER-THAN OR EQUAL TO","(":"LEFT PARENTHESIS",")":"RIGHT PARENTHESIS","[":"LEFT SQUARE BRACKET","]":"RIGHT SQUARE BRACKET","{":"LEFT CURLY BRACKET","}":"RIGHT CURLY BRACKET","/":"SOLIDUS","\\":"REVERSE SOLIDUS","|":"VERTICAL LINE","^":"CIRCUMFLEX ACCENT","~":"TILDE","°":"DEGREE SIGN","¶":"PILCROW SIGN","§":"SECTION SIGN","·":"MIDDLE DOT"};
+/* ===== Exact glyph sets (rows) ===== */
+/* Hebrew base */
+const ROW_HEB_1 = "אבגדהוזחטיכךלמםנןסעפףצץקרשת";
 
+/* Hebrew presentation forms */
+const ROW_HEB_PRES_1 = "אַ אָ אּ בּ גּ דּ הּ וּ וֹ זּ טּ יּ ךּ כּ לּ מּ נּ סּ ףּ פּ צּ קּ רּ שּ שׁ שׂ שּׁ שּׂ תּ";
+
+/* Latin base */
+const ROW_LAT_AZ = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+/* Latin extended (two lines as given) */
+const ROW_LAT_EXT_1 = "Á Ă Â Ä À Ā Å Ã Æ Ć Ç Č Ď Đ É Ě Ê Ë È Ē Ė Ə Ğ Ġ Ģ Ĥ";
+const ROW_LAT_EXT_2 = "Í Ĭ Î Ï Ì İ Į Ĵ Ķ Ĺ Ľ Ł Ń Ň Ñ Ŋ Ó Ô Ö Ò Ō Õ Œ Þ Ŕ Ř Ŗ Ś Ş Ș ß Ť Ţ Ú Û Ü Ù Ū Ů Ű Ų Ŵ Ŷ Ÿ Ý Ź Ž Ż Ǐ Ĺ Ń";
+
+/* Cyrillic */
+const ROW_CYR_1 = "А Б В Г Д Е Ё Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ Ъ Ы Ь Э Ю Я Є Ї І Ґ";
+
+/* Numbers & symbols */
+const ROW_NUM_1 = "0 1 2 3 4 5 6 7 8 9";
+const ROW_NUM_2 = "0 1 2 3 4 5 6 7 8 9";
+const ROW_NUM_SS03 = "0 1 2 3 4 5 6 7 8 9";  // rendered with ss03
+const ROW_NUM_SS04 = "0 1 2 3 4 5 6 7 8 9";  // rendered with ss04
+const ROW_FRAC = "½ ¼ ¾ ⅜ ⅝ ⅞";
+
+const ROW_CURR = "¢ ₳ $ € ₱ ₪ £ ¥";
+
+const ROW_PUNC_1 = ". , ; : … ! ? ¿ • * # / \\ – — ― _ ( ) { } [ ] „ “ ” « » ‹ › ‚ ‘ ’";
+const ROW_SYM_1  = "☺ ☹ @ & ¶ © ® ℗ ™ ° | ¦";
+
+const ROW_SHAPES = "■ □ ▲ ▶ ▼ ◀ △ ◯ ●";
+
+const ROW_ARROWS = "↺ ↗ ↖ ↘ ↙ ↓ ↑ → ← ⇔ ⇕ ⇑ ⇓ ⇐ ⇒ ⇌ ⇅";
+
+const ROW_MATH = "− × ÷ = ≠ > < ≥ ≤ ± ≈ ~ ¬ ∅ % ‰";
+
+/* ===== Names (subset) ===== */
+const HEB_NAMES = {"א":"HEBREW LETTER ALEF","ב":"HEBREW LETTER BET","ג":"HEBREW LETTER GIMEL","ד":"HEBREW LETTER DALET","ה":"HEBREW LETTER HE","ו":"HEBREW LETTER VAV","ז":"HEBREW LETTER ZAYIN","ח":"HEBREW LETTER HET","ט":"HEBREW LETTER TET","י":"HEBREW LETTER YOD","כ":"HEBREW LETTER KAF","ך":"HEBREW LETTER FINAL KAF","ל":"HEBREW LETTER LAMED","מ":"HEBREW LETTER MEM","ם":"HEBREW LETTER FINAL MEM","נ":"HEBREW LETTER NUN","ן":"HEBREW LETTER FINAL NUN","ס":"HEBREW LETTER SAMEKH","ע":"HEBREW LETTER AYIN","פ":"HEBREW LETTER PE","ף":"HEBREW LETTER FINAL PE","צ":"HEBREW LETTER TSADI","ץ":"HEBREW LETTER FINAL TSADI","ק":"HEBREW LETTER QOF","ר":"HEBREW LETTER RESH","ש":"HEBREW LETTER SHIN","ת":"HEBREW LETTER TAV"};
+const SYM_NAMES = {"₪":"NEW SHEQEL SIGN","€":"EURO SIGN","£":"POUND SIGN","¥":"YEN SIGN","$":"DOLLAR SIGN","¢":"CENT SIGN","₳":"AUSTRAL SIGN","₱":"PESO SIGN","©":"COPYRIGHT SIGN","®":"REGISTERED SIGN","℗":"SOUND RECORDING COPYRIGHT","™":"TRADE MARK SIGN","°":"DEGREE SIGN","¶":"PILCROW SIGN","¦":"BROKEN BAR","·":"MIDDLE DOT"};
+
+/* ===== Helpers ===== */
 function unicodeName(ch){
   if(HEB_NAMES[ch]) return HEB_NAMES[ch];
   if(SYM_NAMES[ch]) return SYM_NAMES[ch];
@@ -288,48 +299,92 @@ function unicodeName(ch){
 }
 function unicodeCode(ch){ return "U+" + ch.codePointAt(0).toString(16).toUpperCase().padStart(4,'0'); }
 
-/* Build grids */
+/* Build rows exactly in your order, with small gaps between categories */
 const faceDefault = "AlteZachen Normal";
 let currentFace = faceDefault;
 
+const rowsRoot = document.getElementById('glyphRows');
 const bigGlyph = document.getElementById('bigGlyph');
 const glyphName = document.getElementById('glyphName');
 const glyphCode = document.getElementById('glyphCode');
 
-function makeGrid(containerId, chars, dir='ltr'){
-  const el = document.getElementById(containerId); if(!el) return;
-  el.innerHTML = ''; el.setAttribute('dir', dir);
-  const frag = document.createDocumentFragment();
+function makeRow(charsString, dir='ltr', featureSettings=null){
+  const row = document.createElement('div');
+  row.className = 'grid' + (dir==='rtl' ? ' rtl' : '');
+  row.setAttribute('dir', dir);
+
+  const chars = charsString.split(/\s+/).filter(Boolean);
   for(const ch of chars){
-    if(/\s/.test(ch)) continue;
-    if(!document.fonts.check(`40px "${faceDefault}"`, ch)) continue; // filter missing glyphs
-    const cell = document.createElement('div'); cell.className='cell';
-    const span = document.createElement('span'); span.className='glyph';
+    // filter missing glyphs in default face; feature variants will fallback gracefully
+    if(!document.fonts.check(`40px "${faceDefault}"`, ch)) continue;
+    const cell = document.createElement('div'); cell.className = 'cell';
+    const span = document.createElement('span'); span.className = 'glyph';
     span.style.fontFamily = `"${currentFace}", system-ui, sans-serif`;
+    if(featureSettings) span.style.fontFeatureSettings = featureSettings;
     span.textContent = ch;
     cell.appendChild(span);
     cell.addEventListener('mouseenter', ()=> showGlyph(ch));
-    frag.appendChild(cell);
+    row.appendChild(cell);
   }
-  el.appendChild(frag);
+  rowsRoot.appendChild(row);
 }
-function rebuildAll(){
-  document.querySelectorAll('.glyph').forEach(g=> g.style.fontFamily = `"${currentFace}", system-ui, sans-serif`);
-  bigGlyph.style.fontFamily = `"${currentFace}","AlteZachen Wide",system-ui`;
-}
+function addGap(kind='row'){ const d=document.createElement('div'); d.className = (kind==='group'?'group-gap':'row-gap'); rowsRoot.appendChild(d); }
 function showGlyph(ch){
   bigGlyph.textContent = ch;
   glyphName.textContent = unicodeName(ch);
   glyphCode.textContent = unicodeCode(ch);
 }
+function rebuildFaces(){
+  rowsRoot.querySelectorAll('.glyph').forEach(g=>{
+    g.style.fontFamily = `"${currentFace}", system-ui, sans-serif`;
+  });
+  bigGlyph.style.fontFamily = `"${currentFace}","AlteZachen Wide",system-ui`;
+}
 
-/* After fonts ready */
+/* After fonts ready, build in exact order with small gaps like in your note */
 document.fonts.ready.then(()=>{
-  makeGrid('gridHeb', GROUPS.heb, 'rtl');
-  makeGrid('gridLat', GROUPS.lat, 'ltr');
-  makeGrid('gridCyr', GROUPS.cyr, 'ltr');
-  makeGrid('gridNum', GROUPS.num, 'ltr');
-  showGlyph('א'); // default big glyph
+  // Hebrew base
+  makeRow(ROW_HEB_1, 'rtl'); addGap('row');
+  // Hebrew presentation
+  makeRow(ROW_HEB_PRES_1, 'rtl'); addGap('group');
+
+  // Latin base
+  makeRow(ROW_LAT_AZ, 'ltr'); addGap('row');
+  // Latin extended (two rows)
+  makeRow(ROW_LAT_EXT_1, 'ltr'); addGap('row');
+  makeRow(ROW_LAT_EXT_2, 'ltr'); addGap('group');
+
+  // Cyrillic
+  makeRow(ROW_CYR_1, 'ltr'); addGap('group');
+
+  // Numbers default two rows
+  makeRow(ROW_NUM_1, 'ltr'); addGap('row');
+  makeRow(ROW_NUM_2, 'ltr'); addGap('row');
+  // Stylistic sets
+  makeRow(ROW_NUM_SS03, 'ltr', '"ss03" 1'); addGap('row');
+  makeRow(ROW_NUM_SS04, 'ltr', '"ss04" 1'); addGap('group');
+
+  // Fractions
+  makeRow(ROW_FRAC, 'ltr'); addGap('row');
+
+  // Currencies
+  makeRow(ROW_CURR, 'ltr'); addGap('group');
+
+  // Punctuation & symbols
+  makeRow(ROW_PUNC_1, 'ltr'); addGap('row');
+  makeRow(ROW_SYM_1 , 'ltr'); addGap('group');
+
+  // Shapes
+  makeRow(ROW_SHAPES, 'ltr'); addGap('group');
+
+  // Arrows
+  makeRow(ROW_ARROWS, 'ltr'); addGap('group');
+
+  // Math / misc
+  makeRow(ROW_MATH, 'ltr');
+
+  // Default big glyph
+  showGlyph('א');
 });
 
 /* Weight tabs */
@@ -338,13 +393,12 @@ document.querySelectorAll('.tabs .tab').forEach(btn=>{
     document.querySelectorAll('.tabs .tab').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
     currentFace = btn.dataset.face;
-    rebuildAll();
+    rebuildFaces();
   });
 });
 
 /* Scroll reveal activate */
-const sections=document.querySelectorAll('.section');
-sections.forEach(el=>io.observe(el));
+document.querySelectorAll('.section').forEach(el=>io.observe(el));
 </script>
 </body>
 </html>
