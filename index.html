@@ -6,13 +6,12 @@
 <title>אלטע זאכן — Alte Zachen</title>
 <meta name="theme-color" content="#ff0000" />
 
-<!-- Preloads -->
 <link rel="preload" href="AlteZachen-Wide.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="AlteZachen-HalfWide.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="AlteZachen-Normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="AlteZachen-Random.woff2" as="font" type="font/woff2" crossorigin>
 
 <style>
-/* ===== Fonts ===== */
 @font-face{font-family:"AlteZachen Normal";
   src:url("AlteZachen-Normal.woff2") format("woff2"),url("AlteZachen-Normal.woff") format("woff");
   font-weight:400;font-style:normal;font-display:swap}
@@ -22,141 +21,95 @@
 @font-face{font-family:"AlteZachen Wide";
   src:url("AlteZachen-Wide.woff2") format("woff2"),url("AlteZachen-Wide.woff") format("woff");
   font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"AlteZachen Random";
+  src:url("AlteZachen-Random.woff2") format("woff2"),url("AlteZachen-Random.woff") format("woff");
+  font-weight:400;font-style:normal;font-display:swap}
 
-/* ===== Core ===== */
+/* Core */
 :root{
   --red:#ff0000; --black:#000; --white:#fff;
-  --edge: clamp(30px, 10vw, 12vw);     /* צדדים בגריד (8–12%) */
-  --pad: clamp(10px, 1.6vw, 24px);     /* מרווח כללי */
-  --cell: 84px;                         /* גודל תא קבוע */
-  --stroke:#000;
+  --edge: clamp(30px, 10vw, 12vw);   /* 8–12% לבן בצדדים */
+  --pad: clamp(10px, 1.6vw, 24px);
+  --cell: 84px;                      /* גודל תא קבוע */
 }
 @media (max-width:640px){ :root{ --cell: 68px; } }
 
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{
-  margin:0;background:var(--white);color:var(--black);
+body{margin:0;background:var(--white);color:var(--black);
   font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",Arial;
-  line-height:1.2;text-align:center;
-}
-img{max-width:100%;height:auto;display:block;margin:0 auto}
-
-/* Sections */
-.section{
-  padding:min(11vh,110px) var(--pad);
-  opacity:0; transform:translateY(50px);
-  transition:opacity .6s ease, transform .6s cubic-bezier(.2,.8,.2,1);
-}
-.section.reveal{opacity:1; transform:translateY(0)}
-.section.red{background:var(--red);color:var(--white)}
-.section.white{background:var(--white);color:var(--black)}
-.section.black{background:var(--black);color:var(--white)}
+  line-height:1.2;text-align:center}
+.section{padding:min(11vh,110px) var(--pad);opacity:0;transform:translateY(50px);
+  transition:opacity .6s ease, transform .6s cubic-bezier(.2,.8,.2,1)}
+.section.reveal{opacity:1;transform:translateY(0)}
+.section.red{background:var(--red);color:#fff}
+.section.white{background:#fff;color:#000}
+.section.black{background:#000;color:#fff}
 .wrap{max-width:1320px;margin:0 auto}
 
-/* Sizes */
 .huge{font-size:clamp(44px,10vw,160px);line-height:.88;margin:0}
 .big {font-size:clamp(38px,10.5vw,170px);line-height:.9;margin:.06em 0}
 .mid {font-size:clamp(26px,6.2vw,86px); line-height:.96;margin:.1em 0}
 .weight{font-size:clamp(16px,2.4vw,28px);font-weight:700;margin-bottom:8px}
 .section.spec{padding-top:min(7vh,64px);padding-bottom:min(7vh,64px)}
 
-/* Random “feature” */
-.random-row{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap}
-.shuffle{appearance:none;border:1px solid #000;background:#fff;color:#000;font-weight:700;
-  padding:.5em 1em;cursor:pointer}
-.shuffle:active{transform:scale(.98)}
-
-/* ===== Glyph Showcase ===== */
-.section.glyphs-section{ padding-left:var(--edge); padding-right:var(--edge); }
-.wrap-glyph{ width:100%; max-width:none; margin:0 }
+/* ===== Glyphs ===== */
+.section.glyphs-section{padding-left:var(--edge);padding-right:var(--edge)}
+.wrap-glyph{width:100%;max-width:none;margin:0}
 .glyphs-wrap{
-  direction:ltr; /* מבטיח שהטור השמאלי הוא הסטיקי גם באתר RTL */
-  display:grid;
-  grid-template-columns: clamp(360px, 42%, 720px) 1fr; /* שמאל סטיקי, ימין גריד */
-  gap:clamp(12px,2vw,22px);
-  align-items:start;
+  direction:ltr; /* כדי שהטור השמאלי תמיד סטיקי */
+  display:grid; grid-template-columns: clamp(360px,42%,720px) 1fr;
+  gap:clamp(12px,2vw,22px); align-items:start
 }
 
-/* Sticky preview (LEFT) */
-.glyph-preview{
-  position:sticky; top:clamp(12px,2.5vw,24px);
-  display:grid; gap:10px;
-}
-.preview-box{
-  width:100%; aspect-ratio:1/1; background:#fff;
-  border:1px solid var(--stroke);
-  display:flex; align-items:center; justify-content:center;
-}
+/* Sticky preview */
+.glyph-preview{position:sticky;top:clamp(12px,2.5vw,24px);display:grid;gap:10px}
+.preview-box{width:100%;aspect-ratio:1/1;background:#fff;border:1px solid #000;
+  display:flex;align-items:center;justify-content:center}
 .preview-glyph{
-  color:var(--red);
-  font-family:"AlteZachen Normal","AlteZachen Wide",system-ui;
-  line-height:1; text-align:center;
-  font-size:clamp(140px, 32vw, 620px);
-  transform:translateY(-2.5%); /* אופטית */
+  color:var(--red); font-family:"AlteZachen Normal","AlteZachen Wide",system-ui;
+  line-height:1; text-align:center; font-size:clamp(140px,32vw,620px);
+  transform:translateY(-2.5%)
 }
-.preview-meta{
-  display:flex; justify-content:space-between; align-items:center;
-  font: 13px/1.2 Arial, Helvetica, sans-serif; color:#000;
-}
+.preview-meta{display:flex;justify-content:space-between;align-items:center;
+  font:13px/1.2 Arial,Helvetica,sans-serif;color:#000}
 
-/* Weight tabs (נורמל מימין, רחב משמאל) */
-.tabs{ display:grid; grid-auto-flow:column; gap:0; border:1px solid #000; direction:rtl }
-.tab{
-  appearance:none; border:0; margin:0; padding:.62em 1.1em;
-  background:#fff; color:#000; cursor:pointer; font-weight:700;
-  font-size:clamp(14px,1.8vw,22px);
-  border-inline-start:1px solid #000; /* בגלל RTL */
-}
+/* Tabs: רחב | חצי־רחב | נורמל (נורמל מימין) */
+.tabs{display:grid;grid-auto-flow:column;gap:0;border:1px solid #000;direction:rtl}
+.tab{appearance:none;border:0;margin:0;padding:.62em 1.1em;background:#fff;color:#000;
+  cursor:pointer;font-weight:700;font-size:clamp(14px,1.8vw,22px);border-inline-start:1px solid #000}
 .tab:first-child{border-inline-start:0}
 .tab.active{background:#000;color:#fff}
 
-/* Right rows (תאים קבועים, לא נמתח לשורה) */
-.glyph-cells{ justify-self:stretch; width:100%; min-width:0 }
+/* Grid (תאים קבועים, לבן בסוף שורה) */
+.glyph-cells{justify-self:stretch;width:100%;min-width:0}
 .grid{
+  direction:ltr !important;         /* אחיד לכל השורות */
   display:grid;
-  grid-template-columns: repeat(auto-fill, var(--cell)); /* לבן בסוף שורה = טוב */
-  gap:10px; padding:4px;
-  justify-content:start;         /* יישור עקבי לשמאל (של ה־LTR container) */
-  justify-items:center; align-items:center;
+  grid-template-columns: repeat(auto-fill, var(--cell));
+  gap:10px; padding:0; margin:0;
+  justify-content:left;             /* פיזי, לא תלוי RTL/LTR */
+  justify-items:center; align-items:center
 }
-/* gaps */
-.row-gap{ height:8px }
-.group-gap{ height:16px }
+.row-gap{height:8px}
+.group-gap{height:16px}
 
-/* Cells & glyphs */
+/* Cells */
 .cell{
-  width:var(--cell); aspect-ratio:1/1;
-  border:1px solid var(--stroke);
-  background:#e6e6e6;
-  display:flex; align-items:center; justify-content:center;
-  transition:background-color .06s ease, color .06s ease;
+  width:var(--cell);aspect-ratio:1/1;border:1px solid #000;
+  background:#fff; display:flex;align-items:center;justify-content:center;
+  transition:background-color .06s ease,color .06s ease
 }
 .glyph{
-  color:#000;
-  font-family:"AlteZachen Normal",system-ui,sans-serif;
-  font-size:52px; line-height:1;
-  display:flex; align-items:center; justify-content:center;
-  transform:translateY(-6%);           /* מרכז אופטית */
+  color:#000; font-family:"AlteZachen Normal",system-ui,sans-serif;
+  font-size:52px; line-height:1; display:flex;align-items:center;justify-content:center;
+  transform:translateY(-6%) /* מרכז אופטית */
 }
-/* Hover = negative */
-.cell:hover{ background:#000 }
-.cell:hover .glyph{ color:#fff }
+.cell:hover{background:#000}.cell:hover .glyph{color:#fff}
 
 /* About */
-.about{
-  font-family:"AlteZachen Normal","AlteZachen Wide",system-ui;
-  font-size:clamp(22px,4.6vw,72px);line-height:1.12;margin:.35em 0
-}
-
-/* ==== Red scroll-reveal panel ==== */
-.reveal-stage{ height:140vh; position:relative; }
-.reveal-stick{ position:sticky; top:0; height:100vh; overflow:hidden; }
-.reveal-red{ position:absolute; inset:0; background:var(--red); color:#fff;
-  display:flex; align-items:center; justify-content:center; padding:8vw 6vw; }
-.reveal-mask{ position:absolute; inset:0; background:#fff; transform:translateY(0%); }
-.reveal-text{ position:relative; z-index:1; font-family:"AlteZachen Wide","AlteZachen Normal";
-  font-size:clamp(32px,6.5vw,96px); line-height:1.05; text-align:center; }
+.about{font-family:"AlteZachen Normal","AlteZachen Wide",system-ui;
+  font-size:clamp(22px,4.6vw,72px);line-height:1.12;margin:.35em 0}
 </style>
 </head>
 <body>
@@ -197,18 +150,15 @@ img{max-width:100%;height:auto;display:block;margin:0 auto}
   </div>
 </section>
 
-<!-- RANDOM headline + shuffle -->
+<!-- RANDOM (דוגמה בלבד, בלי כפתורים) -->
 <section class="section white spec">
   <div class="wrap">
-    <div class="weight" style="font-family:'AlteZachen Random','AlteZachen Wide'">רנדום</div>
-    <div class="random-row">
-      <div id="randomLine" class="big" style="font-family:'AlteZachen Random'">אלטע זאכן — הכל משתנה בכל רענון</div>
-      <button class="shuffle" id="shuffleBtn">↻ ערבב</button>
-    </div>
+    <div class="weight" style="font-family:'AlteZachen Random'">רנדום</div>
+    <div class="big" style="font-family:'AlteZachen Random'">אלטע זאכן — הכל בזזזזזול!</div>
   </div>
 </section>
 
-<!-- ===== GLYPHS ===== -->
+<!-- ===== GLYPH GRID ===== -->
 <section class="section white glyphs-section" id="glyphs">
   <div class="wrap-glyph glyphs-wrap">
     <!-- Sticky LEFT -->
@@ -221,7 +171,7 @@ img{max-width:100%;height:auto;display:block;margin:0 auto}
         <span id="glyphCode">U+05D0</span>
       </div>
 
-      <!-- Tabs: רחב | חצי־רחב | נורמל (ויזואלית נורמל מימין) -->
+      <!-- Tabs: רחב | חצי־רחב | נורמל -->
       <div class="tabs" role="tablist" aria-label="Weights">
         <button class="tab"        data-face="AlteZachen Wide"     style="font-family:'AlteZachen Wide'">רחב</button>
         <button class="tab"        data-face="AlteZachen HalfWide" style="font-family:'AlteZachen HalfWide'">חצי־רחב</button>
@@ -231,18 +181,6 @@ img{max-width:100%;height:auto;display:block;margin:0 auto}
 
     <!-- Grid RIGHT -->
     <div class="glyph-cells" id="glyphRows"></div>
-  </div>
-</section>
-
-<!-- Red scroll-reveal panel -->
-<section class="reveal-stage">
-  <div class="reveal-stick">
-    <div class="reveal-red">
-      <div class="reveal-mask" id="revealMask"></div>
-      <div class="reveal-text">
-        אֲלְטֶע זָאכֶן — טייפ משפחתי לכרזות ולכותרות. אפשר ליצור קשר, לקרוא עוד, ולהוריד דוגמית.
-      </div>
-    </div>
   </div>
 </section>
 
@@ -261,155 +199,114 @@ img{max-width:100%;height:auto;display:block;margin:0 auto}
 </section>
 
 <script>
-/* Scroll reveal sections */
+/* Reveal */
 const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('reveal');io.unobserve(e.target)}})},{threshold:.15});
 document.querySelectorAll('.section').forEach(el=>io.observe(el));
 
-/* ===== Glyph data ===== */
+/* ===== Glyph rows ===== */
 const ROW_HEB_1 = "אבגדהוזחטיכךלמםנןסעפףצץקרשת";
 const ROW_HEB_PRES_1 = "אַ אָ אּ בּ גּ דּ הּ וּ וֹ זּ טּ יּ ךּ כּ לּ מּ נּ סּ ףּ פּ צּ קּ רּ שּ שׁ שׂ שּׁ שּׂ תּ";
-
 const ROW_LAT_AZ = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const ROW_LAT_EXT_1 = "Á Ă Â Ä À Ā Å Ã Æ Ć Ç Č Ď Đ É Ě Ê Ë È Ē Ė Ə Ğ Ġ Ģ Ĥ";
 const ROW_LAT_EXT_2 = "Í Ĭ Î Ï Ì İ Į Ĵ Ķ Ĺ Ľ Ł Ń Ň Ñ Ŋ Ó Ô Ö Ò Ō Õ Œ Þ Ŕ Ř Ŗ Ś Ş Ș ß Ť Ţ Ú Û Ü Ù Ū Ů Ű Ų Ŵ Ŷ Ÿ Ý Ź Ž Ż Ǐ Ĺ Ń";
-
 const ROW_CYR_1 = "А Б В Г Д Е Ё Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ Ъ Ы Ь Э Ю Я Є Ї І Ґ";
-
 const ROW_NUM_1 = "0 1 2 3 4 5 6 7 8 9";
 const ROW_NUM_2 = "0 1 2 3 4 5 6 7 8 9";
 const ROW_NUM_SS03 = "0 1 2 3 4 5 6 7 8 9";
 const ROW_NUM_SS04 = "0 1 2 3 4 5 6 7 8 9";
 const ROW_FRAC = "½ ¼ ¾ ⅜ ⅝ ⅞";
-
 const ROW_CURR = "¢ ₳ $ € ₱ ₪ £ ¥";
-
 const ROW_PUNC_1 = ". , ; : … ! ? ¿ • * # / \\ – — ― _ ( ) { } [ ] „ “ ” « » ‹ › ‚ ‘ ’";
 const ROW_SYM_1  = "☺ ☹ @ & ¶ © ® ℗ ™ ° | ¦";
-
 const ROW_SHAPES = "■ □ ▲ ▶ ▼ ◀ △ ◯ ●";
 const ROW_ARROWS = "↺ ↗ ↖ ↘ ↙ ↓ ↑ → ← ⇔ ⇕ ⇑ ⇓ ⇐ ⇒ ⇌ ⇅";
 const ROW_MATH = "− × ÷ = ≠ > < ≥ ≤ ± ≈ ~ ¬ ∅ % ‰";
 
-/* Names subset */
+/* Names (subset) */
 const HEB_NAMES = {"א":"HEBREW LETTER ALEF","ב":"HEBREW LETTER BET","ג":"HEBREW LETTER GIMEL","ד":"HEBREW LETTER DALET","ה":"HEBREW LETTER HE","ו":"HEBREW LETTER VAV","ז":"HEBREW LETTER ZAYIN","ח":"HEBREW LETTER HET","ט":"HEBREW LETTER TET","י":"HEBREW LETTER YOD","כ":"HEBREW LETTER KAF","ך":"HEBREW LETTER FINAL KAF","ל":"HEBREW LETTER LAMED","מ":"HEBREW LETTER MEM","ם":"HEBREW LETTER FINAL MEM","נ":"HEBREW LETTER NUN","ן":"HEBREW LETTER FINAL NUN","ס":"HEBREW LETTER SAMEKH","ע":"HEBREW LETTER AYIN","פ":"HEBREW LETTER PE","ף":"HEBREW LETTER FINAL PE","צ":"HEBREW LETTER TSADI","ץ":"HEBREW LETTER FINAL TSADI","ק":"HEBREW LETTER QOF","ר":"HEBREW LETTER RESH","ש":"HEBREW LETTER SHIN","ת":"HEBREW LETTER TAV"};
 const SYM_NAMES = {"₪":"NEW SHEQEL SIGN","€":"EURO SIGN","£":"POUND SIGN","¥":"YEN SIGN","$":"DOLLAR SIGN","¢":"CENT SIGN","₳":"AUSTRAL SIGN","₱":"PESO SIGN","©":"COPYRIGHT SIGN","®":"REGISTERED SIGN","℗":"SOUND RECORDING COPYRIGHT","™":"TRADE MARK SIGN","°":"DEGREE SIGN","¶":"PILCROW SIGN","¦":"BROKEN BAR","·":"MIDDLE DOT"};
-function unicodeName(ch){
-  if(HEB_NAMES[ch]) return HEB_NAMES[ch];
-  if(SYM_NAMES[ch]) return SYM_NAMES[ch];
-  const cp = ch.codePointAt(0);
-  if(ch >= 'A' && ch <= 'Z') return "LATIN CAPITAL LETTER " + ch;
-  if(ch >= 'a' && ch <= 'z') return "LATIN SMALL LETTER " + ch.toUpperCase();
-  if(ch >= '0' && ch <= '9') return "DIGIT " + ch;
-  return "U+" + cp.toString(16).toUpperCase().padStart(4,'0');
-}
-function unicodeCode(ch){ return "U+" + ch.codePointAt(0).toString(16).toUpperCase().padStart(4,'0'); }
+function nameOf(ch){ if(HEB_NAMES[ch]) return HEB_NAMES[ch]; if(SYM_NAMES[ch]) return SYM_NAMES[ch];
+  const cp=ch.codePointAt(0); if(ch>='A'&&ch<='Z')return"LATIN CAPITAL LETTER "+ch;
+  if(ch>='a'&&ch<='z')return"LATIN SMALL LETTER "+ch.toUpperCase();
+  if(ch>='0'&&ch<='9')return"DIGIT "+ch; return "U+"+cp.toString(16).toUpperCase().padStart(4,'0')}
+function codeOf(ch){return "U+"+ch.codePointAt(0).toString(16).toUpperCase().padStart(4,'0')}
 
-/* Build rows — כולם LTR כדי שהגריד אחיד (העברית תציג רגיל גם כך) */
-const faceDefault = "AlteZachen Normal";
-let currentFace = faceDefault;
+const faceDefault="AlteZachen Normal"; let currentFace=faceDefault;
+const rowsRoot=document.getElementById('glyphRows');
+const bigGlyph=document.getElementById('bigGlyph');
+const glyphName=document.getElementById('glyphName');
+const glyphCode=document.getElementById('glyphCode');
 
-const rowsRoot = document.getElementById('glyphRows');
-const bigGlyph = document.getElementById('bigGlyph');
-const glyphName = document.getElementById('glyphName');
-const glyphCode = document.getElementById('glyphCode');
-
-function makeRow(charsString, dir='ltr', featureSettings=null){
-  const row = document.createElement('div');
-  row.className = 'grid';
-  row.setAttribute('dir', dir); // אינפורמטיבי בלבד
-
+/* Row builder (LTR לכל השורות כדי ליישר לגריד) */
+function makeRow(charsString, featureSettings=null){
+  const row=document.createElement('div'); row.className='grid';
   for(const ch of Array.from(charsString)){
     if(/\s/.test(ch)) continue;
     if(!document.fonts.check(`40px "${faceDefault}"`, ch)) continue;
-    const cell = document.createElement('div'); cell.className = 'cell';
-    const span = document.createElement('span'); span.className = 'glyph';
-    span.style.fontFamily = `"${currentFace}", system-ui, sans-serif`;
-    if(featureSettings) span.style.fontFeatureSettings = featureSettings;
-    span.textContent = ch;
+    const cell=document.createElement('div'); cell.className='cell';
+    const span=document.createElement('span'); span.className='glyph';
+    span.style.fontFamily=`"${currentFace}", system-ui, sans-serif`;
+    if(featureSettings) span.style.fontFeatureSettings=featureSettings;
+    span.textContent=ch;
     cell.appendChild(span);
-    cell.addEventListener('mouseenter', ()=> showGlyph(ch, featureSettings)); // לשמור ss03/ss04
+    cell.addEventListener('mouseenter', ()=> showGlyph(ch, featureSettings));
     row.appendChild(cell);
   }
   rowsRoot.appendChild(row);
 }
-function addGap(kind='row'){ const d=document.createElement('div'); d.className = (kind==='group'?'group-gap':'row-gap'); rowsRoot.appendChild(d); }
-
+function addGap(kind='row'){const d=document.createElement('div'); d.className=(kind==='group'?'group-gap':'row-gap'); rowsRoot.appendChild(d)}
 function showGlyph(ch, featureSettings=null){
-  bigGlyph.textContent = ch;
-  bigGlyph.style.fontFamily = `"${currentFace}","AlteZachen Wide",system-ui`;
-  bigGlyph.style.fontFeatureSettings = featureSettings ? featureSettings : "normal"; // תאימות ss03/ss04
-  glyphName.textContent = unicodeName(ch);
-  glyphCode.textContent = "U+" + ch.codePointAt(0).toString(16).toUpperCase().padStart(4,'0');
+  bigGlyph.textContent=ch;
+  bigGlyph.style.fontFamily=`"${currentFace}","AlteZachen Wide",system-ui`;
+  bigGlyph.style.fontFeatureSettings=featureSettings?featureSettings:"normal";
+  glyphName.textContent=nameOf(ch);
+  glyphCode.textContent=codeOf(ch);
 }
-
 function rebuildFaces(){
   rowsRoot.querySelectorAll('.glyph').forEach(g=>{
-    g.style.fontFamily = `"${currentFace}", system-ui, sans-serif`;
+    g.style.fontFamily=`"${currentFace}", system-ui, sans-serif`;
   });
-  // השאר את אותו feature בגדול (אם כבר נבחר)
-  const fs = bigGlyph.style.fontFeatureSettings;
-  bigGlyph.style.fontFamily = `"${currentFace}","AlteZachen Wide",system-ui`;
-  bigGlyph.style.fontFeatureSettings = fs || "normal";
+  const fs=bigGlyph.style.fontFeatureSettings;
+  bigGlyph.style.fontFamily=`"${currentFace}","AlteZachen Wide",system-ui`;
+  bigGlyph.style.fontFeatureSettings=fs||"normal";
 }
 
-/* Build rows */
+/* Build (הכל LTR לגריד אחיד) */
 document.fonts.ready.then(()=>{
-  makeRow(ROW_HEB_1, 'rtl'); addGap('row');
-  makeRow(ROW_HEB_PRES_1, 'rtl'); addGap('group');
+  makeRow(ROW_HEB_1); addGap('row');
+  makeRow(ROW_HEB_PRES_1); addGap('group');
 
-  makeRow(ROW_LAT_AZ, 'ltr'); addGap('row');
-  makeRow(ROW_LAT_EXT_1, 'ltr'); addGap('row');
-  makeRow(ROW_LAT_EXT_2, 'ltr'); addGap('group');
+  makeRow(ROW_LAT_AZ); addGap('row');
+  makeRow(ROW_LAT_EXT_1); addGap('row');
+  makeRow(ROW_LAT_EXT_2); addGap('group');
 
-  makeRow(ROW_CYR_1, 'ltr'); addGap('group');
+  makeRow(ROW_CYR_1); addGap('group');
 
-  makeRow(ROW_NUM_1, 'ltr'); addGap('row');
-  makeRow(ROW_NUM_2, 'ltr'); addGap('row');
-  makeRow(ROW_NUM_SS03, 'ltr', '"ss03" 1'); addGap('row');
-  makeRow(ROW_NUM_SS04, 'ltr', '"ss04" 1'); addGap('group');
+  makeRow(ROW_NUM_1); addGap('row');
+  makeRow(ROW_NUM_2); addGap('row');
+  makeRow(ROW_NUM_SS03, '"ss03" 1'); addGap('row');
+  makeRow(ROW_NUM_SS04, '"ss04" 1'); addGap('group');
 
-  makeRow(ROW_FRAC, 'ltr'); addGap('row');
-  makeRow(ROW_CURR, 'ltr'); addGap('group');
-  makeRow(ROW_PUNC_1, 'ltr'); addGap('row');
-  makeRow(ROW_SYM_1 , 'ltr'); addGap('group');
-  makeRow(ROW_SHAPES, 'ltr'); addGap('group');
-  makeRow(ROW_ARROWS, 'ltr'); addGap('group');
-  makeRow(ROW_MATH, 'ltr');
+  makeRow(ROW_FRAC); addGap('row');
+  makeRow(ROW_CURR); addGap('group');
+  makeRow(ROW_PUNC_1); addGap('row');
+  makeRow(ROW_SYM_1); addGap('group');
+  makeRow(ROW_SHAPES); addGap('group');
+  makeRow(ROW_ARROWS); addGap('group');
+  makeRow(ROW_MATH);
 
   showGlyph('א');
 });
 
-/* Tabs (רחב | חצי־רחב | נורמל) */
+/* Tabs */
 document.querySelectorAll('.tabs .tab').forEach(btn=>{
   btn.addEventListener('click', ()=>{
     document.querySelectorAll('.tabs .tab').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    currentFace = btn.dataset.face;
-    rebuildFaces();
+    btn.classList.add('active'); currentFace=btn.dataset.face; rebuildFaces();
   });
 });
 
-/* Random “shuffle” */
-const rand = document.getElementById('randomLine');
-document.getElementById('shuffleBtn').addEventListener('click', ()=>{
-  rand.animate([{letterSpacing:"0px"},{letterSpacing:"6px"},{letterSpacing:"0px"}], {duration:380, easing:"cubic-bezier(.2,.8,.2,1)"});
-});
-
-/* Red reveal mask (simple scroll progress) */
-const stage = document.querySelector('.reveal-stage');
-const mask  = document.getElementById('revealMask');
-function onScroll(){
-  const r = stage.getBoundingClientRect();
-  const h = window.innerHeight;
-  const total = r.height - h;
-  const passed = Math.min(Math.max(-r.top,0), total);
-  const p = total ? (passed/total) : 0;
-  mask.style.transform = `translateY(${(1-p)*100}%)`;  // אדום "עולה"
-}
-onScroll();
-addEventListener('scroll', onScroll, {passive:true});
-
-/* Reveal other sections */
+/* Reveal */
 document.querySelectorAll('.section').forEach(el=>io.observe(el));
 </script>
 </body>
