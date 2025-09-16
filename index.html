@@ -73,25 +73,38 @@ img{max-width:100%;height:auto;display:block;margin:0 auto;box-shadow:none}
 @media (max-width:900px){.img-grid{grid-template-columns:1fr}}
 
 /* ===== Glyph Grid ===== */
-.glyphs{display:grid;gap:clamp(12px,2vh,20px)}
-.grid{
-  /* תאים גדולים יותר ויישור אמצע */
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));
-  gap:10px;padding:6px;overflow:visible;justify-items:center;align-items:center
-}
-.grid.rtl{direction:rtl}
-.cell{
-  position:relative;width:100%;aspect-ratio:1/1;border:1px solid #dcdcdc;background:#fff;
-  display:flex;align-items:center;justify-content:center;    /* מרכז אמיתי */
-  transform-origin:center;transition:transform .08s ease,border-color .08s ease; /* מהיר יותר */
-  z-index:0
-}
-.cell:hover{transform:scale(3.8);z-index:12;border-color:#000} /* גדול ומהיר */
-.glyph{
-  font-family:"AlteZachen Normal",system-ui,sans-serif;
-  font-size:52px;line-height:1;display:flex;align-items:center;justify-content:center;
-  transform-origin:center;transition:transform .08s ease   /* מהיר */
-}
+<section class="section white" id="glyphs">
+  <div class="wrap glyphs-wrap">
+    <!-- PREVIEW (sticky left) -->
+    <aside class="glyph-preview">
+      <div class="preview-box">
+        <div id="bigGlyph" class="preview-glyph" aria-live="polite">א</div>
+      </div>
+      <div class="preview-meta">
+        <span id="glyphName" class="meta-left">HEBREW LETTER ALEF</span>
+        <span id="glyphCode" class="meta-right">U+05D0</span>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Weights">
+        <button class="tab active" data-face="AlteZachen Normal"  style="font-family:'AlteZachen Normal'">נורמל</button>
+        <button class="tab"        data-face="AlteZachen HalfWide" style="font-family:'AlteZachen HalfWide'">חצי־רחב</button>
+        <button class="tab"        data-face="AlteZachen Wide"     style="font-family:'AlteZachen Wide'">רחב</button>
+        <button class="tab"        data-face="AlteZachen Random"   style="font-family:'AlteZachen Random'">רנדום</button>
+      </div>
+    </aside>
+
+    <!-- GRID (right) -->
+    <div class="glyph-cells">
+      <div class="grid rtl" id="gridHeb" dir="rtl"></div>
+      <div class="grid-gap"></div>
+      <div class="grid" id="gridLat" dir="ltr"></div>
+      <div class="grid-gap"></div>
+      <div class="grid" id="gridCyr" dir="ltr"></div>
+      <div class="grid-gap"></div>
+      <div class="grid" id="gridNum" dir="ltr"></div>
+    </div>
+  </div>
+</section>
+
 
 /* About (ב־Normal, קצת קטן וצפוף יותר) */
 .about{
