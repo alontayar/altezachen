@@ -6,215 +6,160 @@
 <title>אלטע זאכן — Alte Zachen</title>
 <meta name="theme-color" content="#ff0000" />
 
-<!-- PRELOADS (root files; no folders) -->
+<!-- פרילוד לקבצי פונט (שורש) -->
 <link rel="preload" href="AlteZachen-Wide.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="AlteZachen-HalfWide.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="AlteZachen-Normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="AlteZachen-Random.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" as="image" href="Logo_Header.jpg">
 
 <style>
 /* ====== FONTS (root-level paths) ====== */
-@font-face{
-  font-family:"AlteZachen Normal";
-  src:url("AlteZachen-Normal.woff2") format("woff2"),
-      url("AlteZachen-Normal.woff") format("woff");
-  font-weight:400; font-style:normal; font-display:swap;
-}
-@font-face{
-  font-family:"AlteZachen HalfWide";
-  src:url("AlteZachen-HalfWide.woff2") format("woff2"),
-      url("AlteZachen-HalfWide.woff") format("woff");
-  font-weight:400; font-style:normal; font-display:swap;
-}
-@font-face{
-  font-family:"AlteZachen Wide";
-  src:url("AlteZachen-Wide.woff2") format("woff2"),
-      url("AlteZachen-Wide.woff") format("woff");
-  font-weight:400; font-style:normal; font-display:swap;
-}
-@font-face{
-  font-family:"AlteZachen Random";
-  src:url("AlteZachen-Random.woff2") format("woff2"),
-      url("AlteZachen-Random.woff") format("woff");
-  font-weight:400; font-style:normal; font-display:swap;
-}
+@font-face{ font-family:"AlteZachen Normal";
+  src:url("AlteZachen-Normal.woff2") format("woff2"), url("AlteZachen-Normal.woff") format("woff");
+  font-weight:400; font-style:normal; font-display:swap; }
+@font-face{ font-family:"AlteZachen HalfWide";
+  src:url("AlteZachen-HalfWide.woff2") format("woff2"), url("AlteZachen-HalfWide.woff") format("woff");
+  font-weight:400; font-style:normal; font-display:swap; }
+@font-face{ font-family:"AlteZachen Wide";
+  src:url("AlteZachen-Wide.woff2") format("woff2"), url("AlteZachen-Wide.woff") format("woff");
+  font-weight:400; font-style:normal; font-display:swap; }
+@font-face{ font-family:"AlteZachen Random";
+  src:url("AlteZachen-Random.woff2") format("woff2"), url("AlteZachen-Random.woff") format("woff");
+  font-weight:400; font-style:normal; font-display:swap; }
 
 /* ====== CORE ====== */
-:root{
-  --red:#ff0000; --black:#000; --white:#fff;
-  --pad: clamp(20px, 6vw, 80px);
-}
+:root{ --red:#ff0000; --black:#000; --white:#fff; --pad:clamp(20px,6vw,80px); }
 *{box-sizing:border-box}
 html,body{height:100%}
 html{scroll-behavior:smooth}
 body{
   margin:0; background:var(--white); color:var(--black);
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", Arial;
+  font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",Arial;
   line-height:1.2; text-align:center;
 }
-img{max-width:100%;height:auto;display:block;margin:0 auto}
+img{max-width:100%; height:auto; display:block; margin:0 auto; box-shadow:none}
 
 /* Sections */
-.section{padding: min(16vh,160px) var(--pad)}
+.section{padding:min(16vh,160px) var(--pad); opacity:0; transform:translateY(60px);
+  transition:opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1);}
+.section.reveal{opacity:1; transform:translateY(0)}
 .section.red{background:var(--red);color:var(--white)}
 .section.white{background:var(--white);color:var(--black)}
 .section.black{background:var(--black);color:var(--white)}
+.wrap{max-width:1400px; margin:0 auto}
+.spacer{height:min(8vh,80px)}
 
-/* Titles & sizes */
-.huge{font-size: clamp(48px, 12vw, 200px); line-height:.9; margin:0}
-.big{font-size: clamp(34px, 9vw, 140px); line-height:.92; margin:.1em 0}
-.mid{font-size: clamp(22px, 5.6vw, 72px); line-height:1; margin:.2em 0}
-.info-big{font-size: clamp(18px, 3.4vw, 42px); line-height:1.28; margin:.6em 0}
+/* Sizes (אפשר לשנות פר בלוק בקלות) */
+.huge{font-size:clamp(48px,12vw,200px); line-height:.9; margin:0}
+.big {font-size:clamp(34px,9vw,140px);  line-height:.92; margin:.1em 0}
+.mid {font-size:clamp(22px,5.6vw,72px); line-height:1;   margin:.2em 0}
 
-/* Labels for weights */
-.label{
-  display:inline-block; margin-bottom:18px; font-size: clamp(14px, 2.2vw, 22px);
-  padding:.35em .8em; border:2px solid currentColor; border-radius:999px; font-weight:700;
+/* Weight labels — שחור, בלי עיגול */
+.weight{font-size:clamp(16px,2.6vw,28px); font-weight:700; margin-bottom:14px; color:#000}
+
+/* Image grid 2× (נקי, שווייצרי) */
+.img-grid{
+  display:grid; grid-template-columns:1fr 1fr; gap:clamp(10px,2vw,24px); align-items:center; justify-items:center;
 }
+@media (max-width:900px){ .img-grid{grid-template-columns:1fr} }
 
-/* Centered column */
-.wrap{max-width: 1400px; margin: 0 auto}
-
-/* Reveal animations */
-.section{opacity:0; transform: translateY(60px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1)}
-.section.reveal{opacity:1; transform: translateY(0)}
-figure.reveal img{transform: scale(.98); transition: transform .7s ease}
-figure.reveal.visible img{transform: scale(1)}
-
-/* Glyph grid — hover enlarge like GT */
-.grid-wrap{margin-top: 24px}
-.grid-note{font-size: clamp(12px,1.8vw,18px); opacity:.6; margin-bottom:8px}
+/* Glyph grid */
 .grid{
-  display:grid; grid-template-columns:repeat(auto-fill, minmax(64px, 1fr)); gap:6px;
-  margin-top:10px; overflow:visible; padding:6px;
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(64px,1fr));
+  gap:8px; padding:6px; overflow:visible; justify-items:center; align-items:center;
 }
 .cell{
-  position:relative; display:flex; align-items:center; justify-content:center;
-  aspect-ratio:1/1; border:1px solid #ddd; background:#fff;
-  font-family:"AlteZachen Normal", system-ui; font-size:36px;
-  transition: transform .12s ease, border-color .12s ease;
-  transform-origin:center; z-index:0;
+  position:relative; display:grid; place-items:center; aspect-ratio:1/1;
+  width:100%; border:1px solid #dcdcdc; background:#fff; transform-origin:center;
+  transition:transform .14s ease, border-color .14s ease; z-index:0;
 }
-.cell:hover{
-  transform: scale(2.5);
-  z-index:10;
-  border-color:#000;
+.cell .g{
+  display:block; line-height:1; font-size:42px; /* גדול יותר כברירת מחדל */
+  font-family:"AlteZachen Normal", system-ui, sans-serif;
+  transform-origin:center; transition:transform .14s ease;
 }
+.cell:hover{ transform:scale(3.4); z-index:10; border-color:#000; }
+.cell:hover .g{ transform:scale(1.08); }
 
-/* Kill all image shadows (Swiss clean) */
-img{box-shadow:none}
-
-/* Utility */
-.spacer{height:min(8vh,80px)}
+/* About */
+.about{
+  font-family:"AlteZachen Random","AlteZachen Wide","AlteZachen Normal",system-ui;
+  font-size:clamp(24px,5.2vw,80px); line-height:1.22; margin:.4em 0;
+}
 </style>
 </head>
 <body>
 
-<!-- ===== HERO (Logo + Main Title) ===== -->
-<section class="section red reveal">
+<!-- HERO -->
+<section class="section red">
   <div class="wrap">
-    <img src="Logo_Header.jpg" alt="Alte Zachen — Logo">
-    <div class="spacer"></div>
     <h1 class="huge" style="font-family:'AlteZachen Wide','AlteZachen Normal',system-ui">אלטע זאכן</h1>
-    <div class="big" style="font-family:'AlteZachen Wide','AlteZachen Normal',system-ui">ALTE ZACHEN</div>
+    <div class="big"  style="font-family:'AlteZachen Wide','AlteZachen Normal',system-ui">ALTE ZACHEN</div>
   </div>
 </section>
 
-<!-- ===== NORMAL ===== -->
+<!-- NORMAL -->
 <section class="section white">
   <div class="wrap">
-    <div class="label">נורמל</div>
-    <div class="big" style="font-family:'AlteZachen Normal'">מחמם</div>
-    <div class="mid" style="font-family:'AlteZachen Normal'">אתה שומר על בריאותך בהשתמשך במים מינרליים מצוינים ומעולים, סחטיין!</div>
+    <div class="weight" style="font-family:'AlteZachen Normal'">נורמל</div>
+    <div class="big"  style="font-family:'AlteZachen Normal'">מחמם</div>
+    <div class="mid"  style="font-family:'AlteZachen Normal'">אתה שומר על בריאותך בהשתמשך במים מינרליים מצוינים ומעולים, סחטיין!</div>
   </div>
 </section>
 
-<!-- ===== HALF-WIDE ===== -->
+<!-- HALF-WIDE -->
 <section class="section white">
   <div class="wrap">
-    <div class="label">חצי־רחב</div>
+    <div class="weight" style="font-family:'AlteZachen HalfWide'">חצי־רחב</div>
     <div class="big" style="font-family:'AlteZachen HalfWide'">קונים/מוכרים/</div>
     <div class="big" style="font-family:'AlteZachen HalfWide'">הכל בזזזזזזול!</div>
   </div>
 </section>
 
-<!-- ===== WIDE (LTR block) ===== -->
+<!-- WIDE (LTR) -->
 <section class="section white" dir="ltr">
   <div class="wrap">
-    <div class="label">רחב</div>
-    <div class="big" style="font-family:'AlteZachen Wide'">
+    <div class="weight" style="font-family:'AlteZachen Wide'">רחב</div>
+    <div class="mid"  style="font-family:'AlteZachen Wide'">
       IN 1920, MANDATORY PALESTINE (פלשתינה/ישראל) WAS ESTABLISHED UNDER BRITISH MANDATE, LEADING TO VARIOUS FLAG DESIGNS.
     </div>
   </div>
 </section>
 
-<!-- ===== RANDOM ===== -->
+<!-- RANDOM -->
 <section class="section white">
   <div class="wrap">
-    <div class="label">רנדום</div>
-    <div class="big" style="font-family:'AlteZachen Random'">אלטע זאכן — כותרות, כרזות, מסכי פתיחה</div>
+    <div class="weight" style="font-family:'AlteZachen Random'">רנדום</div>
+    <div class="big"   style="font-family:'AlteZachen Random'">אלטע זאכן — כותרות, כרזות, מסכי פתיחה</div>
   </div>
 </section>
 
-<!-- ===== IMAGE STRIP (use as many as you have in root) ===== -->
+<!-- IMAGES: 2 בעמודה בדסקטופ -->
 <section class="section white">
-  <div class="wrap">
-    <figure class="reveal"><img src="AZ.jpg" alt="Specimen AZ"></figure>
-    <div class="spacer"></div>
-    <figure class="reveal"><img src="AZ5.jpg" alt="Specimen AZ5"></figure>
-    <div class="spacer"></div>
-    <figure class="reveal"><img src="AZ6.jpg" alt="Specimen AZ6"></figure>
-    <div class="spacer"></div>
-    <figure class="reveal"><img src="AZ7.jpg" alt="Specimen AZ7"></figure>
-    <div class="spacer"></div>
-    <figure class="reveal"><img src="AZ8.jpg" alt="Specimen AZ8"></figure>
-    <div class="spacer"></div>
-    <figure class="reveal"><img src="AZ9.jpg" alt="Specimen AZ9"></figure>
-    <div class="spacer"></div>
-    <figure class="reveal"><img src="AZ10.jpg" alt="Specimen AZ10"></figure>
-    <div class="spacer"></div>
-    <figure class="reveal"><img src="AZ11.jpg" alt="Specimen AZ11"></figure>
-    <div class="spacer"></div>
-    <figure class="reveal"><img src="AZ12.jpg" alt="Specimen AZ12"></figure>
-    <div class="spacer"></div>
-    <figure class="reveal"><img src="AZ13.jpg" alt="Specimen AZ13"></figure>
+  <div class="wrap img-grid">
+    <img src="AZ.jpg"  alt="Specimen 1">
+    <img src="AZ5.jpg" alt="Specimen 2">
+    <img src="AZ6.jpg" alt="Specimen 3">
+    <img src="AZ7.jpg" alt="Specimen 4">
   </div>
 </section>
 
-<!-- ===== GLYPH GRID (hover to enlarge) ===== -->
+<!-- GLYPH GRID (בלי טקסטים מסביב) -->
 <section class="section white" id="glyphs">
   <div class="wrap">
-    <div class="label">מערך תווים</div>
-    <div class="grid-wrap">
-      <div class="grid-note">לטינית</div>
-      <div class="grid" id="latinGrid"></div>
-
-      <div class="grid-note">לטינית מורחבת</div>
-      <div class="grid" id="extLatinGrid"></div>
-
-      <div class="grid-note">קירילית</div>
-      <div class="grid" id="cyrGrid"></div>
-
-      <div class="grid-note">עברית</div>
-      <div class="grid" id="hebGrid" dir="rtl"></div>
-
-      <div class="grid-note">ספרות וסימנים</div>
-      <div class="grid" id="numGrid"></div>
-    </div>
+    <div class="grid" id="glyphGrid"></div>
   </div>
 </section>
 
-<!-- ===== ABOUT (big) ===== -->
+<!-- ABOUT (בלי כותרת) -->
 <section class="section black" id="info">
   <div class="wrap">
-    <h2 class="big" style="font-family:'AlteZachen Wide'">אודות הפונט</h2>
-    <p class="info-big">
+    <p class="about">
       אלטע זאכן הוא פונט עברי בהשראת לטרינג וכרזות מודפסות משנות ה־30 וה־40, תקופה שבה עוצבה השפה
       החזותית של היישוב העברי בארץ ישראל. הפונט שואב השראה מלטרינג שצוייר במיוחד עבור כרזות תרבות, אירועים ומוסדות.
       מקור ההשפעה המרכזי הוא עבודותיו של רודי (דויטש) דיין, שעיצב כרזות ואותיות מלאות אופי עבור המרחב הציבורי המתהווה.
     </p>
-    <p class="info-big">
+    <p class="about">
       הפונט משלב שלושה משקלים עיקריים – רגיל, חצי־רחב ורחב – שנבנו מתוך מחקר צורני של טיפוגרפיה ישנה,
       אך הותאמו לשפה עכשווית. לצד שלושת המשקלים קיים גם משקל <strong>רנדום</strong> המאפשר ערבוב חופשי ביניהם
       ויוצר וריאציות טקסטורליות בטקסט, בדומה ללטרינג ידני.
@@ -223,44 +168,46 @@ img{box-shadow:none}
 </section>
 
 <script>
-/* ===== Scroll reveal (celebratory but clean) ===== */
+/* Scroll reveal */
 const io = new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      e.target.classList.add('reveal','visible');
-      io.unobserve(e.target);
-    }
-  });
-},{threshold: .15});
-document.querySelectorAll('.section, figure.reveal').forEach(el=>io.observe(el));
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('reveal'); io.unobserve(e.target); } });
+},{threshold:.15});
+document.querySelectorAll('.section').forEach(el=>io.observe(el));
 
-/* ===== Glyph grids ===== */
-const latin = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-const extLatin = "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØŒŠÙÚÛÜÝŸŽàáâãäåæçèéêëìíîïðñòóôõöøœšùúûüýÿž";
-const cyr = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯЇІЄҐабвгдеёжзийклмнопрстуфхцчшщъыьэюяїієґ";
-const heb = "אבגדהוזחטיכלמנסעפצקרשתךםןףץ";
-const nums = "0123456789 ½¼¾⅓⅔ - – — • ‹› «» ! ? @ © ® ™ $ € £ ¥ % ‰ + − × ÷ = < > ≤ ≥ ( ) [ ] { } / \\ | ^ ~ ° ¶ §";
+/* GLYPH GRID — filter unsupported glyphs & center nicely */
+const charset =
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" +
+  "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØŒŠÙÚÛÜÝŸŽ" +
+  "àáâãäåæçèéêëìíîïðñòóôõöøœšùúûüýÿž" +
+  "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯЇІЄҐ" +
+  "абвгдеёжзийклмнопрстуфхцчшщъыьэюяїієґ" +
+  "אבגדהוזחטיכלמנסעפצקרשתךםןףץ" +
+  "0123456789½¼¾⅓⅔-–—•‹›«»!?@©®™$€£¥‰+÷×=<>≤≥()[]{}/\\|^~°¶§·";
 
-/* default grid shows Normal cut; change here if you want a different cut */
-const gridFace = "AlteZachen Normal";
+const grid = document.getElementById('glyphGrid');
+const face = "AlteZachen Normal";
 
-function fillGrid(id, text, ff){
-  const grid = document.getElementById(id);
-  if(!grid) return;
-  grid.innerHTML = '';
-  for(const ch of text){
-    const d = document.createElement('div');
-    d.className = 'cell';
-    d.style.fontFamily = `'${ff}', system-ui, sans-serif`;
-    d.textContent = ch;
-    grid.appendChild(d);
+/* מחכים שהפונטים נטענו ואז בודקים תמיכה לכל גליף */
+document.fonts.ready.then(()=>{
+  const out = [];
+  for(const ch of charset){
+    // דלג על רווחים/מחיקות
+    if(/\s/.test(ch)) continue;
+    // בדיקת תמיכה בפונט (ללא נפילה לפונט חלופי)
+    const ok = document.fonts.check(`32px "${face}"`, ch);
+    if(!ok) continue;
+
+    const cell = document.createElement('div');
+    cell.className = 'cell';
+    const span = document.createElement('span');
+    span.className = 'g';
+    span.style.fontFamily = `"${face}", system-ui, sans-serif`;
+    span.textContent = ch;
+    cell.appendChild(span);
+    out.push(cell);
   }
-}
-fillGrid('latinGrid', latin, gridFace);
-fillGrid('extLatinGrid', extLatin, gridFace);
-fillGrid('cyrGrid', cyr, gridFace);
-fillGrid('hebGrid', heb, gridFace);
-fillGrid('numGrid', nums, gridFace);
+  grid.replaceChildren(...out);
+});
 </script>
 </body>
 </html>
