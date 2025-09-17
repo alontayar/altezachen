@@ -1,4 +1,4 @@
-<!-- AZ build: v1.0.1 — 2025-09-17 — mobile 10-up + tap overlay preview, bigger buttons, iOS phone detect off -->
+<!-- AZ build: v1.0.2 — 2025-09-17 — table grid (collapsed borders), mobile tap keeps preview, glyph turns red -->
 <!doctype html>
 <html lang="he" dir="rtl">
 <head>
@@ -7,9 +7,9 @@
 <meta name="format-detection" content="telephone=no" />
 <title>אלטע זאכן — Alte Zachen</title>
 <meta name="theme-color" content="#ff0000" />
-<meta name="az-build" content="v1.0.1" />
+<meta name="az-build" content="v1.0.2" />
 
-<!-- Fonts in ROOT -->
+<!-- Fonts at repo root -->
 <link rel="preload" href="AlteZachen-Wide.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="AlteZachen-HalfWide.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="AlteZachen-Normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -38,7 +38,6 @@ body{
   font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",Arial;
   line-height:1.2;text-align:center
 }
-a{color:inherit;text-decoration:none}
 .section{ padding:80px 16px }
 .section.white{ background:#fff; color:#000 }
 .section.red{ background:#ff0000; color:#fff }
@@ -51,7 +50,7 @@ a{color:inherit;text-decoration:none}
 .mid { font-size:6vw;  line-height:.96; margin:.1em 0 }
 @media (min-width:1200px){ .huge{font-size:160px} .big{font-size:170px} .mid{font-size:86px} }
 .weight{ font-size:24px; font-weight:700; margin-bottom:8px }
-@media (max-width:600px){ .weight{ font-size:18px; margin-bottom:4px } } /* כותרת משקל קטנה יותר במובייל */
+@media (max-width:600px){ .weight{ font-size:18px; margin-bottom:4px } }
 .section.spec{ padding-top:56px; padding-bottom:56px }
 
 /* HEADER */
@@ -70,12 +69,13 @@ a{color:inherit;text-decoration:none}
 .btn:hover{ background:#000; color:#fff }
 @media (min-width:1024px){ .btn{ font-size:22px; padding:.7em 1.6em } }
 
-/* ===== GLYPH GRID: FLEX (לא חופף) ===== */
+/* ===== GLYPH GRID (TABLE, COLLAPSED BORDERS) ===== */
 .glyphs-shell{ padding-left:6vw; padding-right:6vw }
 .glyphs-wrap{ display:flex; gap:16px; align-items:flex-start; direction:ltr; }
 .preview-col{ flex:0 0 38%; max-width:700px; min-width:300px; position:sticky; top:16px }
-.grid-col{ flex:1 1 auto; min-width:320px }
+.grid-col{ flex:1 1 auto; min-width:320px; overflow-x:auto }
 
+/* Sticky preview box */
 .preview-box{
   width:100%; height:0; padding-bottom:100%;
   border:1px solid #000; background:#fff; position:relative; overflow:hidden
@@ -89,7 +89,7 @@ a{color:inherit;text-decoration:none}
 .preview-meta{ display:flex; justify-content:space-between; align-items:center; margin-top:8px;
   font:13px/1.2 Arial,Helvetica,sans-serif; color:#000 }
 
-/* Tabs */
+/* Weight tabs (נורמל מימין) */
 .tabs{ display:flex; flex-direction:row-reverse; border:1px solid #000; margin-top:8px }
 .tab{
   flex:1 1 33%; appearance:none; border:0; margin:0; padding:.7em 1.1em;
@@ -100,48 +100,48 @@ a{color:inherit;text-decoration:none}
 .tab.active{ background:#000; color:#fff }
 @media (min-width:1024px){ .tab{ font-size:20px } }
 
-/* Cells (desktop/tablet) */
-.grid{ font-size:0 }
-.cell{
-  display:inline-block; width:84px; height:84px; border:1px solid #000; margin:5px;
-  background:#fff; vertical-align:top; transition:background-color .06s ease,color .06s ease
+/* TABLE as grid */
+.grid-table{
+  border-collapse:collapse;
+  margin:0 auto 0 0;   /* מיושר לשמאל של העמודה */
+  background:#fff;
+}
+.grid-table td{
+  border:1px solid #000;
+  width:84px; height:84px; padding:0;
+  position:relative; background:#fff;
 }
 .glyph{
-  display:flex; width:100%; height:100%; align-items:center; justify-content:center;
-  color:#000; font-family:"AlteZachen Normal",system-ui,sans-serif;
-  font-size:52px; line-height:1; transform:translateY(-6%); transition:transform .08s ease;
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  color:#000; line-height:1; transform:translateY(-6%); font-size:52px;
+  font-family:"AlteZachen Normal",system-ui; transition:color .1s ease, transform .08s ease;
 }
-.cell:hover{ background:#000 }.cell:hover .glyph{ color:#fff }
+.grid-table tr.spacer td{ border:none; height:10px; padding:0; background:transparent }
 
-/* Gaps */
-.row-gap{ height:8px }
-.group-gap{ height:16px }
+/* Desktop hover = invert cell; Mobile tap = glyph red (not background) */
+@media (hover:hover){
+  .grid-table td:hover{ background:#000 }
+  .grid-table td:hover .glyph{ color:#fff }
+}
 
-/* ===== MOBILE (≤600px): 10 per row + tap overlay preview ===== */
+/* ===== MOBILE (≤600px): overlay preview & cell size shrink ===== */
 @media (max-width:600px){
   .glyphs-wrap{ display:block }
   .preview-col{ display:none !important }
   .grid-col{ width:100%; max-width:none }
-  .grid{ text-align:center }
-  .cell{
-    position:relative; margin:0; width:10%; height:auto; border:1px solid #000;
-    display:inline-block; vertical-align:top; background:#fff;
+  .grid-table td{
+    width:calc((100vw - 8vw)/10);
+    height:calc((100vw - 8vw)/10);
   }
-  .cell::before{ content:""; display:block; padding-top:100% } /* square */
-  .glyph{
-    position:absolute; top:0; right:0; bottom:0; left:0;
-    display:flex; align-items:center; justify-content:center;
-    font-size:7.2vw; transform:translateY(-4%); transition:transform .08s ease, color .06s ease;
-  }
-  .cell.active{ background:#ff0000 }
-  .cell.active .glyph{ color:#fff; transform:translateY(-4%) scale(1.12) }
+  .glyph{ font-size:7.2vw; transform:translateY(-4%) }
+  .grid-table td.active .glyph{ color:#ff0000; transform:translateY(-4%) scale(1.08) }
 }
 
-/* Overlay preview for mobile tap */
+/* Floating preview box on mobile tap */
 .touch-preview{
   position:fixed; left:0; top:0; width:0; height:0; display:none;
   border:1px solid #000; background:#fff; z-index:70;
-  align-items:center; justify-content:center; box-shadow:none;
+  align-items:center; justify-content:center;
 }
 .tp-glyph{
   color:#000; font-family:"AlteZachen Normal",system-ui; line-height:1; transform:translateY(-2%);
@@ -165,10 +165,10 @@ a{color:inherit;text-decoration:none}
   position:sticky; top:0; background:#000; padding:12px 10px;
   display:flex; align-items:center; justify-content:space-between; gap:8px; z-index:101
 }
-.tweights{ flex:1; display:flex; justify-content:center; gap:8px; flex-wrap:wrap }
+.tweights{ flex:1; display:flex; justify-content:center; gap:10px; flex-wrap:wrap }
 .tbtn{
-  appearance:none; cursor:pointer; font-weight:700; padding:.52em 1.0em; border:1px solid #ff0000;
-  background:#ff0000; color:#fff; font-family:"AlteZachen Normal",system-ui; font-size:16px
+  appearance:none; cursor:pointer; font-weight:700; padding:.58em 1.1em; border:1px solid #ff0000;
+  background:#ff0000; color:#fff; font-family:"AlteZachen Normal",system-ui; font-size:18px
 }
 .tbtn:hover{ background:#fff; color:#000; border-color:#fff }
 .tweight{ border-color:#fff; background:transparent; color:#fff }
@@ -201,7 +201,7 @@ a{color:inherit;text-decoration:none}
   </div>
 </section>
 
-<!-- NORMAL -->
+<!-- SPECIMEN BLOCKS -->
 <section class="section white spec">
   <div class="wrap">
     <div class="weight" style="font-family:'AlteZachen Normal'">נורמל</div>
@@ -210,7 +210,6 @@ a{color:inherit;text-decoration:none}
   </div>
 </section>
 
-<!-- HALF-WIDE -->
 <section class="section white spec">
   <div class="wrap">
     <div class="weight" style="font-family:'AlteZachen HalfWide'">חצי־רחב</div>
@@ -219,7 +218,6 @@ a{color:inherit;text-decoration:none}
   </div>
 </section>
 
-<!-- WIDE (LTR) -->
 <section class="section white spec" dir="ltr">
   <div class="wrap">
     <div class="weight" style="font-family:'AlteZachen Wide'">רחב</div>
@@ -229,7 +227,6 @@ a{color:inherit;text-decoration:none}
   </div>
 </section>
 
-<!-- RANDOM -->
 <section class="section white spec">
   <div class="wrap">
     <div class="weight" style="font-family:'AlteZachen Random'">רנדום</div>
@@ -240,7 +237,7 @@ a{color:inherit;text-decoration:none}
 <!-- GLYPH GRID -->
 <section class="section white glyphs-shell" id="glyphs">
   <div class="glyphs-wrap">
-    <!-- PREVIEW LEFT (hidden on mobile ≤600px) -->
+    <!-- PREVIEW (desktop) -->
     <div class="preview-col">
       <div class="preview-box"><div id="bigGlyph" class="preview-glyph" aria-live="polite">א</div></div>
       <div class="preview-meta"><span id="glyphName">HEBREW LETTER ALEF</span><span id="glyphCode">U+05D0</span></div>
@@ -250,8 +247,11 @@ a{color:inherit;text-decoration:none}
         <button class="tab active" data-face="AlteZachen Normal"   style="font-family:'AlteZachen Normal'">נורמל</button>
       </div>
     </div>
-    <!-- GRID RIGHT -->
-    <div class="grid-col" id="glyphRows"></div>
+
+    <!-- TABLE GRID -->
+    <div class="grid-col">
+      <table class="grid-table" id="gridTable" aria-label="Glyph grid"><tbody id="gridBody"></tbody></table>
+    </div>
   </div>
 </section>
 
@@ -281,49 +281,46 @@ a{color:inherit;text-decoration:none}
   <div id="testerText" class="tester-text" contenteditable="true" spellcheck="false">סברינה קרפנטר המלכה!!!1</div>
 </div>
 
-<!-- Mobile tap preview overlay -->
+<!-- Mobile floating preview -->
 <div class="touch-preview" id="touchPreview" aria-hidden="true"><div class="tp-glyph" id="tpGlyph">א</div></div>
 
 <script>
-/* ===== HEADER after HERO ===== */
+/* HEADER reveal post-hero */
 (function(){
   var head=document.getElementById('siteHead');
   var hero=document.getElementById('hero');
   function sync(){
-    var cutoff=0;
-    if(hero){ cutoff=hero.offsetTop+hero.offsetHeight-1; }
-    if(window.pageYOffset>cutoff){
-      if(head.className.indexOf('show')===-1) head.className+=' show';
-    } else {
-      head.className=head.className.replace(' show','');
-    }
+    var cutoff=hero?hero.offsetTop+hero.offsetHeight-1:0;
+    if(window.pageYOffset>cutoff){ if(head.className.indexOf('show')===-1) head.className+=' show'; }
+    else{ head.className=head.className.replace(' show',''); }
   }
-  window.addEventListener('scroll',sync,false);
-  window.addEventListener('resize',sync,false);
-  document.addEventListener('DOMContentLoaded',sync,false);
+  addEventListener('scroll',sync,false); addEventListener('resize',sync,false); document.addEventListener('DOMContentLoaded',sync,false);
 })();
 
 /* ===== GLYPH DATA ===== */
-var ROW_HEB_1="אבגדהוזחטיכךלמםנןסעפףצץקרשת";
-var ROW_HEB_PRES_1="אַ אָ אּ בּ גּ דּ הּ וּ וֹ זּ טּ יּ ךּ כּ לּ מּ נּ סּ ףּ פּ צּ קּ רּ שּ שׁ שׂ שּׁ שּׂ תּ";
-var ROW_LAT_AZ="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-var ROW_LAT_EXT_1="Á Ă Â Ä À Ā Å Ã Æ Ć Ç Č Ď Đ É Ě Ê Ë È Ē Ė Ə Ğ Ġ Ģ Ĥ";
-var ROW_LAT_EXT_2="Í Ĭ Î Ï Ì İ Į Ĵ Ķ Ĺ Ľ Ł Ń Ň Ñ Ŋ Ó Ô Ö Ò Ō Õ Œ Þ Ŕ Ř Ŗ Ś Ş Ș ß Ť Ţ Ú Û Ü Ù Ū Ů Ű Ų Ŵ Ŷ Ÿ Ý Ź Ž Ż Ǐ Ĺ Ń";
-var ROW_CYR_1="А Б В Г Д Е Ё Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ Ъ Ы Ь Э Ю Я Є Ї І Ґ";
-var ROW_NUM_1="0 1 2 3 4 5 6 7 8 9";
-var ROW_NUM_2="0 1 2 3 4 5 6 7 8 9";
-var ROW_NUM_SS03="0 1 2 3 4 5 6 7 8 9";
-var ROW_NUM_SS04="0 1 2 3 4 5 6 7 8 9";
-var ROW_FRAC="½ ¼ ¾ ⅜ ⅝ ⅞";
-var ROW_CURR="¢ ₳ $ € ₱ ₪ £ ¥";
-var ROW_PUNC_1=". , ; : … ! ? ¿ • * # / \\ – — ― _ ( ) { } [ ] „ “ ” « » ‹ › ‚ ‘ ’";
-var ROW_SYM_1 ="☺ ☹ @ & ¶ © ® ℗ ™ ° | ¦";
-var ROW_SHAPES="■ □ ▲ ▶ ▼ ◀ △ ◯ ●";
-var ROW_ARROWS="↺ ↗ ↖ ↘ ↙ ↓ ↑ → ← ⇔ ⇕ ⇑ ⇓ ⇐ ⇒ ⇌ ⇅";
-var ROW_MATH="− × ÷ = ≠ > < ≥ ≤ ± ≈ ~ ¬ ∅ % ‰";
+var ROWS=[
+  "אבגדהוזחטיכךלמםנןסעפףצץקרשת",
+  "אַ אָ אּ בּ גּ דּ הּ וּ וֹ זּ טּ יּ ךּ כּ לּ מּ נּ סּ ףּ פּ צּ קּ רּ שּ שׁ שׂ שּׁ שּׂ תּ",
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+  "Á Ă Â Ä À Ā Å Ã Æ Ć Ç Č Ď Đ É Ě Ê Ë È Ē Ė Ə Ğ Ġ Ģ Ĥ",
+  "Í Ĭ Î Ï Ì İ Į Ĵ Ķ Ĺ Ľ Ł Ń Ň Ñ Ŋ Ó Ô Ö Ò Ō Õ Œ Þ Ŕ Ř Ŗ Ś Ş Ș ß Ť Ţ Ú Û Ü Ù Ū Ů Ű Ų Ŵ Ŷ Ÿ Ý Ź Ž Ż Ǐ Ĺ Ń",
+  "А Б В Г Д Е Ё Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ Ъ Ы Ь Э Ю Я Є Ї І Ґ",
+  "0 1 2 3 4 5 6 7 8 9",
+  "0 1 2 3 4 5 6 7 8 9",
+  { text:"0 1 2 3 4 5 6 7 8 9", feat:'"ss03" 1' },
+  { text:"0 1 2 3 4 5 6 7 8 9", feat:'"ss04" 1' },
+  "½ ¼ ¾ ⅜ ⅝ ⅞",
+  "¢ ₳ $ € ₱ ₪ £ ¥",
+  ". , ; : … ! ? ¿ • * # / \\ – — ― _ ( ) { } [ ] „ “ ” « » ‹ › ‚ ‘ ’",
+  "☺ ☹ @ & ¶ © ® ℗ ™ ° | ¦",
+  "■ □ ▲ ▶ ▼ ◀ △ ◯ ●",
+  "↺ ↗ ↖ ↘ ↙ ↓ ↑ → ← ⇔ ⇕ ⇑ ⇓ ⇐ ⇒ ⇌ ⇅",
+  "− × ÷ = ≠ > < ≥ ≤ ± ≈ ~ ¬ ∅ % ‰"
+];
 
 var HEB_NAMES={"א":"HEBREW LETTER ALEF","ב":"HEBREW LETTER BET","ג":"HEBREW LETTER GIMEL","ד":"HEBREW LETTER DALET","ה":"HEBREW LETTER HE","ו":"HEBREW LETTER VAV","ז":"HEBREW LETTER ZAYIN","ח":"HEBREW LETTER HET","ט":"HEBREW LETTER TET","י":"HEBREW LETTER YOD","כ":"HEBREW LETTER KAF","ך":"HEBREW LETTER FINAL KAF","ל":"HEBREW LETTER LAMED","מ":"HEBREW LETTER MEM","ם":"HEBREW LETTER FINAL MEM","נ":"HEBREW LETTER NUN","ן":"HEBREW LETTER FINAL NUN","ס":"HEBREW LETTER SAMEKH","ע":"HEBREW LETTER AYIN","פ":"HEBREW LETTER PE","ף":"HEBREW LETTER FINAL PE","צ":"HEBREW LETTER TSADI","ץ":"HEBREW LETTER FINAL TSADI","ק":"HEBREW LETTER QOF","ר":"HEBREW LETTER RESH","ש":"HEBREW LETTER SHIN","ת":"HEBREW LETTER TAV"};
-var SYM_NAMES={"₪":"NEW SHEQEL SIGN","€":"EURO SIGN","£":"POUND SIGN","¥":"YEN SIGN","$":"DOLLAR SIGN","¢":"CENT SIGN","₳":"AUSTRAL SIGN","₱":"PESO SIGN","©":"COPYRIGHT SIGN","®":"REGISTERED SIGN","℗":"SOUND RECORDING COPYRIGHT","™":"TRADE MARK SIGN","°":"DEGREE SIGN","¶":"PILCROW SIGN","¦":"BROKEN BAR","·":"MIDDLE DOT"};
+var SYM_NAMES={"₪":"NEW SHEQEL SIGN","€":"EURO SIGN","£":"POUND SIGN","¥":"YEN SIGN","$":"DOLLAR SIGN","¢":"CENT SIGN","₳":"AUSTRAL SIGN","₱":"PESO SIGN","©":"COPYRIGHT SIGN","®":"REGISTERED SIGN","℗":"SOUND RECORDING COPYRIGHT","™":"TRADE MARK SIGN","°":"DEGREE SIGN","¶":"PILCROW SIGN","¦":"BROKEN BAR"};
+
 function nameOf(ch){
   if(HEB_NAMES[ch])return HEB_NAMES[ch];
   if(SYM_NAMES[ch])return SYM_NAMES[ch];
@@ -339,44 +336,56 @@ function codeOf(ch){
 }
 
 var currentFace="AlteZachen Normal";
-var rowsRoot=document.getElementById('glyphRows');
+var gridBody=document.getElementById('gridBody');
 var bigGlyph=document.getElementById('bigGlyph');
 var glyphName=document.getElementById('glyphName');
 var glyphCode=document.getElementById('glyphCode');
 
-/* build a row */
-function makeRow(charsString, featureSettings){
-  var grid=document.createElement('div'); grid.className='grid';
-  for(var i=0;i<charsString.length;i++){
-    var ch=charsString[i];
-    if(ch===" "||ch==="\n"||ch==="\t") continue;
-    var cell=document.createElement('div'); cell.className='cell';
+/* build table rows */
+function addSpacer(){
+  var tr=document.createElement('tr'); tr.className='spacer';
+  var td=document.createElement('td'); td.colSpan=999; tr.appendChild(td);
+  gridBody.appendChild(tr);
+}
+function addRow(row){
+  var text = typeof row==="string" ? row : row.text;
+  var feat  = typeof row==="object" && row.feat ? row.feat : "";
+  var tr=document.createElement('tr');
+  for(var i=0;i<text.length;i++){
+    var ch=text[i]; if(ch===" "||ch==="\n"||ch==="\t") continue;
+    var td=document.createElement('td'); td.className='cell';
     var span=document.createElement('span'); span.className='glyph';
-    span.style.fontFamily='"'+currentFace+'", system-ui, sans-serif';
-    if(featureSettings) span.style.fontFeatureSettings=featureSettings;
-    span.appendChild(document.createTextNode(ch));
-    cell.appendChild(span);
-    /* desktop hover -> left preview */
-    cell.onmouseenter=(function(c,fs){return function(){showGlyph(c,fs)}})(ch,featureSettings);
-    grid.appendChild(cell);
+    span.style.fontFamily='"'+currentFace+'", system-ui';
+    if(feat) span.style.fontFeatureSettings=feat;
+    span.textContent=ch;
+    td.appendChild(span);
+
+    /* desktop hover -> sticky preview */
+    td.onmouseenter=(function(c,f){return function(){showGlyph(c,f)}})(ch,feat);
+
+    /* mobile click -> keep overlay until action */
+    td.addEventListener('click', (function(cell,chr,fs){
+      return function(ev){ onCellTap(cell,chr,fs); };
+    })(td,ch,feat), false);
+
+    tr.appendChild(td);
   }
-  rowsRoot.appendChild(grid);
+  gridBody.appendChild(tr);
 }
-function gap(kind){
-  var d=document.createElement('div'); d.className=(kind==='group'?'group-gap':'row-gap'); rowsRoot.appendChild(d);
-}
-function showGlyph(ch, featureSettings){
+function showGlyph(ch, feat){
   if(bigGlyph){
-    bigGlyph.innerHTML=""; bigGlyph.appendChild(document.createTextNode(ch));
+    bigGlyph.textContent=ch;
     bigGlyph.style.fontFamily='"'+currentFace+'","AlteZachen Wide",system-ui';
-    bigGlyph.style.fontFeatureSettings=featureSettings?featureSettings:"normal";
+    bigGlyph.style.fontFeatureSettings=feat?feat:"normal";
   }
-  if(glyphName) glyphName.innerHTML=nameOf(ch);
-  if(glyphCode) glyphCode.innerHTML=codeOf(ch);
+  if(glyphName) glyphName.textContent=nameOf(ch);
+  if(glyphCode) glyphCode.textContent=codeOf(ch);
 }
 function rebuildFaces(){
-  var gs=rowsRoot.querySelectorAll('.glyph');
-  for(var i=0;i<gs.length;i++){ gs[i].style.fontFamily='"'+currentFace+'", system-ui, sans-serif'; }
+  var gs=document.querySelectorAll('.glyph');
+  for(var i=0;i<gs.length;i++){
+    gs[i].style.fontFamily='"'+currentFace+'", system-ui';
+  }
   if(bigGlyph){
     var fs=bigGlyph.style.fontFeatureSettings||"normal";
     bigGlyph.style.fontFamily='"'+currentFace+'","AlteZachen Wide",system-ui';
@@ -384,126 +393,62 @@ function rebuildFaces(){
   }
 }
 
-/* Build once */
+/* build all */
 (function(){
-  makeRow(ROW_HEB_1); gap('row');
-  makeRow(ROW_HEB_PRES_1); gap('group');
-
-  makeRow(ROW_LAT_AZ); gap('row');
-  makeRow(ROW_LAT_EXT_1); gap('row');
-  makeRow(ROW_LAT_EXT_2); gap('group');
-
-  makeRow(ROW_CYR_1); gap('group');
-
-  makeRow(ROW_NUM_1); gap('row');
-  makeRow(ROW_NUM_2); gap('row');
-  makeRow(ROW_NUM_SS03, '"ss03" 1'); gap('row');
-  makeRow(ROW_NUM_SS04, '"ss04" 1'); gap('group');
-
-  makeRow(ROW_FRAC); gap('row');
-  makeRow(ROW_CURR); gap('group');
-  makeRow(ROW_PUNC_1); gap('row');
-  makeRow(ROW_SYM_1); gap('group');
-  makeRow(ROW_SHAPES); gap('group');
-  makeRow(ROW_ARROWS); gap('group');
-  makeRow(ROW_MATH);
-
+  for(var r=0;r<ROWS.length;r++){
+    addRow(ROWS[r]);
+    // small space between groups (like reference)
+    if([0,1,4,5,9,11,13,14,15].indexOf(r)!==-1) addSpacer();
+  }
   showGlyph('א');
 })();
 
-/* Tabs */
+/* tabs (switch weight) */
 (function(){
   var tabs=document.querySelectorAll('.tabs .tab');
-  var i; for(i=0;i<tabs.length;i++){
+  for(var i=0;i<tabs.length;i++){
     tabs[i].addEventListener('click', function(){
-      var j; for(j=0;j<tabs.length;j++) tabs[j].classList.remove('active');
-      this.classList.add('active');
-      currentFace=this.getAttribute('data-face');
-      rebuildFaces();
+      for(var j=0;j<tabs.length;j++) tabs[j].classList.remove('active');
+      this.classList.add('active'); currentFace=this.getAttribute('data-face'); rebuildFaces();
     }, false);
   }
 })();
 
-/* ===== Mobile: tap to enlarge + floating white preview box ===== */
-(function(){
-  var overlay=document.getElementById('touchPreview');
-  var overlayGlyph=document.getElementById('tpGlyph');
+/* ===== Mobile tap behaviour ===== */
+var overlay=document.getElementById('touchPreview'), tpGlyph=document.getElementById('tpGlyph');
+function isMobile(){ return matchMedia && matchMedia('(max-width: 600px)').matches; }
+function clearActiveCells(){
+  var act=document.querySelectorAll('.grid-table td.active'); for(var i=0;i<act.length;i++) act[i].classList.remove('active');
+}
+function hideOverlay(){
+  overlay.style.display='none'; overlay.setAttribute('aria-hidden','true'); clearActiveCells();
+}
+function onCellTap(cell, ch, feat){
+  if(!isMobile()) return;
+  // toggle: select new or unselect
+  var wasActive=cell.classList.contains('active');
+  clearActiveCells();
+  if(wasActive){ hideOverlay(); return; }
 
-  function isMobile(){ return window.matchMedia && window.matchMedia('(max-width: 600px)').matches; }
+  cell.classList.add('active'); // glyph turns red by CSS
 
-  function hideOverlay(){
-    overlay.style.display='none';
-    overlay.setAttribute('aria-hidden','true');
-    var act=rowsRoot.querySelector('.cell.active'); if(act) act.classList.remove('active');
-  }
-
-  function onTap(e){
-    if(!isMobile()) return;
-    var t=e.target;
-    while(t && t!==rowsRoot && !t.classList.contains('cell')) t=t.parentNode;
-    if(!t || t===rowsRoot) return;
-
-    // toggle active cell
-    var active=rowsRoot.querySelector('.cell.active');
-    if(active && active!==t) active.classList.remove('active');
-    var nowActive=!t.classList.contains('active');
-    if(!nowActive){ t.classList.remove('active'); hideOverlay(); return; }
-    t.classList.add('active');
-
-    // glyph + features
-    var g=t.querySelector('.glyph');
-    var ch=g && g.textContent ? g.textContent.charAt(0) : '';
-    overlayGlyph.textContent=ch;
-    overlayGlyph.style.fontFamily='"'+currentFace+'", system-ui';
-    overlayGlyph.style.fontFeatureSettings=g.style.fontFeatureSettings||'normal';
-
-    // size & position (≈ 2.6× תא)
-    var r=t.getBoundingClientRect();
-    var cellSize=r.width;
-    var size=Math.min(window.innerWidth*0.62, cellSize*2.6);
-    var left=r.left + r.width/2 - size/2;
-    var top =r.top  + r.height/2 - size/2;
-    // clamp into viewport
-    if(left<6) left=6; if(top<6) top=6;
-    if(left+size>window.innerWidth-6) left=window.innerWidth-size-6;
-    if(top +size>window.innerHeight-6) top =window.innerHeight-size-6;
-
-    overlay.style.width=size+'px';
-    overlay.style.height=size+'px';
-    overlay.style.left=left+'px';
-    overlay.style.top=top+'px';
-    overlay.style.display='flex';
-    overlay.setAttribute('aria-hidden','false');
-
-    // font-size inside box
-    overlayGlyph.style.fontSize=(size*0.72)+'px';
-  }
-
-  function bind(){
-    if(isMobile()){
-      rowsRoot.addEventListener('click', onTap, false);
-      rowsRoot.addEventListener('touchstart', onTap, {passive:true});
-      window.addEventListener('scroll', hideOverlay, false);
-    }else{
-      rowsRoot.removeEventListener('click', onTap, false);
-      rowsRoot.removeEventListener('touchstart', onTap, false);
-      window.removeEventListener('scroll', hideOverlay, false);
-      hideOverlay();
-    }
-  }
-
-  document.addEventListener('click', function(e){
-    if(!isMobile()) return;
-    var t=e.target;
-    var insideCell=false;
-    while(t){ if(t.classList && t.classList.contains('cell')) { insideCell=true; break; } t=t.parentNode; }
-    if(!insideCell){ hideOverlay(); }
-  }, false);
-
-  window.addEventListener('resize', bind, false);
-  document.addEventListener('DOMContentLoaded', bind, false);
-  bind();
-})();
+  // overlay shows & persists until user action
+  var r=cell.getBoundingClientRect(), size=Math.min(window.innerWidth*0.62, r.width*2.6);
+  var left=r.left + r.width/2 - size/2, top=r.top + r.height/2 - size/2;
+  if(left<6) left=6; if(top<6) top=6;
+  if(left+size>innerWidth-6) left=innerWidth-size-6;
+  if(top +size>innerHeight-6) top =innerHeight-size-6;
+  overlay.style.width=size+'px'; overlay.style.height=size+'px';
+  overlay.style.left=left+'px'; overlay.style.top=top+'px';
+  tpGlyph.textContent=ch;
+  tpGlyph.style.fontFamily='"'+currentFace+'", system-ui';
+  tpGlyph.style.fontFeatureSettings=feat?feat:'normal';
+  tpGlyph.style.fontSize=(size*0.72)+'px';
+  overlay.style.display='flex'; overlay.setAttribute('aria-hidden','false');
+}
+/* close overlay by tap on it or scroll */
+overlay.addEventListener('click', hideOverlay, false);
+addEventListener('scroll', function(){ if(isMobile()) hideOverlay(); }, {passive:true});
 
 /* ===== TYPE TESTER ===== */
 (function(){
