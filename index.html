@@ -1,10 +1,13 @@
+<!-- AZ build: v1.0.1 — 2025-09-17 — mobile 10-up + tap overlay preview, bigger buttons, iOS phone detect off -->
 <!doctype html>
 <html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="format-detection" content="telephone=no" />
 <title>אלטע זאכן — Alte Zachen</title>
 <meta name="theme-color" content="#ff0000" />
+<meta name="az-build" content="v1.0.1" />
 
 <!-- Fonts in ROOT -->
 <link rel="preload" href="AlteZachen-Wide.woff2" as="font" type="font/woff2" crossorigin>
@@ -27,7 +30,7 @@
   src:url("AlteZachen-Random.woff2") format("woff2"),url("AlteZachen-Random.woff") format("woff");
   font-weight:400;font-style:normal;font-display:swap}
 
-/* ===== CORE (ES5-friendly) ===== */
+/* ===== CORE ===== */
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
@@ -35,6 +38,7 @@ body{
   font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",Arial;
   line-height:1.2;text-align:center
 }
+a{color:inherit;text-decoration:none}
 .section{ padding:80px 16px }
 .section.white{ background:#fff; color:#000 }
 .section.red{ background:#ff0000; color:#fff }
@@ -47,55 +51,56 @@ body{
 .mid { font-size:6vw;  line-height:.96; margin:.1em 0 }
 @media (min-width:1200px){ .huge{font-size:160px} .big{font-size:170px} .mid{font-size:86px} }
 .weight{ font-size:24px; font-weight:700; margin-bottom:8px }
+@media (max-width:600px){ .weight{ font-size:18px; margin-bottom:4px } } /* כותרת משקל קטנה יותר במובייל */
 .section.spec{ padding-top:56px; padding-bottom:56px }
 
-/* ===== FIXED HEADER ===== */
+/* HEADER */
 .site-head{
   position:fixed; top:0; left:0; right:0; z-index:50;
   background:#fff; border-bottom:1px solid #000;
   transform:translateY(-110%); transition:transform .35s ease;
 }
 .site-head.show{ transform:translateY(0) }
-.head-wrap{ max-width:1024px; margin:0 auto; display:flex; justify-content:center; gap:12px; padding:10px }
+.head-wrap{ max-width:1120px; margin:0 auto; display:flex; justify-content:center; gap:16px; padding:12px }
 .btn{
   appearance:none; border:1px solid #000; background:#fff; color:#000;
-  padding:.55em 1.2em; font-weight:700; cursor:pointer;
+  padding:.65em 1.4em; font-weight:700; cursor:pointer;
   font-family:"AlteZachen Normal",system-ui; font-size:18px
 }
 .btn:hover{ background:#000; color:#fff }
+@media (min-width:1024px){ .btn{ font-size:22px; padding:.7em 1.6em } }
 
-/* ===== GLYPH GRID (desktop/iPad: sticky preview left) ===== */
-.glyphs-shell{ padding-left:8vw; padding-right:8vw }
-.glyphs-wrap{ text-align:left; direction:ltr; display:block }  /* left column truly left */
-.preview-col, .grid-col{ display:inline-block; vertical-align:top }
-.preview-col{ width:40vw; max-width:700px; min-width:320px; position:sticky; top:16px }
-.grid-col{ width:52vw; max-width:1200px; min-width:320px }
+/* ===== GLYPH GRID: FLEX (לא חופף) ===== */
+.glyphs-shell{ padding-left:6vw; padding-right:6vw }
+.glyphs-wrap{ display:flex; gap:16px; align-items:flex-start; direction:ltr; }
+.preview-col{ flex:0 0 38%; max-width:700px; min-width:300px; position:sticky; top:16px }
+.grid-col{ flex:1 1 auto; min-width:320px }
 
-/* Sticky preview box */
 .preview-box{
-  width:100%; height:0; padding-bottom:100%; /* perfect square */
+  width:100%; height:0; padding-bottom:100%;
   border:1px solid #000; background:#fff; position:relative; overflow:hidden
 }
 .preview-glyph{
   position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
   color:#ff0000; font-family:"AlteZachen Normal","AlteZachen Wide",system-ui;
-  line-height:1; text-align:center; font-size:30vw; max-font-size:600px; transform:translateY(5%);
+  line-height:1; text-align:center; font-size:30vw; max-font-size:600px; transform:translateY(4%);
 }
 @media (min-width:1400px){ .preview-glyph{ font-size:600px } }
 .preview-meta{ display:flex; justify-content:space-between; align-items:center; margin-top:8px;
   font:13px/1.2 Arial,Helvetica,sans-serif; color:#000 }
 
-/* Tabs: נורמל מימין, חצי־רחב באמצע, רחב משמאל */
+/* Tabs */
 .tabs{ display:flex; flex-direction:row-reverse; border:1px solid #000; margin-top:8px }
 .tab{
-  flex:1 1 33%; appearance:none; border:0; margin:0; padding:.62em 1.1em;
+  flex:1 1 33%; appearance:none; border:0; margin:0; padding:.7em 1.1em;
   background:#fff; color:#000; cursor:pointer; font-weight:700; font-size:18px;
   border-left:1px solid #000
 }
 .tab:last-child{ border-left:0 }
 .tab.active{ background:#000; color:#fff }
+@media (min-width:1024px){ .tab{ font-size:20px } }
 
-/* Cells inline-block (desktop/tablet) */
+/* Cells (desktop/tablet) */
 .grid{ font-size:0 }
 .cell{
   display:inline-block; width:84px; height:84px; border:1px solid #000; margin:5px;
@@ -108,17 +113,15 @@ body{
 }
 .cell:hover{ background:#000 }.cell:hover .glyph{ color:#fff }
 
-/* Group gaps */
+/* Gaps */
 .row-gap{ height:8px }
 .group-gap{ height:16px }
 
-/* ===== MOBILE (smartphones only): 10 cells per row, no preview column, tap to enlarge in place ===== */
+/* ===== MOBILE (≤600px): 10 per row + tap overlay preview ===== */
 @media (max-width:600px){
-  /* hide preview column, grid full width */
+  .glyphs-wrap{ display:block }
   .preview-col{ display:none !important }
-  .grid-col{ display:block; width:100%; max-width:none }
-
-  /* exact 10 per row: 10% each, square via ::before */
+  .grid-col{ width:100%; max-width:none }
   .grid{ text-align:center }
   .cell{
     position:relative; margin:0; width:10%; height:auto; border:1px solid #000;
@@ -130,8 +133,18 @@ body{
     display:flex; align-items:center; justify-content:center;
     font-size:7.2vw; transform:translateY(-4%); transition:transform .08s ease, color .06s ease;
   }
-  .cell.active{ background:#000 }
-  .cell.active .glyph{ color:#fff; transform:translateY(-4%) scale(1.22) }
+  .cell.active{ background:#ff0000 }
+  .cell.active .glyph{ color:#fff; transform:translateY(-4%) scale(1.12) }
+}
+
+/* Overlay preview for mobile tap */
+.touch-preview{
+  position:fixed; left:0; top:0; width:0; height:0; display:none;
+  border:1px solid #000; background:#fff; z-index:70;
+  align-items:center; justify-content:center; box-shadow:none;
+}
+.tp-glyph{
+  color:#000; font-family:"AlteZachen Normal",system-ui; line-height:1; transform:translateY(-2%);
 }
 
 /* ===== RED TAKEOVER (ABOUT) ===== */
@@ -145,7 +158,7 @@ body{
 }
 @media (min-width:1200px){ .about-content{ font-size:72px } }
 
-/* ===== TYPE TESTER (overlay) ===== */
+/* ===== TYPE TESTER ===== */
 .tester{ position:fixed; inset:0; background:#000; color:#fff; z-index:100; display:none; overflow:auto }
 .tester.open{ display:block }
 .tester-bar{
@@ -154,7 +167,7 @@ body{
 }
 .tweights{ flex:1; display:flex; justify-content:center; gap:8px; flex-wrap:wrap }
 .tbtn{
-  appearance:none; cursor:pointer; font-weight:700; padding:.45em .9em; border:1px solid #ff0000;
+  appearance:none; cursor:pointer; font-weight:700; padding:.52em 1.0em; border:1px solid #ff0000;
   background:#ff0000; color:#fff; font-family:"AlteZachen Normal",system-ui; font-size:16px
 }
 .tbtn:hover{ background:#fff; color:#000; border-color:#fff }
@@ -216,7 +229,7 @@ body{
   </div>
 </section>
 
-<!-- RANDOM headline -->
+<!-- RANDOM -->
 <section class="section white spec">
   <div class="wrap">
     <div class="weight" style="font-family:'AlteZachen Random'">רנדום</div>
@@ -267,6 +280,9 @@ body{
   </div>
   <div id="testerText" class="tester-text" contenteditable="true" spellcheck="false">סברינה קרפנטר המלכה!!!1</div>
 </div>
+
+<!-- Mobile tap preview overlay -->
+<div class="touch-preview" id="touchPreview" aria-hidden="true"><div class="tp-glyph" id="tpGlyph">א</div></div>
 
 <script>
 /* ===== HEADER after HERO ===== */
@@ -328,6 +344,7 @@ var bigGlyph=document.getElementById('bigGlyph');
 var glyphName=document.getElementById('glyphName');
 var glyphCode=document.getElementById('glyphCode');
 
+/* build a row */
 function makeRow(charsString, featureSettings){
   var grid=document.createElement('div'); grid.className='grid';
   for(var i=0;i<charsString.length;i++){
@@ -339,6 +356,7 @@ function makeRow(charsString, featureSettings){
     if(featureSettings) span.style.fontFeatureSettings=featureSettings;
     span.appendChild(document.createTextNode(ch));
     cell.appendChild(span);
+    /* desktop hover -> left preview */
     cell.onmouseenter=(function(c,fs){return function(){showGlyph(c,fs)}})(ch,featureSettings);
     grid.appendChild(cell);
   }
@@ -366,18 +384,22 @@ function rebuildFaces(){
   }
 }
 
-/* Build grid */
+/* Build once */
 (function(){
   makeRow(ROW_HEB_1); gap('row');
   makeRow(ROW_HEB_PRES_1); gap('group');
+
   makeRow(ROW_LAT_AZ); gap('row');
   makeRow(ROW_LAT_EXT_1); gap('row');
   makeRow(ROW_LAT_EXT_2); gap('group');
+
   makeRow(ROW_CYR_1); gap('group');
+
   makeRow(ROW_NUM_1); gap('row');
   makeRow(ROW_NUM_2); gap('row');
   makeRow(ROW_NUM_SS03, '"ss03" 1'); gap('row');
   makeRow(ROW_NUM_SS04, '"ss04" 1'); gap('group');
+
   makeRow(ROW_FRAC); gap('row');
   makeRow(ROW_CURR); gap('group');
   makeRow(ROW_PUNC_1); gap('row');
@@ -385,6 +407,7 @@ function rebuildFaces(){
   makeRow(ROW_SHAPES); gap('group');
   makeRow(ROW_ARROWS); gap('group');
   makeRow(ROW_MATH);
+
   showGlyph('א');
 })();
 
@@ -401,31 +424,88 @@ function rebuildFaces(){
   }
 })();
 
-/* Mobile: tap to enlarge in place (10-per-row mode) */
+/* ===== Mobile: tap to enlarge + floating white preview box ===== */
 (function(){
+  var overlay=document.getElementById('touchPreview');
+  var overlayGlyph=document.getElementById('tpGlyph');
+
   function isMobile(){ return window.matchMedia && window.matchMedia('(max-width: 600px)').matches; }
+
+  function hideOverlay(){
+    overlay.style.display='none';
+    overlay.setAttribute('aria-hidden','true');
+    var act=rowsRoot.querySelector('.cell.active'); if(act) act.classList.remove('active');
+  }
+
   function onTap(e){
+    if(!isMobile()) return;
     var t=e.target;
     while(t && t!==rowsRoot && !t.classList.contains('cell')) t=t.parentNode;
     if(!t || t===rowsRoot) return;
+
+    // toggle active cell
     var active=rowsRoot.querySelector('.cell.active');
     if(active && active!==t) active.classList.remove('active');
-    t.classList.toggle('active');
+    var nowActive=!t.classList.contains('active');
+    if(!nowActive){ t.classList.remove('active'); hideOverlay(); return; }
+    t.classList.add('active');
+
+    // glyph + features
+    var g=t.querySelector('.glyph');
+    var ch=g && g.textContent ? g.textContent.charAt(0) : '';
+    overlayGlyph.textContent=ch;
+    overlayGlyph.style.fontFamily='"'+currentFace+'", system-ui';
+    overlayGlyph.style.fontFeatureSettings=g.style.fontFeatureSettings||'normal';
+
+    // size & position (≈ 2.6× תא)
+    var r=t.getBoundingClientRect();
+    var cellSize=r.width;
+    var size=Math.min(window.innerWidth*0.62, cellSize*2.6);
+    var left=r.left + r.width/2 - size/2;
+    var top =r.top  + r.height/2 - size/2;
+    // clamp into viewport
+    if(left<6) left=6; if(top<6) top=6;
+    if(left+size>window.innerWidth-6) left=window.innerWidth-size-6;
+    if(top +size>window.innerHeight-6) top =window.innerHeight-size-6;
+
+    overlay.style.width=size+'px';
+    overlay.style.height=size+'px';
+    overlay.style.left=left+'px';
+    overlay.style.top=top+'px';
+    overlay.style.display='flex';
+    overlay.setAttribute('aria-hidden','false');
+
+    // font-size inside box
+    overlayGlyph.style.fontSize=(size*0.72)+'px';
   }
+
   function bind(){
     if(isMobile()){
       rowsRoot.addEventListener('click', onTap, false);
+      rowsRoot.addEventListener('touchstart', onTap, {passive:true});
+      window.addEventListener('scroll', hideOverlay, false);
     }else{
       rowsRoot.removeEventListener('click', onTap, false);
-      var act=rowsRoot.querySelectorAll('.cell.active'); for(var i=0;i<act.length;i++) act[i].classList.remove('active');
+      rowsRoot.removeEventListener('touchstart', onTap, false);
+      window.removeEventListener('scroll', hideOverlay, false);
+      hideOverlay();
     }
   }
+
+  document.addEventListener('click', function(e){
+    if(!isMobile()) return;
+    var t=e.target;
+    var insideCell=false;
+    while(t){ if(t.classList && t.classList.contains('cell')) { insideCell=true; break; } t=t.parentNode; }
+    if(!insideCell){ hideOverlay(); }
+  }, false);
+
   window.addEventListener('resize', bind, false);
   document.addEventListener('DOMContentLoaded', bind, false);
   bind();
 })();
 
-/* TYPE TESTER */
+/* ===== TYPE TESTER ===== */
 (function(){
   var tester=document.getElementById('tester');
   var open=document.getElementById('openTester');
