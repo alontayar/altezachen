@@ -1,4 +1,3 @@
-<!-- AZ build: v1.0.5 — desktop adaptive columns, centered glyphs -->
 <!doctype html>
 <html lang="he" dir="rtl">
 <head>
@@ -8,35 +7,40 @@
 <title>אלטע זאכן — Alte Zachen</title>
 <meta name="theme-color" content="#ff0000" />
 
+<!-- Fonts (root) -->
 <link rel="preload" href="AlteZachen-Wide.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="AlteZachen-HalfWide.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="AlteZachen-Normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="AlteZachen-Random.woff2" as="font" type="font/woff2" crossorigin>
 
 <style>
+/* ===== FONTS ===== */
 @font-face{font-family:"AlteZachen Normal";   src:url("AlteZachen-Normal.woff2") format("woff2"),url("AlteZachen-Normal.woff") format("woff");     font-display:swap}
 @font-face{font-family:"AlteZachen HalfWide"; src:url("AlteZachen-HalfWide.woff2") format("woff2"),url("AlteZachen-HalfWide.woff") format("woff"); font-display:swap}
 @font-face{font-family:"AlteZachen Wide";     src:url("AlteZachen-Wide.woff2") format("woff2"),url("AlteZachen-Wide.woff") format("woff");       font-display:swap}
 @font-face{font-family:"AlteZachen Random";   src:url("AlteZachen-Random.woff2") format("woff2"),url("AlteZachen-Random.woff") format("woff");   font-display:swap}
 
+/* ===== BASE ===== */
 :root{
-  --cols: 18;   /* יתעדכן בג׳ס */
-  --cell: 84px; /* יתעדכן בג׳ס */
+  --cols: 18;     /* יתעדכן בדסקטופ בג׳ס */
+  --cell: 84px;   /* להערכת גודל פונט בדסקטופ */
 }
-
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial;line-height:1.2;text-align:center}
 
-/* Header */
+/* ===== HEADER ===== */
 .site-head{position:fixed;top:0;left:0;right:0;z-index:50;background:#fff;border-bottom:1px solid #000;transform:translateY(-110%);transition:transform .35s ease}
 .site-head.show{transform:translateY(0)}
-.head-wrap{max-width:1120px;margin:0 auto;display:flex;justify-content:center;gap:16px;padding:12px}
-.btn{appearance:none;border:1px solid #000;background:#fff;color:#000;padding:.65em 1.4em;font-weight:700;cursor:pointer;font-family:"AlteZachen Normal";font-size:18px}
+.head-wrap{max-width:1120px;margin:0 auto;display:flex;justify-content:center;gap:16px;padding:8px}
+.btn{appearance:none;border:1px solid #000;background:#fff;color:#000;padding:.55em 1.2em;font-weight:700;cursor:pointer;font-family:"AlteZachen Normal";font-size:16px}
 .btn:hover{background:#000;color:#fff}
-@media (min-width:1024px){.btn{font-size:22px;padding:.7em 1.6em}}
+@media (min-width:1024px){
+  .head-wrap{padding:12px}
+  .btn{font-size:24px;padding:.7em 1.6em}
+}
 
-/* Sections */
+/* ===== SECTIONS ===== */
 .section{padding:80px 16px}
 .section.white{background:#fff}
 .section.red{background:#ff0000;color:#fff}
@@ -56,46 +60,42 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
 .preview-col{flex:0 0 38%;max-width:700px;min-width:300px;position:sticky;top:16px}
 .grid-col{flex:1 1 auto;min-width:320px}
 
-/* Sticky preview (desktop) — הרמתי קצת למרכז */
+/* Sticky preview (desktop) — מרכז גבוה יותר */
 .preview-box{width:100%;height:0;padding-bottom:100%;border:1px solid #000;background:#fff;position:relative;overflow:hidden}
-.preview-glyph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#ff0000;font-family:"AlteZachen Normal","AlteZachen Wide";line-height:1;text-align:center;font-size:30vw;max-font-size:600px;transform:translateY(-8%)}
+.preview-glyph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#ff0000;font-family:"AlteZachen Normal","AlteZachen Wide";line-height:1;text-align:center;font-size:30vw;max-font-size:600px;transform:translateY(-12%)}
 @media (min-width:1400px){.preview-glyph{font-size:600px}}
 .preview-meta{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font:13px/1.2 Arial,Helvetica,sans-serif;color:#000}
 
-/* tabs */
+/* Weight tabs */
 .tabs{display:flex;flex-direction:row-reverse;border:1px solid #000;margin-top:8px}
 .tab{flex:1 1 33%;appearance:none;border:0;margin:0;padding:.7em 1.1em;background:#fff;color:#000;cursor:pointer;font-weight:700;font-size:18px;border-left:1px solid #000}
 .tab:last-child{border-left:0}
 .tab.active{background:#000;color:#fff}
 @media (min-width:1024px){.tab{font-size:20px}}
 
-/* Table core — עכשיו מבוסס על משתנים, כך שלא גולש */
+/* Table — ריבועים אמיתיים ותמיד ברוחב מלא */
 .grid-table{border-collapse:collapse;table-layout:fixed;width:100%;background:#fff}
-.grid-table td{border:1px solid #000;width:calc(100%/var(--cols));height:var(--cell);padding:0;position:relative;background:#fff}
-.grid-table tr.spacer td{border:none;height:22px;padding:0;background:transparent}
-
-/* Cell content — הרמתי למרכז אופטי */
-.glyph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#000;line-height:1;transform:translateY(-8%);font-size:min(52px,calc(var(--cell)*0.62));font-family:"AlteZachen Normal";transition:color .1s ease,transform .08s ease}
+.grid-table td{border:1px solid #000;width:calc(100%/var(--cols));aspect-ratio:1/1;padding:0;position:relative;background:#fff}
+.glyph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#000;line-height:1;transform:translateY(-6%);font-size:min(52px,calc(var(--cell)*0.62));font-family:"AlteZachen Normal";transition:color .1s ease}
 
 @media (hover:hover){
   .grid-table td:hover{background:#000}
   .grid-table td:hover .glyph{color:#fff}
 }
 
-/* ===== Mobile (≤600px) still 10 cols ===== */
+/* ===== Mobile (≤600px) ===== */
 @media (max-width:600px){
   .glyphs-wrap{display:block}
   .preview-col{display:none!important}
   .grid-col{width:100%;max-width:none}
   .glyphs-shell{padding-left:4vw;padding-right:4vw}
   :root{ --cols: 10; }
-  .glyph{font-size:7.8vw;transform:translateY(-6%)} /* קצת גדול יותר וקריא */
-  .grid-table td.active .glyph{color:#ff0000;transform:translateY(-6%) scale(1.08)}
+  .glyph{font-size:7.8vw;transform:translateY(-6%)} /* בגריד עצמו נראה נכון, לא נוגעים */
 }
 
-/* Mobile tap preview */
+/* Mobile tap preview (אין שינוי תא; רק חלון גדול) */
 .touch-preview{position:fixed;left:0;top:0;width:0;height:0;display:none;border:1px solid #000;background:#fff;z-index:70;align-items:center;justify-content:center}
-.tp-glyph{color:#000;font-family:"AlteZachen Normal";line-height:1;transform:translateY(-8%)}
+.tp-glyph{color:#000;font-family:"AlteZachen Normal";line-height:1;transform:translateY(-12%)}
 
 /* Red takeover */
 .about-stage{height:200vh}
@@ -103,17 +103,31 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
 .about-content{max-width:1200px;margin:0 auto;font-family:"AlteZachen Normal","AlteZachen Wide";font-size:7vw;line-height:1.12}
 @media (min-width:1200px){.about-content{font-size:72px}}
 
-/* Tester (כמו קודם) */
+/* ===== Tester ===== */
 .tester{position:fixed;inset:0;background:#000;color:#fff;z-index:100;display:none;overflow:auto}
 .tester.open{display:block}
-.tester-bar{position:sticky;top:0;background:#000;padding:12px 10px;display:flex;align-items:center;justify-content:space-between;gap:8px;z-index:101}
-.tweights{flex:1;display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
-.tbtn{appearance:none;cursor:pointer;font-weight:700;padding:.58em 1.1em;border:1px solid #ff0000;background:#ff0000;color:#fff;font-family:"AlteZachen Normal";font-size:18px}
+
+/* top bar */
+.tester-bar{position:sticky;top:0;background:#000;padding:12px 10px;display:flex;align-items:center;justify-content:center;gap:10px;z-index:101;flex-wrap:wrap}
+.tweights{display:flex;justify-content:center;gap:10px;flex-wrap:nowrap;overflow:auto}
+.tbtn{appearance:none;cursor:pointer;font-weight:700;padding:.58em 1.1em;border:1px solid #ff0000;background:#ff0000;color:#fff;font-family:"AlteZachen Normal";font-size:18px;white-space:nowrap}
 .tbtn:hover{background:#fff;color:#000;border-color:#fff}
 .tweight{border-color:#fff;background:transparent;color:#fff}
 .tweight:hover{background:#fff;color:#000;border-color:#fff}
-.tester-text{outline:none;border:0;width:100%;font-family:"AlteZachen Normal";font-size:10vw;line-height:.92;text-align:center;white-space:pre-wrap;word-break:break-word;color:#fff;margin:6vh auto 10vh;padding:0 12px}
-@media (min-width:1200px){.tester-text{font-size:170px}}
+
+/* bottom bar (mobile only) */
+.tester-foot{display:none}
+@media (max-width:600px){
+  .tbtn.buy-top,.tbtn.close-top{display:none}          /* קונים/סגירה נעלמים למעלה במובייל */
+  .tester-foot{position:sticky;bottom:0;display:flex;gap:10px;justify-content:space-between;background:#000;padding:10px 12px}
+}
+
+/* tester text */
+.tester-text{outline:none;border:0;width:100%;font-family:"AlteZachen Normal";font-size:10vw;line-height:.92;text-align:center;white-space:pre-wrap;word-break:break-word;color:#fff;margin:4vh auto 8vh;padding:0 12px}
+@media (min-width:1200px){
+  .tbtn{font-size:22px}
+  .tester-text{font-size:220px}
+}
 </style>
 </head>
 <body>
@@ -167,6 +181,7 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
 <!-- ===== GLYPH GRID ===== -->
 <section class="section white glyphs-shell" id="glyphs">
   <div class="glyphs-wrap">
+    <!-- Desktop sticky preview -->
     <div class="preview-col">
       <div class="preview-box"><div id="bigGlyph" class="preview-glyph" aria-live="polite">א</div></div>
       <div class="preview-meta"><span id="glyphName">HEBREW LETTER ALEF</span><span id="glyphCode">U+05D0</span></div>
@@ -177,12 +192,14 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
       </div>
     </div>
 
+    <!-- Grid -->
     <div class="grid-col">
       <table class="grid-table" id="gridTable" aria-label="Glyph grid"><tbody id="gridBody"></tbody></table>
     </div>
   </div>
 </section>
 
+<!-- Red takeover -->
 <section class="about-stage" id="about">
   <div class="about-stick">
     <div class="about-content">
@@ -191,32 +208,42 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
   </div>
 </section>
 
+<!-- ===== TYPE TESTER ===== -->
 <div class="tester" id="tester" aria-hidden="true">
   <div class="tester-bar">
-    <button class="tbtn" id="buyInside">רכישה</button>
     <div class="tweights" id="testerWeights">
       <button class="tbtn tweight" data-face="AlteZachen Normal"   style="font-family:'AlteZachen Normal'">נורמל</button>
       <button class="tbtn tweight" data-face="AlteZachen HalfWide" style="font-family:'AlteZachen HalfWide'">חצי־רחב</button>
       <button class="tbtn tweight" data-face="AlteZachen Wide"     style="font-family:'AlteZachen Wide'">רחב</button>
       <button class="tbtn tweight" data-face="AlteZachen Random"   style="font-family:'AlteZachen Random'">רנדום</button>
     </div>
-    <button class="tbtn" id="closeTester">סגירה</button>
+    <!-- בדסקטופ נשארים למעלה -->
+    <button class="tbtn buy-top"   id="buyInside">רכישה</button>
+    <button class="tbtn close-top" id="closeTester">סגירה</button>
   </div>
+
   <div id="testerText" class="tester-text" contenteditable="true" spellcheck="false">סברינה קרפנטר המלכה!!!1</div>
+
+  <!-- במובייל: כפתורי רכישה/סגירה למטה -->
+  <div class="tester-foot">
+    <button class="tbtn" id="buyMobile">רכישה</button>
+    <button class="tbtn" id="closeMobile">סגירה</button>
+  </div>
 </div>
 
+<!-- Mobile floating preview (grid tap) -->
 <div class="touch-preview" id="touchPreview" aria-hidden="true"><div class="tp-glyph" id="tpGlyph">א</div></div>
 
 <script>
-/* Header reveal */
+/* ===== HEADER REVEAL ===== */
 (function(){
-  var head=document.getElementById('siteHead'), hero=document.getElementById('hero');
-  function sync(){ var cut=hero?hero.offsetTop+hero.offsetHeight-1:0; if(pageYOffset>cut) head.classList.add('show'); else head.classList.remove('show'); }
+  const head=document.getElementById('siteHead'), hero=document.getElementById('hero');
+  function sync(){ const cut=hero?hero.offsetTop+hero.offsetHeight-1:0; if(pageYOffset>cut) head.classList.add('show'); else head.classList.remove('show'); }
   addEventListener('scroll',sync,{passive:true}); addEventListener('resize',sync); document.addEventListener('DOMContentLoaded',sync);
 })();
 
 /* ===== DATA ===== */
-var GROUPS=[
+const GROUPS=[
   "אבגדהוזחטיכךלמםנןסעפףצץקרשת",
   "אַ אָ אּ בּ גּ דּ הּ וּ וֹ זּ טּ יּ ךּ כּ לּ מּ נּ סּ ףּ פּ צּ קּ רּ שּ שׁ שׂ שּׁ שּׂ תּ",
   "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
@@ -236,85 +263,78 @@ var GROUPS=[
   "− × ÷ = ≠ > < ≥ ≤ ± ≈ ~ ¬ ∅ % ‰"
 ];
 
-var HEB_NAMES={"א":"HEBREW LETTER ALEF","ב":"HEBREW LETTER BET","ג":"HEBREW LETTER GIMEL","ד":"HEBREW LETTER DALET","ה":"HEBREW LETTER HE","ו":"HEBREW LETTER VAV","ז":"HEBREW LETTER ZAYIN","ח":"HEBREW LETTER HET","ט":"HEBREW LETTER TET","י":"HEBREW LETTER YOD","כ":"HEBREW LETTER KAF","ך":"HEBREW LETTER FINAL KAF","ל":"HEBREW LETTER LAMED","מ":"HEBREW LETTER MEM","ם":"HEBREW LETTER FINAL MEM","נ":"HEBREW LETTER NUN","ן":"HEBREW LETTER FINAL NUN","ס":"HEBREW LETTER SAMEKH","ע":"HEBREW LETTER AYIN","פ":"HEBREW LETTER PE","ף":"HEBREW LETTER FINAL PE","צ":"HEBREW LETTER TSADI","ץ":"HEBREW LETTER FINAL TSADI","ק":"HEBREW LETTER QOF","ר":"HEBREW LETTER RESH","ש":"HEBREW LETTER SHIN","ת":"HEBREW LETTER TAV"};
-function nameOf(ch){ if(HEB_NAMES[ch])return HEB_NAMES[ch]; var cp=ch.codePointAt(0); if(ch>='A'&&ch<='Z')return"LATIN CAPITAL LETTER "+ch; if(ch>='a'&&ch<='z')return"LATIN SMALL LETTER "+ch.toUpperCase(); if(ch>='0'&&ch<='9')return"DIGIT "+ch; var h=cp.toString(16).toUpperCase(); while(h.length<4)h="0"+h; return"U+"+h }
-function codeOf(ch){ var h=ch.codePointAt(0).toString(16).toUpperCase(); while(h.length<4)h="0"+h; return"U+"+h }
+const HEB_NAMES={"א":"HEBREW LETTER ALEF","ב":"HEBREW LETTER BET","ג":"HEBREW LETTER GIMEL","ד":"HEBREW LETTER DALET","ה":"HEBREW LETTER HE","ו":"HEBREW LETTER VAV","ז":"HEBREW LETTER ZAYIN","ח":"HEBREW LETTER HET","ט":"HEBREW LETTER TET","י":"HEBREW LETTER YOD","כ":"HEBREW LETTER KAF","ך":"HEBREW LETTER FINAL KAF","ל":"HEBREW LETTER LAMED","מ":"HEBREW LETTER MEM","ם":"HEBREW LETTER FINAL MEM","נ":"HEBREW LETTER NUN","ן":"HEBREW LETTER FINAL NUN","ס":"HEBREW LETTER SAMEKH","ע":"HEBREW LETTER AYIN","פ":"HEBREW LETTER PE","ף":"HEBREW LETTER FINAL PE","צ":"HEBREW LETTER TSADI","ץ":"HEBREW LETTER FINAL TSADI","ק":"HEBREW LETTER QOF","ר":"HEBREW LETTER RESH","ש":"HEBREW LETTER SHIN","ת":"HEBREW LETTER TAV"};
+function nameOf(ch){ if(HEB_NAMES[ch])return HEB_NAMES[ch]; const cp=ch.codePointAt(0); if(ch>='A'&&ch<='Z')return"LATIN CAPITAL LETTER "+ch; if(ch>='a'&&ch<='z')return"LATIN SMALL LETTER "+ch.toUpperCase(); if(ch>='0'&&ch<='9')return"DIGIT "+ch; let h=cp.toString(16).toUpperCase(); while(h.length<4)h="0"+h; return"U+"+h }
+function codeOf(ch){ let h=ch.codePointAt(0).toString(16).toUpperCase(); while(h.length<4)h="0"+h; return"U+"+h }
 
-/* ===== GRID BUILDING ===== */
-var currentFace="AlteZachen Normal";
-var gridBody=document.getElementById('gridBody');
-var bigGlyph=document.getElementById('bigGlyph');
-var glyphName=document.getElementById('glyphName');
-var glyphCode=document.getElementById('glyphCode');
+/* ===== GRID ===== */
+let currentFace="AlteZachen Normal";
+const gridBody=document.getElementById('gridBody');
+const bigGlyph=document.getElementById('bigGlyph');
+const glyphName=document.getElementById('glyphName');
+const glyphCode=document.getElementById('glyphCode');
 
 function isMobile(){ return matchMedia('(max-width:600px)').matches; }
 
-/* חישוב דינמי לעמודות וגודל תא בדסקטופ */
+/* דסקטופ: עמודות דינמיות וגודל תא משוער (למרכז גופנים) */
 function computeDesktopCols(){
-  var holder=document.querySelector('.grid-col');
-  var w = holder ? holder.clientWidth : innerWidth*0.6;
-  var desired = 88;                  // גודל תא רצוי בפיקסלים
-  var cols = Math.max(12, Math.floor(w/desired));
-  cols = Math.min(26, cols);         // לא יותר מדי צפוף
-  var cell = Math.floor(w/cols);     // גובה תא (ריבוע)
+  const holder=document.querySelector('.grid-col');
+  const w = holder ? holder.clientWidth : innerWidth*0.6;
+  let desired = 88;
+  let cols = Math.max(12, Math.floor(w/desired));
+  cols = Math.min(26, cols);
+  let cell = Math.floor(w/cols);
   document.documentElement.style.setProperty('--cols', cols);
   document.documentElement.style.setProperty('--cell', cell+'px');
   return {cols,cell};
 }
 
-function spacer(){
-  var tr=document.createElement('tr'); tr.className='spacer';
-  var td=document.createElement('td'); td.colSpan=200; tr.appendChild(td);
-  gridBody.appendChild(tr);
-}
-
 function makeCell(ch, feat){
-  var td=document.createElement('td'); td.className='cell';
-  var span=document.createElement('span'); span.className='glyph';
+  const td=document.createElement('td');
+  const span=document.createElement('span'); span.className='glyph';
   span.style.fontFamily='"'+currentFace+'",system-ui';
   if(feat) span.style.fontFeatureSettings=feat;
   span.textContent=ch; td.appendChild(span);
 
+  // דסקטופ: hover
   td.onmouseenter=(function(c,f){ return function(){ if(!isMobile()) showGlyph(c,f); }; })(ch,feat);
+
+  // מובייל: tap → רק חלון תצוגה
   td.addEventListener('click',(function(cell,c,f){ return function(){ onCellTap(cell,c,f); }; })(td,ch,feat));
   return td;
 }
-function emptyCell(){ var td=document.createElement('td'); td.className='cell'; return td; }
+function emptyCell(){ return document.createElement('td'); }
 
-/* תמיד בונים ב-chunks: מובייל 10; דסקטופ לפי computeDesktopCols() */
 function buildGroup(text, feat){
-  var chars=[]; for(var i=0;i<text.length;i++){ var ch=text[i]; if(ch===" "||ch==="\n"||ch==="\t") continue; chars.push(ch); }
-  var cols = isMobile() ? 10 : computeDesktopCols().cols;
+  const chars=[]; for(let i=0;i<text.length;i++){ const ch=text[i]; if(ch===" "||ch==="\n"||ch==="\t") continue; chars.push(ch); }
+  const cols = isMobile() ? 10 : computeDesktopCols().cols;
 
-  for(var j=0;j<chars.length;j+=cols){
-    var tr=document.createElement('tr');
-    var slice=chars.slice(j,j+cols);
-    slice.forEach(function(ch){ tr.appendChild(makeCell(ch, feat)); });
-    for(var k=slice.length; k<cols; k++){ tr.appendChild(emptyCell()); } // השלמה
+  for(let j=0;j<chars.length;j+=cols){
+    const tr=document.createElement('tr');
+    const slice=chars.slice(j,j+cols);
+    slice.forEach(ch=>tr.appendChild(makeCell(ch, feat)));
+    for(let k=slice.length;k<cols;k++) tr.appendChild(emptyCell());
     gridBody.appendChild(tr);
   }
 }
-
 function buildGrid(){
   gridBody.innerHTML="";
   if(!isMobile()) computeDesktopCols();
-  for(var r=0;r<GROUPS.length;r++){
-    var row=GROUPS[r], feat=(typeof row==="object"&&row.feat)?row.feat:"";
-    var text=(typeof row==="object")?row.text:row;
+  for(let r=0;r<GROUPS.length;r++){
+    const row=GROUPS[r], feat=(typeof row==="object"&&row.feat)?row.feat:"";
+    const text=(typeof row==="object")?row.text:row;
     buildGroup(text, feat);
-    if([0,1,4,5,9,11,13,14,15].indexOf(r)!==-1) spacer();
   }
   showGlyph('א');
 }
-
 function rebuildFaces(){
-  document.querySelectorAll('.glyph').forEach(function(el){ el.style.fontFamily='"'+currentFace+'",system-ui'; });
-  var fs=bigGlyph.style.fontFeatureSettings||"normal";
+  document.querySelectorAll('.glyph').forEach(el=>{ el.style.fontFamily='"'+currentFace+'",system-ui'; });
+  const fs=bigGlyph.style.fontFeatureSettings||"normal";
   bigGlyph.style.fontFamily='"'+currentFace+'","AlteZachen Wide",system-ui';
   bigGlyph.style.fontFeatureSettings=fs;
 }
 
-/* Preview */
+/* Preview (desktop) */
 function showGlyph(ch, feat){
   if(bigGlyph){
     bigGlyph.textContent=ch;
@@ -325,57 +345,84 @@ function showGlyph(ch, feat){
   if(glyphCode) glyphCode.textContent=codeOf(ch);
 }
 
-/* Mobile tap preview */
-var overlay=document.getElementById('touchPreview'), tpGlyph=document.getElementById('tpGlyph');
-function clearActive(){ document.querySelectorAll('.grid-table td.active').forEach(el=>el.classList.remove('active')); }
-function hideOverlay(){ overlay.style.display='none'; overlay.setAttribute('aria-hidden','true'); clearActive(); }
-
+/* Mobile tap preview (bigger & stays) */
+const overlay=document.getElementById('touchPreview'), tpGlyph=document.getElementById('tpGlyph');
+function hideOverlay(){ overlay.style.display='none'; overlay.setAttribute('aria-hidden','true'); }
 function onCellTap(cell,ch,feat){
   if(!isMobile()) return;
-  var was=cell.classList.contains('active'); clearActive();
-  if(was){ hideOverlay(); return; }
-  cell.classList.add('active');
-
-  var r=cell.getBoundingClientRect(), size=Math.min(innerWidth*0.62, r.width*2.6);
-  var left=r.left+r.width/2-size/2, top=r.top+r.height/2-size/2;
+  const r=cell.getBoundingClientRect();
+  const size=Math.min(innerWidth*0.78, r.width*3.2); // גדול יותר
+  let left=r.left+r.width/2-size/2, top=r.top+r.height/2-size/2;
   left=Math.max(6,Math.min(left,innerWidth-size-6));
   top =Math.max(6,Math.min(top ,innerHeight-size-6));
   overlay.style.cssText='display:flex;left:'+left+'px;top:'+top+'px;width:'+size+'px;height:'+size+'px';
-  tpGlyph.textContent=ch; tpGlyph.style.fontFamily='"'+currentFace+'",system-ui'; tpGlyph.style.fontFeatureSettings=feat||'normal'; tpGlyph.style.fontSize=(size*0.72)+'px';
+  tpGlyph.textContent=ch; tpGlyph.style.fontFamily='"'+currentFace+'",system-ui';
+  tpGlyph.style.fontFeatureSettings=feat||'normal'; tpGlyph.style.fontSize=(size*0.74)+'px';
   overlay.setAttribute('aria-hidden','false');
 }
 overlay.addEventListener('click',hideOverlay);
 addEventListener('scroll',()=>{ if(isMobile()) hideOverlay(); },{passive:true});
 
 /* Tabs */
-(function(){
-  var tabs=document.querySelectorAll('.tabs .tab');
-  tabs.forEach(function(t){
-    t.addEventListener('click',function(){
-      tabs.forEach(x=>x.classList.remove('active'));
-      this.classList.add('active');
-      currentFace=this.dataset.face;
-      rebuildFaces();
-    });
+document.querySelectorAll('.tabs .tab').forEach(t=>{
+  t.addEventListener('click',function(){
+    document.querySelectorAll('.tabs .tab').forEach(x=>x.classList.remove('active'));
+    this.classList.add('active'); currentFace=this.dataset.face; rebuildFaces();
   });
-})();
+});
 
-/* Tester open/close */
-(function(){
-  var tester=document.getElementById('tester');
-  var open=document.getElementById('openTester');
-  var close=document.getElementById('closeTester');
-  if(open) open.onclick=()=>{tester.classList.add('open');tester.setAttribute('aria-hidden','false');};
-  if(close) close.onclick=()=>{tester.classList.remove('open');tester.setAttribute('aria-hidden','true');};
-  document.getElementById('testerWeights').querySelectorAll('button').forEach(btn=>{
-    btn.onclick=()=>{ document.getElementById('testerText').style.fontFamily='"'+btn.dataset.face+'",system-ui'; };
-  });
-})();
+/* ===== TESTER ===== */
+const tester=document.getElementById('tester');
+const open=document.getElementById('openTester');
+const closeTop=document.getElementById('closeTester');
+const buyTop=document.getElementById('buyInside');
+const closeMob=document.getElementById('closeMobile');
+const buyMob=document.getElementById('buyMobile');
+const tWeights=document.getElementById('testerWeights');
+const tText=document.getElementById('testerText');
 
-/* Build + rebuild on resize/breakpoint */
+function openTester(){ tester.classList.add('open'); tester.setAttribute('aria-hidden','false'); fitTester(); }
+function closeTester(){ tester.classList.remove('open'); tester.setAttribute('aria-hidden','true'); }
+if(open) open.onclick=openTester;
+if(closeTop) closeTop.onclick=closeTester;
+if(buyTop) buyTop.onclick=()=>location.href='#';
+if(closeMob) closeMob.onclick=closeTester;
+if(buyMob) buyMob.onclick=()=>location.href='#';
+
+tWeights.querySelectorAll('button').forEach(btn=>{
+  btn.onclick=()=>{ tText.style.fontFamily='"'+btn.dataset.face+'",system-ui'; fitTester(); };
+});
+
+/* התאמה דינמית בטסטר — במובייל ממלא גובה/רוחב לפי התוכן */
+function fitTester(){
+  // Desktop: שומר גדול מאוד; מובייל: ממלא ~75% מהמסך
+  if(matchMedia('(max-width:600px)').matches){
+    let size = Math.min(innerWidth*0.9, innerHeight*0.75); // התחלה
+    tText.style.fontSize = size + 'px';
+    // לכווץ עד שזה נכנס
+    let guard=30;
+    while(guard-- && (tText.scrollWidth>innerWidth*0.96 || tText.scrollHeight>innerHeight*0.78)){
+      size *= 0.90; tText.style.fontSize = size+'px';
+    }
+  }else{
+    // Desktop — גדול יותר מהקודם
+    let size = 260; tText.style.fontSize = size+'px';
+    let guard=20;
+    while(guard-- && (tText.scrollWidth>innerWidth*0.92)){
+      size -= 12; tText.style.fontSize = size+'px';
+    }
+  }
+}
+tText.addEventListener('input',fitTester);
+addEventListener('resize',()=>{ if(tester.classList.contains('open')) fitTester(); });
+
+/* ===== BUILD ===== */
 buildGrid();
 addEventListener('resize',()=>{ if(!isMobile()) buildGrid(); });
 matchMedia('(max-width:600px)').addEventListener('change', buildGrid);
+
+/* ===== HEADER BUTTONS (demo) ===== */
+document.getElementById('buyTop').onclick=()=>location.href='#';
 </script>
 </body>
 </html>
