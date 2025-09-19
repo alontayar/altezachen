@@ -142,88 +142,53 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
 
   
 
-/* === HERO desktop force: image >=85% viewport height === */
-.section.red.hero{
+/* ===== HERO (clean re-style) ===== */
+#hero.hero-landing{
+  background:#ff0000;
   padding:0 !important;
   margin:0 !important;
-  min-height:85vh !important;        /* הסקשן עצמו */
-  display:flex;                      /* מרכזים את התמונה */
-  align-items:center;
-  justify-content:center;
-}
-
-.section.red.hero .hero-img{
-  height:85vh !important;            /* התמונה תופסת 85% גובה מסך */
-  max-height:85vh !important;
-  width:auto !important;             /* שומר יחס */
-  max-width:92vw !important;         /* שוליים צדדיים מתונים */
-  object-fit:contain !important;
-  display:block;
-}
-
-/* אם היחס אנכי/צר במיוחד – העדף רוחב, שמור על גובה */
-@media (max-aspect-ratio: 3/4){
-  .section.red.hero .hero-img{
-    width:92vw !important;
-    height:auto !important;
-    max-height:92vh !important;
-  }
-}
-
-/* מובייל נשאר כמו שהיה – full-bleed */
-@media (max-width: 767px){
-  .section.red.hero{ min-height:auto !important; }
-  .section.red.hero .hero-img{
-    width:100vw !important;
-    max-width:100vw !important;
-    height:auto !important;
-    max-height:none !important;
-  }
-}
-
-/* ליתר בטחון – אל תיתן מרווח דיפולטי של הדפדפן */
-html, body { margin:0; }
-
-/* === HERO fix: grow image to ≥85vh and ignore wrap max-width (desktop) === */
-.section.red.hero{
-  padding:0 !important;
-  margin:0 !important;
-  min-height:85vh !important;
+  min-height:0;
   display:flex;
   align-items:center;
   justify-content:center;
 }
 
-.section.red.hero .wrap{               /* מבטל את ההגבלה של wrap */
-  max-width:none !important;
-  width:100% !important;
-  padding:0 !important;
-  margin:0 !important;
-}
-
-.section.red.hero .hero-img{
+/* אלמנט התמונה: מרכז + שליטה מלאה בגודל */
+#hero .hero-figure{
+  /* התמונה עצמה */
+  --hero: none;
+  background: var(--hero) center center / contain no-repeat;
   display:block;
-  margin:0 auto;
-  height:85vh !important;             /* התמונה עצמה ≥ 85% גובה מסך */
-  max-height:85vh !important;
-  width:auto !important;              /* שמירת יחס */
-  max-width:none !important;          /* אל תגבּל ל-100% */
-  object-fit:contain !important;
+
+  /* בדסקטופ: לפחות 85% גובה מסך, עם שוליים צדדיים מתונים */
+  width: min(88vw, 1600px);
+  height: clamp(85vh, 92vh, 1100px);   /* לא פחות מ-85vh, לא יותר מ~92vh */
+  max-width: 1600px;
+
+  /* מסגרת הסקשן נשארת אדומה סביב התמונה */
+  /* אין border/outline כדי שלא תראה מסגרת */
 }
 
-/* למקרה שיש כלל גלובלי img{max-width:100%} */
-img.hero-img{ max-width:none !important; }
+/* מסכים ענקיים: קצת יותר נשימה מהצדדים (אופציונלי) */
+@media (min-width:1600px){
+  #hero .hero-figure{ width: min(84vw, 1800px); }
+}
 
-/* במובייל להשאיר full-bleed כרגיל */
+/* מובייל: Full bleed אמיתי */
 @media (max-width:767px){
-  .section.red.hero{ min-height:auto !important; }
-  .section.red.hero .hero-img{
-    width:100vw !important;
-    max-width:100vw !important;
-    height:auto !important;
-    max-height:none !important;
+  #hero.hero-landing{
+    min-height: 100vh;          /* כדי שהתמונה תוכל למלא מסך */
+  }
+  #hero .hero-figure{
+    width: 100vw;
+    height: 100vh;              /* ממלא את המסך */
+    max-width: 100vw;
   }
 }
+
+/* בטיחות נגד חוקים גלובליים על img (לא רלוונטי כאן, אבל שומר): */
+img.hero-img{ max-width:none !important; }
+
 
 
 
@@ -247,11 +212,10 @@ img.hero-img{ max-width:none !important; }
   </div>
 </header>
 
-<section class="section red hero" id="hero">
-  <div class="wrap hero-img-wrap">
-    <img class="hero-img" src="hero.webp" alt="אלטע זאכן – כותרת גרפית">
-  </div>
+<section id="hero" class="hero-landing">
+  <figure class="hero-figure" style="--hero:url('hero.webp')"></figure>
 </section>
+
 
 <section class="section white spec">
   <div class="wrap">
