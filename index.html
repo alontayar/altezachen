@@ -23,20 +23,54 @@
 html{scroll-behavior:smooth}
 body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial;line-height:1.2;text-align:center}
 
-/* Header */
-.site-head{position:fixed;top:0;left:0;right:0;z-index:50;background:#fff;border-bottom:1px solid #000;transform:translateY(-110%);transition:transform .35s ease}
+/* ================= HEADER (חדש) ================ */
+.site-head{
+  position:fixed;inset-inline:0;top:0;z-index:60;
+  background:#ff0000;
+  border-bottom:3px solid #000;   /* stroke שחור דק למטה */
+  transform:translateY(-110%);
+  transition:transform .35s ease;
+}
 .site-head.show{transform:translateY(0)}
-.head-wrap{max-width:1120px;margin:0 auto;display:flex;justify-content:center;gap:16px;padding:6px}
-.btn{appearance:none;border:1px solid #000;background:#fff;color:#000;padding:.5em 1.2em;font-weight:700;cursor:pointer;font-family:"AlteZachen Normal";font-size:16px}
-.btn:hover{background:#000;color:#fff}
-@media (min-width:1024px){ .head-wrap{padding:10px 12px} .btn{font-size:24px;padding:.7em 1.6em} }
+.head-wrap{
+  max-width:1280px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 14px;
+}
+.brand{display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+.brand img{display:block;height:34px;width:auto}
+.btn-tester{
+  appearance:none;cursor:pointer;
+  border:2px solid #000;background:#fff;color:#000;
+  padding:.25em .6em;           /* “צפוף” */
+  font-family:"AlteZachen HalfWide",system-ui;
+  font-weight:700;font-size:22px;line-height:1;
+}
+.btn-tester:hover{background:#000;color:#ff0000;border-color:#000}
+@media (max-width:600px){
+  .head-wrap{padding:6px 10px}
+  .brand img{height:26px}
+  .btn-tester{font-size:18px}
+}
 
-/* Sections */
+/* ====== Sections & hero image ====== */
 .section{padding:80px 16px}
 .section.white{background:#fff}
 .section.red{background:#ff0000;color:#fff}
 .wrap{max-width:1320px;margin:0 auto}
-.hero{min-height:120vh;display:flex;align-items:center;justify-content:center}
+
+/* HERO picture that scrolls vertically (fills width, margins on sides desktop) */
+#hero.hero-landing{background:#ff0000;padding:0;margin:0;width:100vw}
+#hero.hero-landing .wrap{max-width:none;padding:0;margin:0;display:contents}
+#hero.hero-landing .hero-media{
+  display:block;margin:0 auto;
+  width:min(92vw,1600px);max-width:92vw;height:auto;object-fit:contain;
+}
+@media (max-width:767px){
+  #hero.hero-landing .hero-media{width:100vw;max-width:100vw;height:auto}
+}
+
+/* Type samples */
 .huge{font-size:12vw;line-height:.88;margin:0}
 .big {font-size:9vw; line-height:.9;  margin:.06em 0}
 .mid {font-size:6vw; line-height:.96; margin:.1em 0}
@@ -45,156 +79,118 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
 @media (max-width:600px){.weight{font-size:18px;margin-bottom:4px}}
 .section.spec{padding-top:56px;padding-bottom:56px}
 
-/* ===== GLYPH GRID ===== */
+/* ===== GLYPH GRID (כמו בגרסה שלך) ===== */
 .glyphs-shell{padding-left:var(--grid-pad);padding-right:var(--grid-pad)}
 .glyphs-wrap{display:flex;gap:16px;align-items:flex-start;direction:ltr}
 .preview-col{flex:0 0 38%;max-width:700px;min-width:300px;position:sticky;top:16px}
 .grid-col{flex:1 1 auto;min-width:320px}
-.cell.filler{ background:#fff; }
-.cell.filler .glyph{ display:none; }
+.cell.filler{background:#fff}.cell.filler .glyph{display:none}
 
-/* Sticky preview */
 .preview-box{width:100%;height:0;padding-bottom:100%;border:1px solid #000;background:#fff;position:relative;overflow:hidden}
 .preview-glyph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#ff0000;font-family:"AlteZachen Normal","AlteZachen Wide";line-height:1;text-align:center;font-size:30vw;max-font-size:600px;transform:translateY(-16%)}
 @media (min-width:1400px){.preview-glyph{font-size:600px}}
 .preview-meta{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font:13px/1.2 Arial,Helvetica,sans-serif;color:#000}
 
-/* Weight tabs */
 .tabs{display:flex;flex-direction:row-reverse;border:1px solid #000;margin-top:8px}
 .tab{flex:1 1 33%;appearance:none;border:0;margin:0;padding:.7em 1.1em;background:#fff;color:#000;cursor:pointer;font-weight:700;font-size:18px;border-left:1px solid #000}
 .tab:last-child{border-left:0}
 .tab.active{background:#000;color:#fff}
 @media (min-width:1024px){.tab{font-size:20px}}
 
-/* Category grid */
 .cat{margin-bottom:24px}
-.grid{
-  --cell:var(--cellPx);
-  display:inline-grid;
-  grid-template-columns:repeat(var(--cols), var(--cell));
-  grid-auto-rows:var(--cell);
-  gap:1px;
-  background:#000;
-  padding:1px;
-}
-.cell{
-  width:var(--cell);height:var(--cell);
-  background:#fff;display:flex;align-items:center;justify-content:center;
-  user-select:none;-webkit-user-select:none;
-}
-.glyph{
-  color:#000;line-height:1;transform:translateY(-6%);
-  font-family:"AlteZachen Normal";font-size:calc(var(--cell)*.62);
-  transition:color .08s ease, background-color .08s ease;
-}
-@media (hover:hover){ .cell:hover .glyph{color:#fff} .cell:hover{background:#000} }
-
-/* separator */
+.grid{--cell:var(--cellPx);display:inline-grid;grid-template-columns:repeat(var(--cols),var(--cell));grid-auto-rows:var(--cell);gap:1px;background:#000;padding:1px}
+.cell{width:var(--cell);height:var(--cell);background:#fff;display:flex;align-items:center;justify-content:center;user-select:none;-webkit-user-select:none}
+.glyph{color:#000;line-height:1;transform:translateY(-6%);font-family:"AlteZachen Normal";font-size:calc(var(--cell)*.62);transition:color .08s ease,background-color .08s ease}
+@media (hover:hover){.cell:hover .glyph{color:#fff}.cell:hover{background:#000}}
 .sepLine{height:16px}
 
-/* Mobile */
 @media (max-width:600px){
-  .cat{ margin-bottom:12px; }
-  .sepLine{ height:10px; }
-  .glyphs-wrap{display:block}
-  .preview-col{display:none!important}
-  .grid-col{width:100%;max-width:none}
-  :root{ --grid-pad:4vw; }
+  .cat{margin-bottom:12px}.sepLine{height:10px}
+  .glyphs-wrap{display:block}.preview-col{display:none!important}.grid-col{width:100%;max-width:none}
+  :root{--grid-pad:4vw}
 }
 
-/* Mobile tap preview */
+/* Tap preview overlay (mobile) */
 .touch-preview{position:fixed;left:0;top:0;width:0;height:0;display:none;border:1px solid #000;background:#fff;z-index:70;align-items:center;justify-content:center;touch-action:manipulation}
 .tp-glyph{color:#000;font-family:"AlteZachen Normal";line-height:1;transform:translateY(-16%)}
 
-/* Red takeover */
+/* Red takeover text block */
 .about-stage{height:200vh}
 .about-stick{position:sticky;top:0;height:100vh;background:#ff0000;color:#fff;display:flex;align-items:center;justify-content:center;padding:8vw 6vw}
 .about-content{max-width:1200px;margin:0 auto;font-family:"AlteZachen Normal","AlteZachen Wide";font-size:7vw;line-height:1.12}
 @media (min-width:1200px){.about-content{font-size:72px}}
 
-/* ===== Tester ===== */
+/* ================= TYPE TESTER ================= */
 .tester{position:fixed;inset:0;background:#000;color:#fff;z-index:100;display:none;overflow:auto}
 .tester.open{display:block}
+
+/* פס עליון – בדסקטופ נשאר כמו שהיה */
 .tester-bar{position:sticky;top:0;background:#000;padding:10px 10px;display:flex;align-items:center;justify-content:center;gap:10px;z-index:101;flex-wrap:wrap}
-.tweights{display:flex;justify-content:center;gap:10px;flex-wrap:nowrap;overflow-x:auto;padding:0 6px}
-.tweights::-webkit-scrollbar{display:none}
+.tweights{display:flex;justify-content:center;gap:10px;flex-wrap:nowrap}
 .tbtn{appearance:none;cursor:pointer;font-weight:700;padding:.58em 1.1em;border:1px solid #ff0000;background:#ff0000;color:#fff;font-family:"AlteZachen Normal";font-size:18px;white-space:nowrap}
 .tbtn:hover{background:#fff;color:#000;border-color:#fff}
 .tweight{border-color:#fff;background:transparent;color:#fff}
 .tweight:hover{background:#fff;color:#000;border-color:#fff}
 .buy-top,.close-top{display:inline-flex}
-.tester-foot{display:none}
-@media (min-width:1200px){ .tbtn{font-size:22px} }
-@media (max-width:600px){ .buy-top,.close-top{display:none} .tester-foot{position:sticky;bottom:0;display:flex;gap:10px;justify-content:space-between;background:#000;padding:10px 12px} }
+
+/* — מובייל: מחליפים את כפתורי המשקלים לשורת טקסט דקה — */
+.tweights-line{display:none;color:#fff;font-family:"AlteZachen Normal";gap:.6em}
+.tweights-line button{
+  appearance:none;border:0;background:transparent;color:#fff;cursor:pointer;
+  padding:0;margin:0;font-size:17px;font-weight:700;
+}
+.tweights-line .sep{opacity:.55;margin:0 .3em}
+@media (max-width:600px){
+  .tweights{display:none}
+  .tweights-line{display:flex;justify-content:center;align-items:center;flex-wrap:nowrap}
+}
+
+/* הטקסט לנסיון – דינמי */
 .tester-text{
   outline:none;border:0;width:100%;
   font-family:"AlteZachen Normal";
   font-size:clamp(200px,22vw,600px);
   line-height:.92;text-align:center;white-space:pre-wrap;word-break:break-word;color:#fff;
-  margin:6vh auto 10vh;padding:0 12px;
-}
-@media (max-width:600px){ .tester-text{font-size:12vw;margin:4vh auto 8vh} }
-
-
-
-
-
-
-/* === HERO: תמונה מרכזית עם שוליים צדדיים, גובה חופשי לגלילה === */
-#hero.hero-landing{
-  background:#ff0000;
-  padding:0 !important;
-  margin:0 !important;
-  width:100vw !important;   /* שוליים אדומים רק מהצדדים */
-  /* בלי min-height/height -> נותן לתמונה לקבוע את הגובה ולגלול */
+  margin:6vh auto 16vh;padding:0 12px;     /* יותר מרווח לתחתית הפיקס */
 }
 
-/* אם בטעות יש wrap בפנים – ננטרל מגבלות */
-#hero.hero-landing .wrap{
-  max-width:none !important;
-  padding:0 !important;
-  margin:0 !important;
-  display:contents !important;
+/* פוטר קבוע בתחתית במובייל */
+.tester-foot{
+  display:none;
 }
-
-/* התמונה: רוחב נשלט, גובה אוטומטי (אפשר לגלול לאורך) */
-#hero.hero-landing .hero-media{
-  display:block !important;
-  margin:0 auto !important;           /* מרכז אופקית */
-  width:min(92vw, 1600px) !important; /* שוליים קלים מצדדים בדסקטופ */
-  height:auto !important;             /* אין הגבלת גובה */
-  max-width:92vw !important;
-  object-fit:contain !important;      /* שמירת פרופורציות, ללא חיתוך */
-}
-
-/* מובייל: תמלא כמעט את כל הרוחב, עדיין גובה חופשי לגלילה */
-@media (max-width:767px){
-  #hero.hero-landing .hero-media{
-    width:100vw !important;           /* מובייל – רוחב מלא */
-    max-width:100vw !important;
-    height:auto !important;           /* גובה לפי התמונה, מותר לגלול */
+@media (min-width:1200px){ .tbtn{font-size:22px} }
+@media (max-width:600px){
+  .buy-top,.close-top{display:none}
+  .tester-foot{
+    position:fixed;left:0;right:0;bottom:0;z-index:102;
+    display:flex;gap:10px;justify-content:space-between;
+    background:#000;padding:10px 12px;border-top:1px solid #333;
   }
 }
 
-
-
-
+/* ========= utilities ========= */
+.hidden{display:none!important}
 </style>
 </head>
 <body>
 
+<!-- ===== Header חדש ===== -->
 <header class="site-head" id="siteHead">
   <div class="head-wrap">
-    <button class="btn" id="buyTop">רכישה</button>
-    <button class="btn" id="openTester">טסטר</button>
+    <a class="brand" href="https://hafontia.com" target="_blank" rel="noopener">
+      <img src="logoheader.webp" alt="HAFONTIA">
+    </a>
+
+    <button class="btn-tester" id="openTester">↤טייפטסטר</button>
   </div>
 </header>
 
+<!-- ===== HERO image (בראש הדף, עם גלילה לאורך) ===== -->
 <section id="hero" class="hero-landing">
   <img src="hero.webp" class="hero-media" alt="">
 </section>
 
-
+<!-- ===== דוגמאות משקל ===== -->
 <section class="section white spec">
   <div class="wrap">
     <div class="weight" style="font-family:'AlteZachen Normal'">נורמל</div>
@@ -227,10 +223,9 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
   </div>
 </section>
 
-<!-- ===== GLYPH GRID ===== -->
+<!-- ===== GLYPH GRID (לא שיניתי לוגיקה) ===== -->
 <section class="section white glyphs-shell" id="glyphs">
   <div class="glyphs-wrap">
-    <!-- sticky preview (LEFT) -->
     <div class="preview-col">
       <div class="preview-box"><div id="bigGlyph" class="preview-glyph" aria-live="polite">א</div></div>
       <div class="preview-meta"><span id="glyphName">HEBREW LETTER ALEF</span><span id="glyphCode">U+05D0</span></div>
@@ -240,10 +235,7 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
         <button class="tab active" data-face="AlteZachen Normal"   style="font-family:'AlteZachen Normal'">נורמל</button>
       </div>
     </div>
-
-    <div class="grid-col" id="gridCol">
-      <div id="cats"></div>
-    </div>
+    <div class="grid-col" id="gridCol"><div id="cats"></div></div>
   </div>
 </section>
 
@@ -255,29 +247,44 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
   </div>
 </section>
 
-<!-- ===== TYPE TESTER ===== -->
+<!-- ================= TYPE TESTER ================= -->
 <div class="tester" id="tester" aria-hidden="true">
   <div class="tester-bar">
+    <!-- בדסקטופ: הכפתורים הישנים -->
     <div class="tweights" id="testerWeights">
       <button class="tbtn tweight" data-face="AlteZachen Normal"   style="font-family:'AlteZachen Normal'">נורמל</button>
       <button class="tbtn tweight" data-face="AlteZachen HalfWide" style="font-family:'AlteZachen HalfWide'">חצי־רחב</button>
       <button class="tbtn tweight" data-face="AlteZachen Wide"     style="font-family:'AlteZachen Wide'">רחב</button>
       <button class="tbtn tweight" data-face="AlteZachen Random"   style="font-family:'AlteZachen Random'">רנדום</button>
     </div>
+
+    <!-- מובייל: שורת טקסט דקה לבחירת משקל -->
+    <div class="tweights-line" id="tweightsLine" aria-label="בחר משקל">
+      <button data-face="AlteZachen Normal">נורמל</button><span class="sep">|</span>
+      <button data-face="AlteZachen HalfWide">חצי־רחב</button><span class="sep">|</span>
+      <button data-face="AlteZachen Wide">רחב</button><span class="sep">|</span>
+      <button data-face="AlteZachen Random">רנדום</button>
+    </div>
+
+    <!-- כפתורי דסקטופ בצד -->
     <button class="tbtn buy-top"   id="buyInside">רכישה</button>
     <button class="tbtn close-top" id="closeTester">סגירה</button>
   </div>
+
   <div id="testerText" class="tester-text" contenteditable="true" spellcheck="false">סברינה קרפנטר המלכה!!!1</div>
+
+  <!-- פוטר מובייל – תמיד בתחתית -->
   <div class="tester-foot">
     <button class="tbtn" id="buyMobile">רכישה</button>
     <button class="tbtn" id="closeMobile">סגירה</button>
   </div>
 </div>
 
+<!-- Tap preview box למובייל -->
 <div class="touch-preview" id="touchPreview" aria-hidden="true"><div class="tp-glyph" id="tpGlyph">א</div></div>
 
 <script>
-/* Header reveal */
+/* ===== Header reveal אחרי שעוברים את ההירו ===== */
 (()=>{const head=document.getElementById('siteHead'), hero=document.getElementById('hero');
 function sync(){const cut=hero?hero.offsetTop+hero.offsetHeight-1:0; if(pageYOffset>cut) head.classList.add('show'); else head.classList.remove('show');}
 addEventListener('scroll',sync,{passive:true}); addEventListener('resize',sync); document.addEventListener('DOMContentLoaded',sync);})();
@@ -298,7 +305,6 @@ const GEOM="█ □ ▲ ▶ ▼ ◀ △ ○ ●";
 const ARROWS="↻ ↓ ↑ → ← ↗ ↖ ↘ ↙ ⤓ ⤒ ↔ ↕ ↤ ↥ ↦ ↧ ↰ ↱ ↲ ↳";
 const MATH="− × ÷ = ≠ > < ≥ ≤ ± ≈ ~ ¬ ∅ % ‰";
 
-/* Groups: 4 בלבד */
 const CATS=[
   { label:"Hebrew",  chunks:[HEB1, HEB2] },
   { label:"Latin",   chunks:[LAT1, LAT2, LAT3] },
@@ -312,7 +318,6 @@ const CATS=[
   ] }
 ];
 
-/* ===== GRID BUILD (ONE grid per category) ===== */
 let currentFace="AlteZachen Normal";
 const catsHolder=document.getElementById('cats'), gridCol=document.getElementById('gridCol');
 const bigGlyph=document.getElementById('bigGlyph'), glyphName=document.getElementById('glyphName'), glyphCode=document.getElementById('glyphCode');
@@ -322,84 +327,62 @@ function colsPerRow(){ return isMobile()?10:15; }
 function measureCell(){
   const cols=colsPerRow();
   const w=gridCol.clientWidth||innerWidth;
-  const borders = (cols+1)*1 + 2;
-  const px=Math.floor( (w - borders) / cols );
-  document.documentElement.style.setProperty('--cellPx', px+'px');
+  const borders=(cols+1)*1+2;
+  const px=Math.floor((w-borders)/cols);
+  document.documentElement.style.setProperty('--cellPx',px+'px');
   return px;
 }
-
-/* helpers */
-function eachChar(str, cb){
-  for(let i=0;i<str.length;i++){
-    const ch=str[i]; if(ch===" "||ch==="\n"||ch==="\t") continue;
-    cb(ch);
-  }
-}
-function cellEl(ch, feat, variant){
+function eachChar(str,cb){ for(let i=0;i<str.length;i++){ const ch=str[i]; if(ch===" "||ch==="\n"||ch==="\t") continue; cb(ch);} }
+function cellEl(ch,feat,variant){
   const cell=document.createElement('div'); cell.className='cell';
   const s=document.createElement('span'); s.className='glyph';
   s.style.fontFamily='"'+currentFace+'",system-ui';
   if(feat) s.style.fontFeatureSettings=feat;
   if(variant==='oldstyle-nums') s.style.fontVariantNumeric='oldstyle-nums';
   s.textContent=ch; cell.appendChild(s);
-
-  cell.addEventListener('mouseenter', ()=>{ if(!isMobile()) showGlyph(ch, feat); });
-  cell.addEventListener('click', ()=> onCellTap(cell, ch, feat));
+  cell.addEventListener('mouseenter',()=>{ if(!isMobile()) showGlyph(ch,feat); });
+  cell.addEventListener('click',()=> onCellTap(cell,ch,feat));
   return cell;
 }
-
 function buildCats(){
   catsHolder.innerHTML="";
   const cols=colsPerRow(); measureCell();
   CATS.forEach((cat,ci)=>{
     const wrap=document.createElement('div'); wrap.className='cat';
     const grid=document.createElement('div'); grid.className='grid';
-    grid.style.setProperty('--cols', cols);
+    grid.style.setProperty('--cols',cols);
     cat.chunks.forEach(chk=>{
       const text=typeof chk==="object"?chk.text:chk;
-      const feat=typeof chk==="object"?chk.feat:"";
+      const feat =typeof chk==="object"?chk.feat :"";
       const variant=typeof chk==="object"?chk.variant:"";
-      eachChar(text,(ch)=> grid.appendChild( cellEl(ch, feat, variant) ));
+      eachChar(text,(ch)=> grid.appendChild(cellEl(ch,feat,variant)));
     });
-    const total = grid.children.length;
-    const colsC = cols;
-    const rem   = total % colsC;
-    if (rem !== 0) {
-      for (let k = 0; k < (colsC - rem); k++) {
-        const f = document.createElement('div');
-        f.className = 'cell filler';
-        grid.appendChild(f);
-      }
-    }
-    wrap.appendChild(grid);
-    catsHolder.appendChild(wrap);
+    const total=grid.children.length, rem=total%cols;
+    if(rem!==0){ for(let k=0;k<(cols-rem);k++){ const f=document.createElement('div'); f.className='cell filler'; grid.appendChild(f);} }
+    wrap.appendChild(grid); catsHolder.appendChild(wrap);
     if(ci<CATS.length-1){ const sep=document.createElement('div'); sep.className='sepLine'; catsHolder.appendChild(sep); }
   });
   showGlyph('א');
 }
-
 function rebuildFaces(){
   document.querySelectorAll('.glyph').forEach(el=>{ el.style.fontFamily='"'+currentFace+'",system-ui'; });
   const fs=bigGlyph.style.fontFeatureSettings||"normal";
   bigGlyph.style.fontFamily='"'+currentFace+'","AlteZachen Wide",system-ui';
   bigGlyph.style.fontFeatureSettings=fs;
 }
-
-/* desktop big preview */
-function showGlyph(ch, feat){
+function showGlyph(ch,feat){
   if(bigGlyph){
     bigGlyph.textContent=ch;
     bigGlyph.style.fontFamily='"'+currentFace+'","AlteZachen Wide",system-ui';
     bigGlyph.style.fontFeatureSettings=feat||"normal";
   }
-  glyphName.textContent=nameOf(ch);
-  glyphCode.textContent=codeOf(ch);
+  glyphName.textContent=nameOf(ch); glyphCode.textContent=codeOf(ch);
 }
 const HEB_NAMES={"א":"HEBREW LETTER ALEF","ב":"HEBREW LETTER BET","ג":"HEBREW LETTER GIMEL","ד":"HEBREW LETTER DALET","ה":"HEBREW LETTER HE","ו":"HEBREW LETTER VAV","ז":"HEBREW LETTER ZAYIN","ח":"HEBREW LETTER HET","ט":"HEBREW LETTER TET","י":"HEBREW LETTER YOD","כ":"HEBREW LETTER KAF","ך":"HEBREW LETTER FINAL KAF","ל":"HEBREW LETTER LAMED","מ":"HEBREW LETTER MEM","ם":"HEBREW LETTER FINAL MEM","נ":"HEBREW LETTER NUN","ן":"HEBREW LETTER FINAL NUN","ס":"HEBREW LETTER SAMEKH","ע":"HEBREW LETTER AYIN","פ":"HEBREW LETTER PE","ף":"HEBREW LETTER FINAL PE","צ":"HEBREW LETTER TSADI","ץ":"HEBREW LETTER FINAL TSADI","ק":"HEBREW LETTER QOF","ר":"HEBREW LETTER RESH","ש":"HEBREW LETTER SHIN","ת":"HEBREW LETTER TAV"};
 function nameOf(ch){ if(HEB_NAMES[ch])return HEB_NAMES[ch]; const cp=ch.codePointAt(0); if(ch>='A'&&ch<='Z')return"LATIN CAPITAL LETTER "+ch; if(ch>='a'&&ch<='z')return"LATIN SMALL LETTER "+ch.toUpperCase(); if(ch>='0'&&ch<='9')return"DIGIT "+ch; let h=cp.toString(16).toUpperCase(); while(h.length<4)h="0"+h; return"U+"+h }
 function codeOf(ch){ let h=ch.codePointAt(0).toString(16).toUpperCase(); while(h.length<4)h="0"+h; return"U+"+h }
 
-/* Mobile tap preview */
+/* מובייל – tap overlay */
 const overlay=document.getElementById('touchPreview'), tpGlyph=document.getElementById('tpGlyph');
 function hideOverlay(){ overlay.style.display='none'; overlay.setAttribute('aria-hidden','true'); }
 function onCellTap(cell,ch,feat){
@@ -416,7 +399,7 @@ function onCellTap(cell,ch,feat){
 overlay.addEventListener('click',hideOverlay);
 addEventListener('scroll',()=>{ if(isMobile()) hideOverlay(); },{passive:true});
 
-/* Tabs */
+/* טאב משקלים בגריד */
 document.querySelectorAll('.tabs .tab').forEach(t=>{
   t.addEventListener('click',function(){
     document.querySelectorAll('.tabs .tab').forEach(x=>x.classList.remove('active'));
@@ -424,7 +407,7 @@ document.querySelectorAll('.tabs .tab').forEach(t=>{
   });
 });
 
-/* ===== Tester ===== */
+/* ===== TYPE TESTER ===== */
 const tester=document.getElementById('tester');
 const open=document.getElementById('openTester');
 const closeTop=document.getElementById('closeTester');
@@ -432,6 +415,7 @@ const buyTop=document.getElementById('buyInside');
 const closeMob=document.getElementById('closeMobile');
 const buyMob=document.getElementById('buyMobile');
 const tWeights=document.getElementById('testerWeights');
+const tWeightsLine=document.getElementById('tweightsLine');
 const tText=document.getElementById('testerText');
 
 function openTester(){ tester.classList.add('open'); tester.setAttribute('aria-hidden','false'); requestAnimationFrame(fitTester); }
@@ -441,11 +425,15 @@ if(closeTop) closeTop.onclick=closeTester;
 if(buyTop) buyTop.onclick=()=>location.href='#';
 if(closeMob) closeMob.onclick=closeTester;
 if(buyMob) buyMob.onclick=()=>location.href='#';
-tWeights.querySelectorAll('button').forEach(btn=>{
-  btn.onclick=()=>{ tText.style.fontFamily='"'+btn.dataset.face+'",system-ui'; fitTester(); };
+
+/* בחירת משקל – גם בשורת הטקסט במובייל */
+[tWeights, tWeightsLine].forEach(holder=>{
+  holder.querySelectorAll('button').forEach(btn=>{
+    btn.onclick=()=>{ tText.style.fontFamily='"'+btn.dataset.face+'",system-ui'; fitTester(); };
+  });
 });
 
-/* grow text to max */
+/* התאמת גודל טקסט */
 function fitTester(){
   if(matchMedia('(max-width:600px)').matches){
     const maxW=innerWidth*0.92, maxH=innerHeight*0.78;
@@ -454,7 +442,7 @@ function fitTester(){
     guard=30; while(guard-- && (tText.scrollWidth>maxW || tText.scrollHeight>maxH)){ size*=0.93; tText.style.fontSize=size+'px'; }
   }else{
     const maxW=innerWidth*0.94, maxH=innerHeight*0.82;
-    let size=Math.min(620, maxH); tText.style.fontSize=size+'px';
+    let size=Math.min(620,maxH); tText.style.fontSize=size+'px';
     let guard=60; while(guard-- && tText.scrollWidth<maxW*0.92 && tText.scrollHeight<maxH*0.92){ size+=18; tText.style.fontSize=size+'px'; }
     guard=30; while(guard-- && (tText.scrollWidth>maxW || tText.scrollHeight>maxH)){ size-=12; tText.style.fontSize=size+'px'; }
   }
@@ -462,12 +450,9 @@ function fitTester(){
 tText.addEventListener('input',()=>requestAnimationFrame(fitTester));
 addEventListener('resize',()=>{ if(tester.classList.contains('open')) requestAnimationFrame(fitTester); });
 
-/* Build */
+/* Build grids */
 addEventListener('resize',()=>{ measureCell(); buildCats(); });
 document.addEventListener('DOMContentLoaded',()=>{ measureCell(); buildCats(); });
-
-/* Header buttons demo */
-document.getElementById('buyTop').onclick=()=>location.href='#';
 </script>
 </body>
 </html>
