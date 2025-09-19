@@ -1,30 +1,29 @@
 <!doctype html>
 <html lang="he" dir="rtl">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<meta name="format-detection" content="telephone=no" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="format-detection" content="telephone=no">
 <title>אלטע זאכן — Alte Zachen</title>
-<meta name="theme-color" content="#ff0000" />
+<meta name="theme-color" content="#ff0000">
 
-<!-- Fonts at repo root -->
 <link rel="preload" href="AlteZachen-Wide.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="AlteZachen-HalfWide.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="AlteZachen-Normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="AlteZachen-Random.woff2" as="font" type="font/woff2" crossorigin>
 
 <style>
-@font-face{font-family:"AlteZachen Normal";   src:url("AlteZachen-Normal.woff2") format("woff2"),url("AlteZachen-Normal.woff") format("woff");     font-display:swap}
-@font-face{font-family:"AlteZachen HalfWide"; src:url("AlteZachen-HalfWide.woff2") format("woff2"),url("AlteZachen-HalfWide.woff") format("woff"); font-display:swap}
-@font-face{font-family:"AlteZachen Wide";     src:url("AlteZachen-Wide.woff2") format("woff2"),url("AlteZachen-Wide.woff") format("woff");       font-display:swap}
-@font-face{font-family:"AlteZachen Random";   src:url("AlteZachen-Random.woff2") format("woff2"),url("AlteZachen-Random.woff") format("woff");   font-display:swap}
+@font-face{font-family:"AlteZachen Normal";   src:url("AlteZachen-Normal.woff2") format("woff2"),url("AlteZachen-Normal.woff") format("woff");font-display:swap}
+@font-face{font-family:"AlteZachen HalfWide"; src:url("AlteZachen-HalfWide.woff2") format("woff2"),url("AlteZachen-HalfWide.woff") format("woff");font-display:swap}
+@font-face{font-family:"AlteZachen Wide";     src:url("AlteZachen-Wide.woff2") format("woff2"),url("AlteZachen-Wide.woff") format("woff");font-display:swap}
+@font-face{font-family:"AlteZachen Random";   src:url("AlteZachen-Random.woff2") format("woff2"),url("AlteZachen-Random.woff") format("woff");font-display:swap}
 
-:root{ --cols-d:15; --cols-m:10; --cellPx:72px; --grid-pad:6vw; --gap:1px; }
+:root{ --cols-d:15; --cols-m:10; --cellPx:72px; --grid-pad:6vw; }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial;line-height:1.2;text-align:center}
 
-/* Header (appears after red hero) */
+/* Header */
 .site-head{position:fixed;top:0;left:0;right:0;z-index:50;background:#fff;border-bottom:1px solid #000;transform:translateY(-110%);transition:transform .35s ease}
 .site-head.show{transform:translateY(0)}
 .head-wrap{max-width:1120px;margin:0 auto;display:flex;justify-content:center;gap:16px;padding:6px}
@@ -54,43 +53,41 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
 
 /* Sticky preview */
 .preview-box{width:100%;height:0;padding-bottom:100%;border:1px solid #000;background:#fff;position:relative;overflow:hidden}
-.preview-glyph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#ff0000;font-family:"AlteZachen Normal","AlteZachen Wide";line-height:1;text-align:center;font-size:30vw;max-font-size:600px;transform:translateY(-18%)}
+.preview-glyph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#ff0000;font-family:"AlteZachen Normal","AlteZachen Wide";line-height:1;text-align:center;font-size:30vw;max-font-size:600px;transform:translateY(-16%)} /* הרמה קלה */
 @media (min-width:1400px){.preview-glyph{font-size:600px}}
 .preview-meta{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font:13px/1.2 Arial,Helvetica,sans-serif;color:#000}
 
-/* Weight tabs */
+/* Weight tabs (שמאל: רחב, מרכז: חצי־רחב, ימין: נורמל) */
 .tabs{display:flex;flex-direction:row-reverse;border:1px solid #000;margin-top:8px}
 .tab{flex:1 1 33%;appearance:none;border:0;margin:0;padding:.7em 1.1em;background:#fff;color:#000;cursor:pointer;font-weight:700;font-size:18px;border-left:1px solid #000}
 .tab:last-child{border-left:0}
 .tab.active{background:#000;color:#fff}
 @media (min-width:1024px){.tab{font-size:20px}}
 
-/* Category title + rows */
+/* Category container as ONE grid (אין רווח בין שורות) */
 .cat{margin-bottom:24px}
-.cat-title{display:none} /* אין כותרות טקסטואליות — רק הגליפים עובדים */
-.row{
+.grid{
   --cell:var(--cellPx);
-  display:grid; grid-auto-flow:column;
-  grid-template-columns:repeat(var(--k), var(--cell));
-  gap:var(--gap);
-  width:max-content;
-  background:#000; padding:var(--gap);
-  margin:0 0 8px 0;
+  display:inline-grid; /* מונע התארכות לשוליים ו"מחק" של קו ארוך */
+  grid-template-columns:repeat(var(--cols), var(--cell));
+  grid-auto-rows:var(--cell);
+  gap:1px;                /* קווי רשת בעובי אחיד */
+  background:#000;        /* הקווים עצמם */
+  padding:1px;            /* מסגרת חיצונית אחידה */
 }
 .cell{
-  width:var(--cell); aspect-ratio:1/1;
-  background:#fff; position:relative;
-  display:flex; align-items:center; justify-content:center;
-  user-select:none; -webkit-user-select:none;
+  width:var(--cell);height:var(--cell);
+  background:#fff;display:flex;align-items:center;justify-content:center;
+  user-select:none;-webkit-user-select:none;
 }
 .glyph{
-  color:#000; line-height:1; transform:translateY(-6%);
-  font-family:"AlteZachen Normal"; font-size:calc(var(--cell)*.62);
+  color:#000;line-height:1;transform:translateY(-6%);
+  font-family:"AlteZachen Normal";font-size:calc(var(--cell)*.62);
   transition:color .08s ease, background-color .08s ease;
 }
 @media (hover:hover){ .cell:hover .glyph{color:#fff} .cell:hover{background:#000} }
 
-/* separator between categories */
+/* separator between categories only */
 .sepLine{height:22px}
 
 /* Mobile */
@@ -101,7 +98,7 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
   :root{ --grid-pad:4vw; }
 }
 
-/* Mobile floating preview */
+/* Mobile tap preview */
 .touch-preview{position:fixed;left:0;top:0;width:0;height:0;display:none;border:1px solid #000;background:#fff;z-index:70;align-items:center;justify-content:center;touch-action:manipulation}
 .tp-glyph{color:#000;font-family:"AlteZachen Normal";line-height:1;transform:translateY(-16%)}
 
@@ -186,7 +183,7 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
 <!-- ===== GLYPH GRID ===== -->
 <section class="section white glyphs-shell" id="glyphs">
   <div class="glyphs-wrap">
-    <!-- sticky preview on the LEFT -->
+    <!-- sticky preview (LEFT) -->
     <div class="preview-col">
       <div class="preview-box"><div id="bigGlyph" class="preview-glyph" aria-live="polite">א</div></div>
       <div class="preview-meta"><span id="glyphName">HEBREW LETTER ALEF</span><span id="glyphCode">U+05D0</span></div>
@@ -238,7 +235,7 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
 function sync(){const cut=hero?hero.offsetTop+hero.offsetHeight-1:0; if(pageYOffset>cut) head.classList.add('show'); else head.classList.remove('show');}
 addEventListener('scroll',sync,{passive:true}); addEventListener('resize',sync); document.addEventListener('DOMContentLoaded',sync);})();
 
-/* ===== DATA (4 categories) ===== */
+/* ===== DATA (4 קטגוריות) ===== */
 const HEB1="אבגדהוזחטיכךלמםנןסעפףצץקרשת";
 const HEB2="אַ אָ אּ בּ גּ דּ הּ וּ וֹ זּ טּ יּ ךּ כּ לּ מּ נּ סּ ףּ פּ צּ קּ רּ שּ שׁ שׂ שּׁ שּׂ תּ";
 const LAT1="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -256,16 +253,19 @@ const MATH="− × ÷ = ≠ > < ≥ ≤ ± ≈ ~ ¬ ∅ % ‰";
 
 /* Groups: 4 בלבד */
 const CATS=[
-  { label:"Hebrew", chunks:[HEB1, HEB2] },
-  { label:"Latin",  chunks:[LAT1, LAT2, LAT3] },
-  { label:"Cyrillic", chunks:[CYR] },
+  { label:"Hebrew",  chunks:[HEB1, HEB2] },
+  { label:"Latin",   chunks:[LAT1, LAT2, LAT3] },
+  { label:"Cyrillic",chunks:[CYR] },
   { label:"Everything", chunks:[
-      NUM, NUM, {text:NUM, feat:'"ss03" 1'}, {text:NUM, feat:'"ss04" 1'},
+      NUM,                                    // lining 0–9
+      { text:NUM, feat:'"onum" 1', variant:'oldstyle-nums' }, // OSF 0–9
+      { text:NUM, feat:'"ss03" 1' },          // circled set 1
+      { text:NUM, feat:'"ss04" 1' },          // circled set 2
       FRAC, CURR, PUNC, MISC, GEOM, ARROWS, MATH
-    ] }
+  ] }
 ];
 
-/* ===== GRID BUILD — fixed 15 (desktop) / 10 (mobile) with square cells and NO ghost lines ===== */
+/* ===== GRID BUILD (ONE grid per category) ===== */
 let currentFace="AlteZachen Normal";
 const catsHolder=document.getElementById('cats'), gridCol=document.getElementById('gridCol');
 const bigGlyph=document.getElementById('bigGlyph'), glyphName=document.getElementById('glyphName'), glyphCode=document.getElementById('glyphCode');
@@ -274,56 +274,53 @@ function isMobile(){ return matchMedia('(max-width:600px)').matches; }
 function colsPerRow(){ return isMobile()?10:15; }
 function measureCell(){
   const cols=colsPerRow();
-  const pad=8 /*px total frame*/ + (cols-1)*1 /*gaps*/ + 2 /*outer padding*/;
   const w=gridCol.clientWidth||innerWidth;
-  const px=Math.floor( (w - pad) / cols ); 
+  const borders = (cols+1)*1 + 2; // gap lines + outer frame
+  const px=Math.floor( (w - borders) / cols );
   document.documentElement.style.setProperty('--cellPx', px+'px');
   return px;
 }
 
-function chunkChars(str, cols){
-  const arr=[];
+/* helpers */
+function eachChar(str, cb){
   for(let i=0;i<str.length;i++){
     const ch=str[i]; if(ch===" "||ch==="\n"||ch==="\t") continue;
-    arr.push(ch);
+    cb(ch);
   }
-  const rows=[]; for(let i=0;i<arr.length;i+=cols) rows.push(arr.slice(i, i+cols));
-  return rows;
 }
+function cellEl(ch, feat, variant){
+  const cell=document.createElement('div'); cell.className='cell';
+  const s=document.createElement('span'); s.className='glyph';
+  s.style.fontFamily='"'+currentFace+'",system-ui';
+  if(feat) s.style.fontFeatureSettings=feat;
+  if(variant==='oldstyle-nums') s.style.fontVariantNumeric='oldstyle-nums';
+  s.textContent=ch; cell.appendChild(s);
 
-function rowEl(chars, feat){
-  const row=document.createElement('div');
-  row.className='row'; row.style.setProperty('--k', chars.length);
-  chars.forEach(ch=>{
-    const cell=document.createElement('div'); cell.className='cell';
-    const s=document.createElement('span'); s.className='glyph';
-    s.style.fontFamily='"'+currentFace+'",system-ui';
-    if(feat) s.style.fontFeatureSettings=feat;
-    s.textContent=ch;
-    cell.appendChild(s); row.appendChild(cell);
-
-    cell.addEventListener('mouseenter', ()=>{ if(!isMobile()) showGlyph(ch, feat); });
-    cell.addEventListener('click', ()=> onCellTap(cell, ch, feat));
-  });
-  return row;
+  cell.addEventListener('mouseenter', ()=>{ if(!isMobile()) showGlyph(ch, feat); });
+  cell.addEventListener('click', ()=> onCellTap(cell, ch, feat));
+  return cell;
 }
 
 function buildCats(){
   catsHolder.innerHTML="";
   const cols=colsPerRow(); measureCell();
-  CATS.forEach((cat, ci)=>{
+  CATS.forEach((cat,ci)=>{
     const wrap=document.createElement('div'); wrap.className='cat';
+    const grid=document.createElement('div'); grid.className='grid';
+    grid.style.setProperty('--cols', cols);
     cat.chunks.forEach(chk=>{
       const text=typeof chk==="object"?chk.text:chk;
       const feat=typeof chk==="object"?chk.feat:"";
-      const rows=chunkChars(text, cols);
-      rows.forEach(r=> wrap.appendChild(rowEl(r, feat)) );
+      const variant=typeof chk==="object"?chk.variant:"";
+      eachChar(text,(ch)=> grid.appendChild( cellEl(ch, feat, variant) ));
     });
+    wrap.appendChild(grid);
     catsHolder.appendChild(wrap);
     if(ci<CATS.length-1){ const sep=document.createElement('div'); sep.className='sepLine'; catsHolder.appendChild(sep); }
   });
   showGlyph('א');
 }
+
 function rebuildFaces(){
   document.querySelectorAll('.glyph').forEach(el=>{ el.style.fontFamily='"'+currentFace+'",system-ui'; });
   const fs=bigGlyph.style.fontFeatureSettings||"normal";
@@ -400,7 +397,7 @@ function fitTester(){
     guard=30; while(guard-- && (tText.scrollWidth>maxW || tText.scrollHeight>maxH)){ size*=0.93; tText.style.fontSize=size+'px'; }
   }else{
     const maxW=innerWidth*0.94, maxH=innerHeight*0.82;
-    let size=Math.min(600, maxH); tText.style.fontSize=size+'px';
+    let size=Math.min(620, maxH); tText.style.fontSize=size+'px';
     let guard=60; while(guard-- && tText.scrollWidth<maxW*0.92 && tText.scrollHeight<maxH*0.92){ size+=18; tText.style.fontSize=size+'px'; }
     guard=30; while(guard-- && (tText.scrollWidth>maxW || tText.scrollHeight>maxH)){ size-=12; tText.style.fontSize=size+'px'; }
   }
@@ -408,19 +405,9 @@ function fitTester(){
 tText.addEventListener('input',()=>requestAnimationFrame(fitTester));
 addEventListener('resize',()=>{ if(tester.classList.contains('open')) requestAnimationFrame(fitTester); });
 
-/* Build / resize */
-function initialBuild(){ buildCats(); }
-function buildCats(){ catsHolder.innerHTML=''; measureCell();
-  CATS.forEach((cat,ci)=>{ const c=document.createElement('div'); c.className='cat';
-    cat.chunks.forEach(chk=>{ const text=typeof chk==="object"?chk.text:chk; const feat=typeof chk==="object"?chk.feat:""; 
-      chunkChars(text, colsPerRow()).forEach(r=> c.appendChild(rowEl(r,feat)) );
-    });
-    catsHolder.appendChild(c); if(ci<CATS.length-1){ const sep=document.createElement('div'); sep.className='sepLine'; catsHolder.appendChild(sep); }
-  });
-  showGlyph('א');
-}
-addEventListener('resize',()=>{ measureCell(); });
-document.addEventListener('DOMContentLoaded',initialBuild);
+/* Build */
+addEventListener('resize',()=>{ measureCell(); buildCats(); });
+document.addEventListener('DOMContentLoaded',()=>{ measureCell(); buildCats(); });
 
 /* Header buttons demo */
 document.getElementById('buyTop').onclick=()=>location.href='#';
