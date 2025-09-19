@@ -176,6 +176,48 @@ img.hero-media{ max-width:none !important; } /* נטרול כלל גלובלי i
     object-fit:contain !important;       /* לא לחתוך */
   }
 }
+
+/* === HERO: background image that always fills the viewport height === */
+html, body { margin:0; height:100%; }
+
+#hero.hero-landing{
+  /* תמונה כרקע */
+  --hero: none;
+  background:
+    #ff0000                       /* אדום מילוי */
+    var(--hero) no-repeat center top / auto 90dvh; /* בדסקטופ: גובה 90dvh */
+  /* פריסה */
+  width:100vw !important;
+  height:90dvh !important;        /* לפחות 90% מהמסך בדסקטופ */
+  min-height:90dvh !important;
+  padding:0 !important;
+  margin:0 !important;
+  /* לוודא שאין כלום בפנים שמפריע */
+  display:block !important;
+  overflow:hidden;
+}
+
+/* מסכים ענקיים – אפשר גם 92dvh אם תרצה יותר גדול */
+@media (min-width:1600px){
+  #hero.hero-landing{
+    background-size: auto 92dvh;
+    height:92dvh; min-height:92dvh;
+  }
+}
+
+/* מובייל: תמלא 100% מסך (ללא חיתוך) */
+@media (max-width:767px){
+  #hero.hero-landing{
+    background-size: auto 100dvh; /* גובה מלא של המסך */
+    height:100dvh !important;
+    min-height:100dvh !important;
+  }
+}
+
+/* Safety: אם יש חוקים כלליים על img/container שלא קשורים, זה לא משנה כי אין כאן <img> בכלל */
+
+
+
 </style>
 </head>
 <body>
@@ -187,9 +229,7 @@ img.hero-media{ max-width:none !important; } /* נטרול כלל גלובלי i
   </div>
 </header>
 
-<section id="hero" class="hero-landing">
-  <img src="hero.webp" alt="אלטע זאכן – כותרת גרפית" class="hero-media">
-</section>
+<section id="hero" class="hero-landing" style="--hero:url('hero.webp')"></section>
 
 <section class="section white spec">
   <div class="wrap">
