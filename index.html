@@ -50,32 +50,32 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
 .glyphs-wrap{display:flex;gap:16px;align-items:flex-start;direction:ltr}
 .preview-col{flex:0 0 38%;max-width:700px;min-width:300px;position:sticky;top:16px}
 .grid-col{flex:1 1 auto;min-width:320px}
-.cell.filler{ background:#fff; }     /* תאי מילוי ריקים */
-.cell.filler .glyph{ display:none; }  /* אין תוכן בתאי המילוי */
+.cell.filler{ background:#fff; }
+.cell.filler .glyph{ display:none; }
 
 /* Sticky preview */
 .preview-box{width:100%;height:0;padding-bottom:100%;border:1px solid #000;background:#fff;position:relative;overflow:hidden}
-.preview-glyph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#ff0000;font-family:"AlteZachen Normal","AlteZachen Wide";line-height:1;text-align:center;font-size:30vw;max-font-size:600px;transform:translateY(-16%)} /* הרמה קלה */
+.preview-glyph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#ff0000;font-family:"AlteZachen Normal","AlteZachen Wide";line-height:1;text-align:center;font-size:30vw;max-font-size:600px;transform:translateY(-16%)}
 @media (min-width:1400px){.preview-glyph{font-size:600px}}
 .preview-meta{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font:13px/1.2 Arial,Helvetica,sans-serif;color:#000}
 
-/* Weight tabs (שמאל: רחב, מרכז: חצי־רחב, ימין: נורמל) */
+/* Weight tabs */
 .tabs{display:flex;flex-direction:row-reverse;border:1px solid #000;margin-top:8px}
 .tab{flex:1 1 33%;appearance:none;border:0;margin:0;padding:.7em 1.1em;background:#fff;color:#000;cursor:pointer;font-weight:700;font-size:18px;border-left:1px solid #000}
 .tab:last-child{border-left:0}
 .tab.active{background:#000;color:#fff}
 @media (min-width:1024px){.tab{font-size:20px}}
 
-/* Category container as ONE grid (אין רווח בין שורות) */
+/* Category grid */
 .cat{margin-bottom:24px}
 .grid{
   --cell:var(--cellPx);
-  display:inline-grid; /* מונע התארכות לשוליים ו"מחק" של קו ארוך */
+  display:inline-grid;
   grid-template-columns:repeat(var(--cols), var(--cell));
   grid-auto-rows:var(--cell);
-  gap:1px;                /* קווי רשת בעובי אחיד */
-  background:#000;        /* הקווים עצמם */
-  padding:1px;            /* מסגרת חיצונית אחידה */
+  gap:1px;
+  background:#000;
+  padding:1px;
 }
 .cell{
   width:var(--cell);height:var(--cell);
@@ -89,13 +89,13 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
 }
 @media (hover:hover){ .cell:hover .glyph{color:#fff} .cell:hover{background:#000} }
 
-/* separator between categories only */
+/* separator */
 .sepLine{height:16px}
 
 /* Mobile */
 @media (max-width:600px){
-  .cat{ margin-bottom:12px; }  /* היה 24px – הקטן */
-  .sepLine{ height:10px; }     /* היה 22px – הקטן */
+  .cat{ margin-bottom:12px; }
+  .sepLine{ height:10px; }
   .glyphs-wrap{display:block}
   .preview-col{display:none!important}
   .grid-col{width:100%;max-width:none}
@@ -135,78 +135,47 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
 }
 @media (max-width:600px){ .tester-text{font-size:12vw;margin:4vh auto 8vh} }
 
+/* === HERO (התמונה בראש — אובררייד סופי) === */
+html, body { margin:0; height:100%; }
 
-
-
-
-
-
-
-/* === HERO (תמונה גדולה בדסקטופ, מעולה במובייל) === */
-html, body { margin:0; height:100%; } /* בלי מרווחי דפדפן */
-
+/* הסקשן עצמו */
 #hero.hero-landing{
   background:#ff0000;
-  padding:0;
-  margin:0;
-  width:100vw;
-  min-height:100vh;                  /* הסקשן לפחות גובה מסך */
-  display:flex;
-  align-items:flex-start;             /* מתחיל ממש מראש המסך */
-  justify-content:center;
+  padding:0 !important;
+  margin:0 !important;
+  width:100vw !important;
+  min-height:100vh !important;          /* תמיד לפחות מסך מלא */
+  display:flex !important;
+  align-items:flex-start !important;     /* מתחיל ממש מהחלק העליון */
+  justify-content:center !important;
 }
 
-/* מבטל מגבלות wrap אם יש */
+/* התמונה עצמה – דסקטופ: ≥92% גובה מסך, ממורכזת, בלי מגבלות רוחב קודמות */
+#hero.hero-landing .hero-media{
+  display:block !important;
+  margin:0 auto !important;
+  height:92vh !important;                /* שנה ל-85–95vh אם תרצה */
+  max-height:92vh !important;
+  width:auto !important;                 /* שומר יחס נכון */
+  max-width:96vw !important;             /* שוליים קלים מהצדדים */
+  object-fit:contain !important;
+}
+
+/* במקרה שיש חוקים שמגבילים עטיפות פנימיות */
 #hero.hero-landing .wrap{ max-width:none !important; width:100% !important; padding:0 !important; margin:0 !important; display:contents !important; }
+img.hero-media{ max-width:none !important; } /* נטרול כלל גלובלי img{max-width:100%} */
 
-/* התמונה עצמה */
-#hero .hero-media{
-  display:block;
-  margin:0 auto;
-  height:88vh;                        /* ≥ 85% מסך בדסקטופ */
-  max-height:88vh;
-  width:auto;                         /* שומר יחס */
-  max-width:96vw;                     /* שוליים קלים מהצדדים */
-  object-fit:contain;                 /* לא חותך */
-}
-
-/* מסכים ענקיים – עוד קצת נשימה */
-@media (min-width:1600px){
-  #hero .hero-media{ max-width:92vw; }
-}
-
-/* מובייל: מלא מסך אך ללא חיתוך */
+/* מובייל: ממלאת את כל המסך, ללא חיתוך */
 @media (max-width:767px){
-  #hero.hero-landing{
-    align-items:center;
-  }
-  #hero .hero-media{
-    width:100vw;
-    max-width:100vw;
-    height:auto;                      /* שומר יחס נכון במובייל */
-    max-height:100vh;
-    object-fit:contain;
+  #hero.hero-landing{ align-items:center !important; }
+  #hero.hero-landing .hero-media{
+    width:100vw !important;
+    max-width:100vw !important;
+    height:100vh !important;             /* מלא מסך */
+    max-height:100vh !important;
+    object-fit:contain !important;       /* לא לחתוך */
   }
 }
-
-/* ביטחון נגד כללי img גלובליים שמקטינים */
-img.hero-media{ max-width:none !important; }
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
 </style>
 </head>
 <body>
@@ -221,8 +190,6 @@ img.hero-media{ max-width:none !important; }
 <section id="hero" class="hero-landing">
   <img src="hero.webp" alt="אלטע זאכן – כותרת גרפית" class="hero-media">
 </section>
-
-
 
 <section class="section white spec">
   <div class="wrap">
@@ -333,10 +300,10 @@ const CATS=[
   { label:"Latin",   chunks:[LAT1, LAT2, LAT3] },
   { label:"Cyrillic",chunks:[CYR] },
   { label:"Everything", chunks:[
-      NUM,                                    // lining 0–9
-      { text:NUM, feat:'"onum" 1', variant:'oldstyle-nums' }, // OSF 0–9
-      { text:NUM, feat:'"ss03" 1' },          // circled set 1
-      { text:NUM, feat:'"ss04" 1' },          // circled set 2
+      NUM,
+      { text:NUM, feat:'"onum" 1', variant:'oldstyle-nums' },
+      { text:NUM, feat:'"ss03" 1' },
+      { text:NUM, feat:'"ss04" 1' },
       FRAC, CURR, PUNC, MISC, GEOM, ARROWS, MATH
   ] }
 ];
@@ -351,7 +318,7 @@ function colsPerRow(){ return isMobile()?10:15; }
 function measureCell(){
   const cols=colsPerRow();
   const w=gridCol.clientWidth||innerWidth;
-  const borders = (cols+1)*1 + 2; // gap lines + outer frame
+  const borders = (cols+1)*1 + 2;
   const px=Math.floor( (w - borders) / cols );
   document.documentElement.style.setProperty('--cellPx', px+'px');
   return px;
@@ -390,16 +357,16 @@ function buildCats(){
       const variant=typeof chk==="object"?chk.variant:"";
       eachChar(text,(ch)=> grid.appendChild( cellEl(ch, feat, variant) ));
     });
-const total = grid.children.length;
-const colsC = cols;                 // מספר העמודות הפעיל (10 במובייל, 15 בדסקטופ)
-const rem   = total % colsC;
-if (rem !== 0) {
-  for (let k = 0; k < (colsC - rem); k++) {
-    const f = document.createElement('div');
-    f.className = 'cell filler';    // תא מילוי לבן
-    grid.appendChild(f);
-  }
-}
+    const total = grid.children.length;
+    const colsC = cols;
+    const rem   = total % colsC;
+    if (rem !== 0) {
+      for (let k = 0; k < (colsC - rem); k++) {
+        const f = document.createElement('div');
+        f.className = 'cell filler';
+        grid.appendChild(f);
+      }
+    }
     wrap.appendChild(grid);
     catsHolder.appendChild(wrap);
     if(ci<CATS.length-1){ const sep=document.createElement('div'); sep.className='sepLine'; catsHolder.appendChild(sep); }
