@@ -137,6 +137,11 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
 
 
 
+
+
+
+  
+
 /* === HERO desktop force: image >=85% viewport height === */
 .section.red.hero{
   padding:0 !important;
@@ -178,6 +183,54 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
 
 /* ליתר בטחון – אל תיתן מרווח דיפולטי של הדפדפן */
 html, body { margin:0; }
+
+/* === HERO fix: grow image to ≥85vh and ignore wrap max-width (desktop) === */
+.section.red.hero{
+  padding:0 !important;
+  margin:0 !important;
+  min-height:85vh !important;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.section.red.hero .wrap{               /* מבטל את ההגבלה של wrap */
+  max-width:none !important;
+  width:100% !important;
+  padding:0 !important;
+  margin:0 !important;
+}
+
+.section.red.hero .hero-img{
+  display:block;
+  margin:0 auto;
+  height:85vh !important;             /* התמונה עצמה ≥ 85% גובה מסך */
+  max-height:85vh !important;
+  width:auto !important;              /* שמירת יחס */
+  max-width:none !important;          /* אל תגבּל ל-100% */
+  object-fit:contain !important;
+}
+
+/* למקרה שיש כלל גלובלי img{max-width:100%} */
+img.hero-img{ max-width:none !important; }
+
+/* במובייל להשאיר full-bleed כרגיל */
+@media (max-width:767px){
+  .section.red.hero{ min-height:auto !important; }
+  .section.red.hero .hero-img{
+    width:100vw !important;
+    max-width:100vw !important;
+    height:auto !important;
+    max-height:none !important;
+  }
+}
+
+
+
+
+
+
+  
 
 
 
