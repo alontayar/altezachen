@@ -50,6 +50,8 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
 .glyphs-wrap{display:flex;gap:16px;align-items:flex-start;direction:ltr}
 .preview-col{flex:0 0 38%;max-width:700px;min-width:300px;position:sticky;top:16px}
 .grid-col{flex:1 1 auto;min-width:320px}
+.cell.filler{ background:#fff; }     /* תאי מילוי ריקים */
+.cell.filler .glyph{ display:none; }  /* אין תוכן בתאי המילוי */
 
 /* Sticky preview */
 .preview-box{width:100%;height:0;padding-bottom:100%;border:1px solid #000;background:#fff;position:relative;overflow:hidden}
@@ -314,6 +316,16 @@ function buildCats(){
       const variant=typeof chk==="object"?chk.variant:"";
       eachChar(text,(ch)=> grid.appendChild( cellEl(ch, feat, variant) ));
     });
+const total = grid.children.length;
+const colsC = cols;                 // מספר העמודות הפעיל (10 במובייל, 15 בדסקטופ)
+const rem   = total % colsC;
+if (rem !== 0) {
+  for (let k = 0; k < (colsC - rem); k++) {
+    const f = document.createElement('div');
+    f.className = 'cell filler';    // תא מילוי לבן
+    grid.appendChild(f);
+  }
+}
     wrap.appendChild(grid);
     catsHolder.appendChild(wrap);
     if(ci<CATS.length-1){ const sep=document.createElement('div'); sep.className='sepLine'; catsHolder.appendChild(sep); }
