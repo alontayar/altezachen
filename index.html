@@ -140,55 +140,62 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
 
 
 
-  /* === HERO: force full-viewport behavior, desktop ≥85vh, mobile full === */
-html, body { margin:0; height:100%; } /* בלי מרווחים דיפולטיים */
+
+
+/* === HERO (תמונה גדולה בדסקטופ, מעולה במובייל) === */
+html, body { margin:0; height:100%; } /* בלי מרווחי דפדפן */
 
 #hero.hero-landing{
   background:#ff0000;
-  padding:0 !important;
-  margin:0 !important;
-  width:100vw !important;
-  min-height:100vh !important;          /* מסגרת אדומה בגובה מסך */
-  display:flex !important;
-  align-items:flex-start !important;     /* מתחיל ממש מלמעלה */
-  justify-content:center !important;
+  padding:0;
+  margin:0;
+  width:100vw;
+  min-height:100vh;                  /* הסקשן לפחות גובה מסך */
+  display:flex;
+  align-items:flex-start;             /* מתחיל ממש מראש המסך */
+  justify-content:center;
 }
 
-/* נטרול עטיפות/חוקים קודמים שעוצרים גודל */
-#hero .wrap{ max-width:none !important; width:100% !important; padding:0 !important; margin:0 !important; display:contents !important; }
+/* מבטל מגבלות wrap אם יש */
+#hero.hero-landing .wrap{ max-width:none !important; width:100% !important; padding:0 !important; margin:0 !important; display:contents !important; }
 
 /* התמונה עצמה */
 #hero .hero-media{
-  display:block !important;
-  height:90vh !important;               /* >= 90% מסך בדסקטופ */
-  max-height:90vh !important;
-  width:auto !important;                 /* שומר פרופורציות רוחב */
-  max-width:96vw !important;             /* שוליים צדדיים קלים */
-  object-fit:contain !important;
-  margin:0 auto !important;
+  display:block;
+  margin:0 auto;
+  height:88vh;                        /* ≥ 85% מסך בדסקטופ */
+  max-height:88vh;
+  width:auto;                         /* שומר יחס */
+  max-width:96vw;                     /* שוליים קלים מהצדדים */
+  object-fit:contain;                 /* לא חותך */
 }
 
-/* מסכים ענקיים: אפשר קצת פחות “בליד” כדי לשמור שוליים */
+/* מסכים ענקיים – עוד קצת נשימה */
 @media (min-width:1600px){
-  #hero .hero-media{ max-width:92vw !important; }
+  #hero .hero-media{ max-width:92vw; }
 }
 
-/* מובייל: ממלא את כל המסך (full-bleed) */
+/* מובייל: מלא מסך אך ללא חיתוך */
 @media (max-width:767px){
   #hero.hero-landing{
-    align-items:center !important;       /* מרכז ורטיקלית במובייל */
+    align-items:center;
   }
   #hero .hero-media{
-    width:100vw !important;
-    max-width:100vw !important;
-    height:100vh !important;             /* מלא מסך */
-    max-height:100vh !important;
-    object-fit:cover !important;         /* ממלא לגמרי; אם לא רוצים חיתוך: החלף ל-contain */
+    width:100vw;
+    max-width:100vw;
+    height:auto;                      /* שומר יחס נכון במובייל */
+    max-height:100vh;
+    object-fit:contain;
   }
 }
 
-/* למקרה שיש כלל גלובלי שמקטין תמונות */
+/* ביטחון נגד כללי img גלובליים שמקטינים */
 img.hero-media{ max-width:none !important; }
+
+
+
+
+
 
 
 
@@ -214,6 +221,7 @@ img.hero-media{ max-width:none !important; }
 <section id="hero" class="hero-landing">
   <img src="hero.webp" alt="אלטע זאכן – כותרת גרפית" class="hero-media">
 </section>
+
 
 
 <section class="section white spec">
