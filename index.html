@@ -14,54 +14,76 @@
 <link rel="preload" href="AlteZachen-Random.woff2" as="font" type="font/woff2" crossorigin>
 
 <style>
+/* ===== FONTS ===== */
 @font-face{font-family:"AlteZachen Normal";   src:url("AlteZachen-Normal.woff2") format("woff2"),url("AlteZachen-Normal.woff") format("woff");font-display:swap}
 @font-face{font-family:"AlteZachen HalfWide"; src:url("AlteZachen-HalfWide.woff2") format("woff2"),url("AlteZachen-HalfWide.woff") format("woff");font-display:swap}
 @font-face{font-family:"AlteZachen Wide";     src:url("AlteZachen-Wide.woff2") format("woff2"),url("AlteZachen-Wide.woff") format("woff");font-display:swap}
 @font-face{font-family:"AlteZachen Random";   src:url("AlteZachen-Random.woff2") format("woff2"),url("AlteZachen-Random.woff") format("woff");font-display:swap}
 
-:root{ --cols-d:15; --cols-m:10; --cellPx:72px; --grid-pad:6vw; }
+:root{
+  --red:#ff0000; --black:#000; --white:#fff;
+  --grid-pad:6vw;
+  /* Header */
+  --header-h: 60px;
+  --icon-h-desktop: 28px;     /* ~60% מהקודם */
+  --icon-h-mobile: 18px;      /* יותר קטן במובייל */
+}
+
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial;line-height:1.2;text-align:center}
+img{display:block;max-width:100%;height:auto}
 
 /* ================== STICKY HEADER ================== */
 .site-head{
   position:fixed;top:0;left:0;right:0;z-index:1000;
-  background:#ff0000;border-bottom:1px solid #000;
-  transform:translateY(-110%);transition:transform .35s ease;
+  background:var(--red); border-bottom:1px solid #000;
+  transform:translateY(-110%); transition:transform .35s ease;
 }
 .site-head.show{ transform:translateY(0) }
+
+/* ניהול מדוייק של צדדים: משתמשים ב-LTR בתוך ההדר כדי לשלוט ידנית */
 .head-inner{
+  direction:ltr; /* חשוב! */
   max-width:1200px;margin:0 auto;
   display:flex;align-items:center;justify-content:space-between;
-  padding:8px 14px;gap:16px;
+  padding:8px 12px; gap:12px;
 }
 
-/* order + sizes: desktop = logo LEFT, tester RIGHT; mobile swapped */
-.head-logo{order:1;display:inline-flex;align-items:center;text-decoration:none}
-.head-tt  {order:2;display:inline-flex;align-items:center;cursor:pointer;border:none;background:transparent;padding:0}
-/* shrink ~20% מול הקודם */
-.head-logo img,.head-tt img{display:block;height:36px;width:auto}
-.head-tt .tt-hover{display:none}
-.head-tt:hover .tt-default{display:none}
-.head-tt:hover .tt-hover{display:block}
+/* Desktop order: LOGO (LEFT END) — TESTER (RIGHT END) */
+.head-left, .head-right{ display:flex;align-items:center }
+.head-left{ justify-content:flex-start }
+.head-right{ justify-content:flex-end; flex:1 }
 
-/* MOBILE swap sides + further small */
+/* LOGO (שמאל בדסקטופ, ימין במובייל) */
+.head-logo{ display:inline-flex; align-items:center; text-decoration:none }
+.head-logo img{ height:var(--icon-h-desktop); width:auto }
+
+/* TYPE TESTER BUTTON (ימין בדסקטופ, שמאל במובייל) */
+.head-tt{ display:inline-flex; align-items:center; cursor:pointer; border:none; background:transparent; padding:0 }
+.head-tt img{ height:var(--icon-h-desktop); width:auto }
+.head-tt .tt-hover{ display:none }
+.head-tt:hover .tt-default{ display:none }
+.head-tt:hover .tt-hover{ display:block }
+
+/* מובייל: החלפת צדדים + הקטנה נוספת + אוויר */
 @media (max-width:600px){
-  .head-logo{order:2}  /* ימין */
-  .head-tt{order:1}    /* שמאל */
-  .head-logo img,.head-tt img{height:24px}
+  .head-inner{ padding:6px 8px; gap:10px }
+  .head-logo img{ height:var(--icon-h-mobile) } /* לוגו קטן יותר */
+  .head-tt img{ height:var(--icon-h-mobile) }
+
+  /* החלפת צדדים: לוגו לימין, טייפטסטר לשמאל */
+  .head-left{ order:2; justify-content:flex-end }   /* יהיה בצד ימין בגלל LTR פנימי */
+  .head-right{ order:1; justify-content:flex-start }/* שמאל */
 }
 
-/* ============= GENERAL SECTIONS ============= */
+/* ========= SECTIONS ========= */
 .section{padding:80px 16px}
 .section.white{background:#fff}
-.section.red{background:#ff0000;color:#fff}
 .wrap{max-width:1320px;margin:0 auto}
 
-/* HERO: תמונה במרכז, רוחב נשלט; גובה חופשי לגלילה */
+/* HERO (אדום + תמונה לגלילה) */
 #hero.hero-landing{background:#ff0000;padding:0;margin:0;width:100vw}
-#hero.hero-landing .wrap{max-width:none;padding:0;margin:0;display:contents}
 #hero.hero-landing .hero-media{
   display:block;margin:0 auto;
   width:min(92vw,1600px);max-width:92vw;height:auto;object-fit:contain;
@@ -70,7 +92,7 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
   #hero.hero-landing .hero-media{width:100vw;max-width:100vw;height:auto}
 }
 
-/* display blocks */
+/* specimen blocks */
 .huge{font-size:12vw;line-height:.88;margin:0}
 .big {font-size:9vw; line-height:.9;  margin:.06em 0}
 .mid {font-size:6vw; line-height:.96; margin:.1em 0}
@@ -79,26 +101,23 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
 @media (max-width:600px){.weight{font-size:18px;margin-bottom:4px}}
 .section.spec{padding-top:56px;padding-bottom:56px}
 
-/* ===== GLYPH GRID ===== */
+/* ===== GLYPH GRID (נשאר כמו בגרסה הטובה) ===== */
 .glyphs-shell{padding-left:var(--grid-pad);padding-right:var(--grid-pad)}
 .glyphs-wrap{display:flex;gap:16px;align-items:flex-start;direction:ltr}
 .preview-col{flex:0 0 38%;max-width:700px;min-width:300px;position:sticky;top:16px}
 .grid-col{flex:1 1 auto;min-width:320px}
 .cell.filler{background:#fff}.cell.filler .glyph{display:none}
 
-/* Sticky preview */
 .preview-box{width:100%;height:0;padding-bottom:100%;border:1px solid #000;background:#fff;position:relative;overflow:hidden}
 .preview-glyph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#ff0000;font-family:"AlteZachen Normal","AlteZachen Wide";line-height:1;text-align:center;font-size:30vw;max-font-size:600px;transform:translateY(-16%)}
 @media (min-width:1400px){.preview-glyph{font-size:600px}}
 .preview-meta{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font:13px/1.2 Arial,Helvetica,sans-serif;color:#000}
 
-/* Weight tabs (grid preview) */
 .tabs{display:flex;flex-direction:row-reverse;border:1px solid #000;margin-top:8px}
 .tab{flex:1 1 33%;appearance:none;border:0;margin:0;padding:.7em 1.1em;background:#fff;color:#000;cursor:pointer;font-weight:700;font-size:18px;border-left:1px solid #000}
 .tab:last-child{border-left:0}.tab.active{background:#000;color:#fff}
 @media (min-width:1024px){.tab{font-size:20px}}
 
-/* Category grid */
 .cat{margin-bottom:24px}
 .grid{--cell:var(--cellPx);display:inline-grid;grid-template-columns:repeat(var(--cols),var(--cell));grid-auto-rows:var(--cell);gap:1px;background:#000;padding:1px}
 .cell{width:var(--cell);height:var(--cell);background:#fff;display:flex;align-items:center;justify-content:center;user-select:none;-webkit-user-select:none}
@@ -106,7 +125,6 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
 @media (hover:hover){.cell:hover .glyph{color:#fff}.cell:hover{background:#000}}
 .sepLine{height:16px}
 
-/* Mobile grid mode */
 @media (max-width:600px){
   .cat{margin-bottom:12px}.sepLine{height:10px}
   .glyphs-wrap{display:block}.preview-col{display:none!important}.grid-col{width:100%;max-width:none}
@@ -127,11 +145,18 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
 .tester{position:fixed;inset:0;background:#000;color:#fff;z-index:1200;display:none;overflow:auto}
 .tester.open{display:block}
 
-/* top bar (desktop + mobile) */
-.tester-bar{position:sticky;top:0;background:#000;padding:10px 10px;display:flex;align-items:center;justify-content:center;gap:10px;z-index:1210;flex-wrap:wrap}
+/* ===== Desktop toolbar: GRID — Close | Weights | Buy ===== */
+.tester-bar{position:sticky;top:0;background:#000;padding:10px 12px;z-index:1210}
+.tbar-grid{
+  display:grid; grid-template-columns:auto 1fr auto;
+  align-items:center; gap:12px;
+}
+.tbar-close{ justify-self:start }
+.tbar-weights{ justify-self:center }
+.tbar-buy{ justify-self:end }
 
 /* desktop weight buttons */
-.tweights{display:flex;justify-content:center;gap:10px;flex-wrap:nowrap}
+.tweights{display:flex;gap:10px;flex-wrap:nowrap}
 .tweights .tbtn{appearance:none;cursor:pointer;font-weight:700;padding:.58em 1.1em;border:1px solid #ff0000;background:#ff0000;color:#fff;font-family:"AlteZachen Normal";font-size:18px;white-space:nowrap}
 .tweights .tbtn:hover{background:#fff;color:#000;border-color:#fff}
 
@@ -139,33 +164,44 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
 .m-weights{display:none}
 @media (max-width:600px){
   .tweights{display:none}
-  .m-weights{display:flex;gap:10px;justify-content:center;font-family:"AlteZachen HalfWide";font-size:18px}
+  .m-weights{
+    display:flex;gap:10px;justify-content:center;
+    font-family:"AlteZachen HalfWide"; font-size:18px;
+  }
   .m-weights button{background:none;border:0;color:#fff;cursor:pointer;padding:0}
   .m-weights button.active{color:#ff0000}
   .m-weights .sep{opacity:.6}
 }
 
-/* purchase/close */
-.buy-top,.close-top{display:inline-flex}
-.tester-foot{display:none}
-@media (max-width:600px){
-  .buy-top,.close-top{display:none}
-  .tester-foot{position:fixed;left:0;right:0;bottom:0;display:flex;gap:10px;justify-content:space-between;background:#000;padding:10px 12px;z-index:1220}
-}
+/* purchase/close buttons */
 .tbtn{appearance:none;cursor:pointer;font-weight:700;padding:.58em 1.1em;border:1px solid #ff0000;background:#ff0000;color:#fff;font-family:"AlteZachen Normal";font-size:18px}
 .tbtn:hover{background:#fff;color:#000;border-color:#fff}
 
-/* editable text (bigger on mobile) */
+/* desktop top actions always visible */
+.buy-top,.close-top{display:inline-flex}
+
+/* mobile bottom actions fixed */
+.tester-foot{display:none}
+@media (max-width:600px){
+  .buy-top,.close-top{display:none}
+  .tester-foot{
+    position:fixed;left:0;right:0;bottom:0;display:flex;
+    gap:10px;justify-content:space-between;background:#000;
+    padding:10px 12px; z-index:1220
+  }
+}
+
+/* editable text — MUCH bigger, tries to fill screen */
 .tester-text{
   outline:none;border:0;width:100%;
   font-family:"AlteZachen Normal";
-  font-size:clamp(220px,24vw,640px); /* desktop base */
-  line-height:.92;text-align:center;white-space:pre-wrap;word-break:break-word;color:#fff;
-  margin:6vh auto 12vh;padding:0 12px;
+  font-size:clamp(240px,26vw,700px); /* desktop base bigger */
+  line-height:.9; text-align:center; white-space:pre-wrap; word-break:break-word; color:#fff;
+  margin:6vh auto 12vh; padding:0 12px;
 }
 @media (max-width:600px){
   .tester-text{
-    font-size:clamp(36px,18vw,999px);  /* הרבה יותר גדול במובייל */
+    font-size:clamp(48px,22vw,1200px); /* הרבה יותר גדול במובייל */
     margin:6vh auto 18vh;              /* מקום לכפתורי התחתית */
   }
 }
@@ -176,15 +212,18 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
 <!-- ================== HEADER ================== -->
 <header class="site-head" id="siteHead" aria-label="ראש האתר">
   <div class="head-inner">
-    <!-- desktop: logo שמאל, tester ימין ; mobile: logo ימין, tester שמאל (באמצעות order) -->
-    <a class="head-logo" href="https://hafontia.com" target="_blank" rel="noopener" aria-label="הפונטיה">
-      <img src="logoheader.webp" alt="hafontia">
-    </a>
-
-    <button class="head-tt" id="openTester" aria-label="פתח טייפטסטר">
-      <img class="tt-default" src="typetester.webp" alt="">
-      <img class="tt-hover"   src="typetesterhover.webp" alt="">
-    </button>
+    <!-- LEFT (desktop): LOGO | RIGHT: TESTER. במובייל מתהפך ע"י order -->
+    <div class="head-left">
+      <a class="head-logo" href="https://hafontia.com" target="_blank" rel="noopener" aria-label="הפונטיה">
+        <img src="logoheader.webp" alt="hafontia">
+      </a>
+    </div>
+    <div class="head-right">
+      <button class="head-tt" id="openTester" aria-label="פתח טייפטסטר">
+        <img class="tt-default" src="typetester.webp" alt="">
+        <img class="tt-hover"   src="typetesterhover.webp" alt="">
+      </button>
+    </div>
   </div>
 </header>
 
@@ -258,25 +297,33 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
 <!-- ================== TYPE TESTER ================== -->
 <div class="tester" id="tester" aria-hidden="true">
   <div class="tester-bar">
-    <!-- desktop buttons -->
-    <div class="tweights" id="testerWeights">
-      <button class="tbtn" data-face="AlteZachen Normal">נורמל</button>
-      <button class="tbtn" data-face="AlteZachen HalfWide">חצי־רחב</button>
-      <button class="tbtn" data-face="AlteZachen Wide">רחב</button>
-      <button class="tbtn" data-face="AlteZachen Random">רנדום</button>
+    <div class="tbar-grid">
+      <div class="tbar-close">
+        <button class="tbtn close-top" id="closeTester">סגירה</button>
+      </div>
+      <div class="tbar-weights">
+        <!-- desktop weight buttons -->
+        <div class="tweights" id="testerWeights">
+          <button class="tbtn" data-face="AlteZachen Normal">נורמל</button>
+          <button class="tbtn" data-face="AlteZachen HalfWide">חצי־רחב</button>
+          <button class="tbtn" data-face="AlteZachen Wide">רחב</button>
+          <button class="tbtn" data-face="AlteZachen Random">רנדום</button>
+        </div>
+        <!-- mobile weight row -->
+        <div class="m-weights" id="mWeights">
+          <button data-face="AlteZachen Normal"    class="active">נורמל</button>
+          <span class="sep">|</span>
+          <button data-face="AlteZachen HalfWide">חצי־רחב</button>
+          <span class="sep">|</span>
+          <button data-face="AlteZachen Wide">רחב</button>
+          <span class="sep">|</span>
+          <button data-face="AlteZachen Random">רנדום</button>
+        </div>
+      </div>
+      <div class="tbar-buy">
+        <button class="tbtn buy-top" id="buyInside">רכישה</button>
+      </div>
     </div>
-    <!-- mobile weight row -->
-    <div class="m-weights" id="mWeights">
-      <button data-face="AlteZachen Normal"    class="active">נורמל</button>
-      <span class="sep">|</span>
-      <button data-face="AlteZachen HalfWide">חצי-רחב</button>
-      <span class="sep">|</span>
-      <button data-face="AlteZachen Wide">רחב</button>
-      <span class="sep">|</span>
-      <button data-face="AlteZachen Random">רנדום</button>
-    </div>
-    <button class="tbtn buy-top"   id="buyInside">רכישה</button>
-    <button class="tbtn close-top" id="closeTester">סגירה</button>
   </div>
 
   <div id="testerText" class="tester-text" contenteditable="true" spellcheck="false">סברינה קרפנטר המלכה!!!1</div>
@@ -291,12 +338,12 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
 <div class="touch-preview" id="touchPreview" aria-hidden="true"><div class="tp-glyph" id="tpGlyph">א</div></div>
 
 <script>
-/* ===== Header reveal only after white starts ===== */
+/* ===== Header reveal only after hero red ends ===== */
 (()=>{const head=document.getElementById('siteHead'), hero=document.getElementById('hero');
 function sync(){const cut=hero?hero.offsetTop+hero.offsetHeight-1:0; if(pageYOffset>cut) head.classList.add('show'); else head.classList.remove('show');}
 addEventListener('scroll',sync,{passive:true}); addEventListener('resize',sync); document.addEventListener('DOMContentLoaded',sync);})();
 
-/* ===== DATA (4 קטגוריות) ===== */
+/* ===== GLYPH DATA (4 קטגוריות) ===== */
 const HEB1="אבגדהוזחטיכךלמםנןסעפףצץקרשת";
 const HEB2="אַ אָ אּ בּ גּ דּ הּ וּ וֹ זּ טּ יּ ךּ כּ לּ מּ נּ סּ ףּ פּ צּ קּ רּ שּ שׁ שׂ שּׁ שּׂ תּ";
 const LAT1="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -437,11 +484,11 @@ if(buyTop) buyTop.onclick=()=>location.href='#';
 if(closeMob) closeMob.onclick=closeTester;
 if(buyMob) buyMob.onclick=()=>location.href='#';
 
-/* desktop weight buttons */
+/* desktop weights */
 tWeights.querySelectorAll('button').forEach(btn=>{
   btn.onclick=()=>{ tText.style.fontFamily='"'+btn.dataset.face+'",system-ui'; fitTester(); };
 });
-/* mobile inline row — active state אדום */
+/* mobile weights — active = red, font = HalfWide */
 mWeights.querySelectorAll('button').forEach(btn=>{
   btn.onclick=()=>{ mWeights.querySelectorAll('button').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); tText.style.fontFamily='"'+btn.dataset.face+'",system-ui'; fitTester(); };
 });
@@ -449,15 +496,15 @@ mWeights.querySelectorAll('button').forEach(btn=>{
 /* grow text to max */
 function fitTester(){
   if(matchMedia('(max-width:600px)').matches){
-    const maxW=innerWidth*0.94, maxH=innerHeight*0.70; /* יותר מקום לטקסט */
+    const maxW=innerWidth*0.95, maxH=innerHeight*0.74; /* יותר שטח לטקסט */
     let size=Math.min(maxW,maxH); tText.style.fontSize=size+'px';
-    let guard=60; while(guard-- && tText.scrollWidth<maxW*0.9 && tText.scrollHeight<maxH*0.88){ size*=1.10; tText.style.fontSize=size+'px'; }
+    let guard=70; while(guard-- && tText.scrollWidth<maxW*0.92 && tText.scrollHeight<maxH*0.9){ size*=1.12; tText.style.fontSize=size+'px'; }
     guard=40; while(guard-- && (tText.scrollWidth>maxW || tText.scrollHeight>maxH)){ size*=0.94; tText.style.fontSize=size+'px'; }
   }else{
-    const maxW=innerWidth*0.94, maxH=innerHeight*0.82;
-    let size=Math.min(640, maxH); tText.style.fontSize=size+'px';
-    let guard=60; while(guard-- && tText.scrollWidth<maxW*0.92 && tText.scrollHeight<maxH*0.92){ size+=18; tText.style.fontSize=size+'px'; }
-    guard=30; while(guard-- && (tText.scrollWidth>maxW || tText.scrollHeight>maxH)){ size-=12; tText.style.fontSize=size+'px'; }
+    const maxW=innerWidth*0.96, maxH=innerHeight*0.84;
+    let size=Math.min(700, maxH); tText.style.fontSize=size+'px';
+    let guard=70; while(guard-- && tText.scrollWidth<maxW*0.94 && tText.scrollHeight<maxH*0.94){ size+=22; tText.style.fontSize=size+'px'; }
+    guard=40; while(guard-- && (tText.scrollWidth>maxW || tText.scrollHeight>maxH)){ size-=14; tText.style.fontSize=size+'px'; }
   }
 }
 tText.addEventListener('input',()=>requestAnimationFrame(fitTester));
