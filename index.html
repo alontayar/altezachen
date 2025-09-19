@@ -137,40 +137,48 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
 
 
 
-/* === HERO: no top gap + big on desktop === */
-.hero{ 
+/* === HERO desktop force: image >=85% viewport height === */
+.section.red.hero{
   padding:0 !important;
-  margin:0 !important;      /* לוודא שאין דחיפה מלמעלה */
-  scroll-margin-top:0;      /* ליתר בטחון בעיגון */
+  margin:0 !important;
+  min-height:85vh !important;        /* הסקשן עצמו */
+  display:flex;                      /* מרכזים את התמונה */
+  align-items:center;
+  justify-content:center;
 }
 
-/* מובייל: רוחב מלא */
-.hero-img{
+.section.red.hero .hero-img{
+  height:85vh !important;            /* התמונה תופסת 85% גובה מסך */
+  max-height:85vh !important;
+  width:auto !important;             /* שומר יחס */
+  max-width:92vw !important;         /* שוליים צדדיים מתונים */
+  object-fit:contain !important;
   display:block;
-  margin:0 auto;
-  width:100vw;
-  max-width:100vw;
-  height:auto;
 }
 
-/* דסקטופ ומעלה: לפחות 85% גובה מסך, עם שוליים צדדיים סבירים */
-@media (min-width:1024px){
-  .hero{
-    min-height:85vh;        /* הסקשן עצמו תופס לפחות 85% גובה */
-  }
-  .hero-img{
-    width:auto;             /* לא נמתח לרוחב מלא בכוח */
-    max-width:92vw;         /* שוליים צדדיים קלים */
-    height:85vh;            /* כאן הקסם: התמונה בגובה 85% מסך */
-    object-fit:contain;     /* שומר על פרופורציות */
-    margin-inline:auto;     /* מרכז אופקית */
+/* אם היחס אנכי/צר במיוחד – העדף רוחב, שמור על גובה */
+@media (max-aspect-ratio: 3/4){
+  .section.red.hero .hero-img{
+    width:92vw !important;
+    height:auto !important;
+    max-height:92vh !important;
   }
 }
 
-/* מסכים ענקיים: עוד קצת נשימה */
-@media (min-width:1600px){
-  .hero-img{ max-width:88vw; }  /* אם תרצה יותר שוליים, הקטן ל-84vw וכו' */
+/* מובייל נשאר כמו שהיה – full-bleed */
+@media (max-width: 767px){
+  .section.red.hero{ min-height:auto !important; }
+  .section.red.hero .hero-img{
+    width:100vw !important;
+    max-width:100vw !important;
+    height:auto !important;
+    max-height:none !important;
+  }
 }
+
+/* ליתר בטחון – אל תיתן מרווח דיפולטי של הדפדפן */
+html, body { margin:0; }
+
 
 
 
