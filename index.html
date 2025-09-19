@@ -22,11 +22,14 @@
 
 :root{
   --red:#ff0000; --black:#000; --white:#fff;
-  --grid-pad:6vw;
-  /* Header */
+
+  /* Header sizing */
   --header-h: 60px;
-  --icon-h-desktop: 28px;     /* ~60% מהקודם */
-  --icon-h-mobile: 18px;      /* יותר קטן במובייל */
+  --icon-h-desktop: 28px;           /* גובה בסיסי לאייקונים בדסקטופ */
+  --icon-h-mobile: 18px;            /* גובה בסיסי לאייקונים במובייל */
+
+  /* Grid padding */
+  --grid-pad:6vw;
 }
 
 *{box-sizing:border-box}
@@ -42,39 +45,42 @@ img{display:block;max-width:100%;height:auto}
 }
 .site-head.show{ transform:translateY(0) }
 
-/* ניהול מדוייק של צדדים: משתמשים ב-LTR בתוך ההדר כדי לשלוט ידנית */
+/* LTR פנימי לשליטה בצדדים */
 .head-inner{
-  direction:ltr; /* חשוב! */
-  max-width:1200px;margin:0 auto;
+  direction:ltr;
+  width:100%;
   display:flex;align-items:center;justify-content:space-between;
-  padding:8px 12px; gap:12px;
+  padding:6px 8px; gap:8px;
 }
 
-/* Desktop order: LOGO (LEFT END) — TESTER (RIGHT END) */
-.head-left, .head-right{ display:flex;align-items:center }
-.head-left{ justify-content:flex-start }
-.head-right{ justify-content:flex-end; flex:1 }
+/* === החלפת צדדים בדסקטופ: טסטר שמאל, לוגו ימין === */
+.head-left, .head-right{ display:flex;align-items:center; flex:1 }
+.head-right{ order:2; justify-content:flex-end }   /* לוגו — ימין */
+.head-left { order:1; justify-content:flex-start } /* טסטר — שמאל */
 
-/* LOGO (שמאל בדסקטופ, ימין במובייל) */
+/* LOGO */
 .head-logo{ display:inline-flex; align-items:center; text-decoration:none }
-.head-logo img{ height:var(--icon-h-desktop); width:auto }
+.head-logo img{
+  height:calc(var(--icon-h-desktop) * .8); /* 80% בדסקטופ */
+  width:auto;
+}
 
-/* TYPE TESTER BUTTON (ימין בדסקטופ, שמאל במובייל) */
+/* TYPE TESTER BUTTON */
 .head-tt{ display:inline-flex; align-items:center; cursor:pointer; border:none; background:transparent; padding:0 }
 .head-tt img{ height:var(--icon-h-desktop); width:auto }
 .head-tt .tt-hover{ display:none }
 .head-tt:hover .tt-default{ display:none }
 .head-tt:hover .tt-hover{ display:block }
 
-/* מובייל: החלפת צדדים + הקטנה נוספת + אוויר */
+/* === מובייל: לוגו לימין, טייפטסטר לשמאל + הקטנות === */
 @media (max-width:600px){
-  .head-inner{ padding:6px 8px; gap:10px }
-  .head-logo img{ height:var(--icon-h-mobile) } /* לוגו קטן יותר */
-  .head-tt img{ height:var(--icon-h-mobile) }
+  .head-inner{ padding:6px 10px; gap:10px }
 
-  /* החלפת צדדים: לוגו לימין, טייפטסטר לשמאל */
-  .head-left{ order:2; justify-content:flex-end }   /* יהיה בצד ימין בגלל LTR פנימי */
-  .head-right{ order:1; justify-content:flex-start }/* שמאל */
+  .head-right{ order:2; justify-content:flex-end }  /* לוגו — ימין */
+  .head-left { order:1; justify-content:flex-start }/* טסטר — שמאל */
+
+  .head-tt img{ height:var(--icon-h-mobile) }
+  .head-logo img{ height:calc(var(--icon-h-mobile) * .7) } /* 70% במובייל */
 }
 
 /* ========= SECTIONS ========= */
@@ -101,7 +107,7 @@ img{display:block;max-width:100%;height:auto}
 @media (max-width:600px){.weight{font-size:18px;margin-bottom:4px}}
 .section.spec{padding-top:56px;padding-bottom:56px}
 
-/* ===== GLYPH GRID (נשאר כמו בגרסה הטובה) ===== */
+/* ===== GLYPH GRID (גרסה הנקייה) ===== */
 .glyphs-shell{padding-left:var(--grid-pad);padding-right:var(--grid-pad)}
 .glyphs-wrap{display:flex;gap:16px;align-items:flex-start;direction:ltr}
 .preview-col{flex:0 0 38%;max-width:700px;min-width:300px;position:sticky;top:16px}
@@ -145,7 +151,7 @@ img{display:block;max-width:100%;height:auto}
 .tester{position:fixed;inset:0;background:#000;color:#fff;z-index:1200;display:none;overflow:auto}
 .tester.open{display:block}
 
-/* ===== Desktop toolbar: GRID — Close | Weights | Buy ===== */
+/* Desktop toolbar: GRID — Close | Weights | Buy */
 .tester-bar{position:sticky;top:0;background:#000;padding:10px 12px;z-index:1210}
 .tbar-grid{
   display:grid; grid-template-columns:auto 1fr auto;
@@ -160,13 +166,14 @@ img{display:block;max-width:100%;height:auto}
 .tweights .tbtn{appearance:none;cursor:pointer;font-weight:700;padding:.58em 1.1em;border:1px solid #ff0000;background:#ff0000;color:#fff;font-family:"AlteZachen Normal";font-size:18px;white-space:nowrap}
 .tweights .tbtn:hover{background:#fff;color:#000;border-color:#fff}
 
-/* mobile weights – inline text row (HalfWide + active red) */
+/* mobile weights – inline row (HalfWide + big + active red) */
 .m-weights{display:none}
 @media (max-width:600px){
   .tweights{display:none}
   .m-weights{
-    display:flex;gap:10px;justify-content:center;
-    font-family:"AlteZachen HalfWide"; font-size:18px;
+    display:flex;gap:10px;justify-content:center;align-items:center;
+    font-family:"AlteZachen HalfWide"; font-size:22px; line-height:1;
+    padding:2px 0;
   }
   .m-weights button{background:none;border:0;color:#fff;cursor:pointer;padding:0}
   .m-weights button.active{color:#ff0000}
@@ -191,18 +198,19 @@ img{display:block;max-width:100%;height:auto}
   }
 }
 
-/* editable text — MUCH bigger, tries to fill screen */
+/* editable text — even bigger */
 .tester-text{
   outline:none;border:0;width:100%;
   font-family:"AlteZachen Normal";
-  font-size:clamp(240px,26vw,700px); /* desktop base bigger */
+  font-size:clamp(240px,28vw,920px); /* desktop base */
   line-height:.9; text-align:center; white-space:pre-wrap; word-break:break-word; color:#fff;
   margin:6vh auto 12vh; padding:0 12px;
 }
 @media (max-width:600px){
   .tester-text{
-    font-size:clamp(48px,22vw,1200px); /* הרבה יותר גדול במובייל */
+    font-size:clamp(64px,26vw,1400px); /* יותר גדול במובייל */
     margin:6vh auto 18vh;              /* מקום לכפתורי התחתית */
+    line-height:.9;
   }
 }
 </style>
@@ -212,17 +220,17 @@ img{display:block;max-width:100%;height:auto}
 <!-- ================== HEADER ================== -->
 <header class="site-head" id="siteHead" aria-label="ראש האתר">
   <div class="head-inner">
-    <!-- LEFT (desktop): LOGO | RIGHT: TESTER. במובייל מתהפך ע"י order -->
+    <!-- שמאל (בדסקטופ): טסטר | ימין: לוגו. במובייל אותו סדר (טסטר שמאל, לוגו ימין) -->
     <div class="head-left">
-      <a class="head-logo" href="https://hafontia.com" target="_blank" rel="noopener" aria-label="הפונטיה">
-        <img src="logoheader.webp" alt="hafontia">
-      </a>
-    </div>
-    <div class="head-right">
       <button class="head-tt" id="openTester" aria-label="פתח טייפטסטר">
         <img class="tt-default" src="typetester.webp" alt="">
         <img class="tt-hover"   src="typetesterhover.webp" alt="">
       </button>
+    </div>
+    <div class="head-right">
+      <a class="head-logo" href="https://hafontia.com" target="_blank" rel="noopener" aria-label="הפונטיה">
+        <img src="logoheader.webp" alt="hafontia">
+      </a>
     </div>
   </div>
 </header>
@@ -493,17 +501,17 @@ mWeights.querySelectorAll('button').forEach(btn=>{
   btn.onclick=()=>{ mWeights.querySelectorAll('button').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); tText.style.fontFamily='"'+btn.dataset.face+'",system-ui'; fitTester(); };
 });
 
-/* grow text to max */
+/* grow text to max (stronger) */
 function fitTester(){
   if(matchMedia('(max-width:600px)').matches){
-    const maxW=innerWidth*0.95, maxH=innerHeight*0.74; /* יותר שטח לטקסט */
+    const maxW=innerWidth*0.95, maxH=innerHeight*0.82;
     let size=Math.min(maxW,maxH); tText.style.fontSize=size+'px';
-    let guard=70; while(guard-- && tText.scrollWidth<maxW*0.92 && tText.scrollHeight<maxH*0.9){ size*=1.12; tText.style.fontSize=size+'px'; }
-    guard=40; while(guard-- && (tText.scrollWidth>maxW || tText.scrollHeight>maxH)){ size*=0.94; tText.style.fontSize=size+'px'; }
+    let guard=90; while(guard-- && tText.scrollWidth<maxW*0.92 && tText.scrollHeight<maxH*0.9){ size*=1.14; tText.style.fontSize=size+'px'; }
+    guard=50; while(guard-- && (tText.scrollWidth>maxW || tText.scrollHeight>maxH)){ size*=0.94; tText.style.fontSize=size+'px'; }
   }else{
-    const maxW=innerWidth*0.96, maxH=innerHeight*0.84;
-    let size=Math.min(700, maxH); tText.style.fontSize=size+'px';
-    let guard=70; while(guard-- && tText.scrollWidth<maxW*0.94 && tText.scrollHeight<maxH*0.94){ size+=22; tText.style.fontSize=size+'px'; }
+    const maxW=innerWidth*0.98, maxH=innerHeight*0.84;
+    let size=Math.min(820, maxH); tText.style.fontSize=size+'px';
+    let guard=80; while(guard-- && tText.scrollWidth<maxW*0.96 && tText.scrollHeight<maxH*0.94){ size+=24; tText.style.fontSize=size+'px'; }
     guard=40; while(guard-- && (tText.scrollWidth>maxW || tText.scrollHeight>maxH)){ size-=14; tText.style.fontSize=size+'px'; }
   }
 }
