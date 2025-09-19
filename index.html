@@ -135,86 +135,47 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
 }
 @media (max-width:600px){ .tester-text{font-size:12vw;margin:4vh auto 8vh} }
 
-/* === HERO (התמונה בראש — אובררייד סופי) === */
-html, body { margin:0; height:100%; }
 
-/* הסקשן עצמו */
+
+
+
+
+/* === HERO: תמונה מרכזית עם שוליים צדדיים, גובה חופשי לגלילה === */
 #hero.hero-landing{
   background:#ff0000;
   padding:0 !important;
   margin:0 !important;
-  width:100vw !important;
-  min-height:100vh !important;          /* תמיד לפחות מסך מלא */
-  display:flex !important;
-  align-items:flex-start !important;     /* מתחיל ממש מהחלק העליון */
-  justify-content:center !important;
+  width:100vw !important;   /* שוליים אדומים רק מהצדדים */
+  /* בלי min-height/height -> נותן לתמונה לקבוע את הגובה ולגלול */
 }
 
-/* התמונה עצמה – דסקטופ: ≥92% גובה מסך, ממורכזת, בלי מגבלות רוחב קודמות */
-#hero.hero-landing .hero-media{
-  display:block !important;
-  margin:0 auto !important;
-  height:92vh !important;                /* שנה ל-85–95vh אם תרצה */
-  max-height:92vh !important;
-  width:auto !important;                 /* שומר יחס נכון */
-  max-width:96vw !important;             /* שוליים קלים מהצדדים */
-  object-fit:contain !important;
-}
-
-/* במקרה שיש חוקים שמגבילים עטיפות פנימיות */
-#hero.hero-landing .wrap{ max-width:none !important; width:100% !important; padding:0 !important; margin:0 !important; display:contents !important; }
-img.hero-media{ max-width:none !important; } /* נטרול כלל גלובלי img{max-width:100%} */
-
-/* מובייל: ממלאת את כל המסך, ללא חיתוך */
-@media (max-width:767px){
-  #hero.hero-landing{ align-items:center !important; }
-  #hero.hero-landing .hero-media{
-    width:100vw !important;
-    max-width:100vw !important;
-    height:100vh !important;             /* מלא מסך */
-    max-height:100vh !important;
-    object-fit:contain !important;       /* לא לחתוך */
-  }
-}
-
-/* === HERO: background image that always fills the viewport height === */
-html, body { margin:0; height:100%; }
-
-#hero.hero-landing{
-  /* תמונה כרקע */
-  --hero: none;
-  background:
-    #ff0000                       /* אדום מילוי */
-    var(--hero) no-repeat center top / auto 90dvh; /* בדסקטופ: גובה 90dvh */
-  /* פריסה */
-  width:100vw !important;
-  height:90dvh !important;        /* לפחות 90% מהמסך בדסקטופ */
-  min-height:90dvh !important;
+/* אם בטעות יש wrap בפנים – ננטרל מגבלות */
+#hero.hero-landing .wrap{
+  max-width:none !important;
   padding:0 !important;
   margin:0 !important;
-  /* לוודא שאין כלום בפנים שמפריע */
+  display:contents !important;
+}
+
+/* התמונה: רוחב נשלט, גובה אוטומטי (אפשר לגלול לאורך) */
+#hero.hero-landing .hero-media{
   display:block !important;
-  overflow:hidden;
+  margin:0 auto !important;           /* מרכז אופקית */
+  width:min(92vw, 1600px) !important; /* שוליים קלים מצדדים בדסקטופ */
+  height:auto !important;             /* אין הגבלת גובה */
+  max-width:92vw !important;
+  object-fit:contain !important;      /* שמירת פרופורציות, ללא חיתוך */
 }
 
-/* מסכים ענקיים – אפשר גם 92dvh אם תרצה יותר גדול */
-@media (min-width:1600px){
-  #hero.hero-landing{
-    background-size: auto 92dvh;
-    height:92dvh; min-height:92dvh;
-  }
-}
-
-/* מובייל: תמלא 100% מסך (ללא חיתוך) */
+/* מובייל: תמלא כמעט את כל הרוחב, עדיין גובה חופשי לגלילה */
 @media (max-width:767px){
-  #hero.hero-landing{
-    background-size: auto 100dvh; /* גובה מלא של המסך */
-    height:100dvh !important;
-    min-height:100dvh !important;
+  #hero.hero-landing .hero-media{
+    width:100vw !important;           /* מובייל – רוחב מלא */
+    max-width:100vw !important;
+    height:auto !important;           /* גובה לפי התמונה, מותר לגלול */
   }
 }
 
-/* Safety: אם יש חוקים כלליים על img/container שלא קשורים, זה לא משנה כי אין כאן <img> בכלל */
 
 
 
@@ -229,7 +190,10 @@ html, body { margin:0; height:100%; }
   </div>
 </header>
 
-<section id="hero" class="hero-landing" style="--hero:url('hero.webp')"></section>
+<section id="hero" class="hero-landing">
+  <img src="hero.webp" class="hero-media" alt="">
+</section>
+
 
 <section class="section white spec">
   <div class="wrap">
