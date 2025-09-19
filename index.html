@@ -137,32 +137,40 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
 
 
 
-/* === Hero image sizing & margins (responsive) === */
-.hero{ padding:0 }                               /* ברירת מחדל: בלי רווחים */
-.hero-img-wrap{ max-width:none; width:100%; padding:0 }
+/* === HERO: no top gap + big on desktop === */
+.hero{ 
+  padding:0 !important;
+  margin:0 !important;      /* לוודא שאין דחיפה מלמעלה */
+  scroll-margin-top:0;      /* ליתר בטחון בעיגון */
+}
+
+/* מובייל: רוחב מלא */
 .hero-img{
   display:block;
-  margin:0 auto;                                 /* מרכז */
-  width:100vw;                                   /* במובייל - רוחב מלא */
+  margin:0 auto;
+  width:100vw;
+  max-width:100vw;
   height:auto;
 }
 
-/* מסכים בינוניים ומעלה: תתקרב לרוב המסך, לא לכולו */
-@media (min-width:768px){
-  .hero{ padding-block:8vh }                     /* מרווח אדום מעל/מתחת */
+/* דסקטופ ומעלה: לפחות 85% גובה מסך, עם שוליים צדדיים סבירים */
+@media (min-width:1024px){
+  .hero{
+    min-height:85vh;        /* הסקשן עצמו תופס לפחות 85% גובה */
+  }
   .hero-img{
-    width:clamp(640px, 82vw, 1100px);            /* מפסיקה לגדול אחרי ~1100px */
-    max-height:calc(100vh - 16vh);               /* שלא תחרוג מהמסך אנכית */
-    object-fit:contain;                          /* שמירת פרופורציות */
+    width:auto;             /* לא נמתח לרוחב מלא בכוח */
+    max-width:92vw;         /* שוליים צדדיים קלים */
+    height:85vh;            /* כאן הקסם: התמונה בגובה 85% מסך */
+    object-fit:contain;     /* שומר על פרופורציות */
+    margin-inline:auto;     /* מרכז אופקית */
   }
 }
 
-/* מסכים רחבים במיוחד: עוד קצת “נשימה” מהצדדים */
-@media (min-width:1400px){
-  .hero{ padding-block:9vh }
-  .hero-img{ width:min(78vw, 1200px) }           /* עוד עצירה על max גדול יותר */
+/* מסכים ענקיים: עוד קצת נשימה */
+@media (min-width:1600px){
+  .hero-img{ max-width:88vw; }  /* אם תרצה יותר שוליים, הקטן ל-84vw וכו' */
 }
-
 
 
 
