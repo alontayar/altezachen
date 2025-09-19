@@ -134,6 +134,39 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
   margin:6vh auto 10vh;padding:0 12px;
 }
 @media (max-width:600px){ .tester-text{font-size:12vw;margin:4vh auto 8vh} }
+
+
+
+/* === Hero image sizing & margins (responsive) === */
+.hero{ padding:0 }                               /* ברירת מחדל: בלי רווחים */
+.hero-img-wrap{ max-width:none; width:100%; padding:0 }
+.hero-img{
+  display:block;
+  margin:0 auto;                                 /* מרכז */
+  width:100vw;                                   /* במובייל - רוחב מלא */
+  height:auto;
+}
+
+/* מסכים בינוניים ומעלה: תתקרב לרוב המסך, לא לכולו */
+@media (min-width:768px){
+  .hero{ padding-block:8vh }                     /* מרווח אדום מעל/מתחת */
+  .hero-img{
+    width:clamp(640px, 82vw, 1100px);            /* מפסיקה לגדול אחרי ~1100px */
+    max-height:calc(100vh - 16vh);               /* שלא תחרוג מהמסך אנכית */
+    object-fit:contain;                          /* שמירת פרופורציות */
+  }
+}
+
+/* מסכים רחבים במיוחד: עוד קצת “נשימה” מהצדדים */
+@media (min-width:1400px){
+  .hero{ padding-block:9vh }
+  .hero-img{ width:min(78vw, 1200px) }           /* עוד עצירה על max גדול יותר */
+}
+
+
+
+
+
 </style>
 </head>
 <body>
@@ -146,9 +179,8 @@ body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-ap
 </header>
 
 <section class="section red hero" id="hero">
-  <div class="wrap">
-    <h1 class="huge" style="font-family:'AlteZachen Wide','AlteZachen Normal'">אלטע זאכן</h1>
-    <div class="huge" style="font-family:'AlteZachen Wide','AlteZachen Normal'">ALTE ZACHEN</div>
+  <div class="wrap hero-img-wrap">
+    <img class="hero-img" src="hero.webp" alt="אלטע זאכן – כותרת גרפית">
   </div>
 </section>
 
