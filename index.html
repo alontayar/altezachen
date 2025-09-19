@@ -33,9 +33,15 @@
   --red:#ff0000;
   --black:#000;
   --white:#fff;
+
   --edge-pad: clamp(12px, 3vw, 36px);
-  --header-h: clamp(52px, 6.4vw, 72px); /* דק יותר מלפני */
-  --header-border:2px;
+
+  /* Header sizes */
+  --header-h: clamp(52px, 6.2vw, 68px);
+  --header-border: 4px;              /* כפי שביקשת */
+  --header-icon-h: calc( (var(--header-h) - 14px) * 0.70 ); /* הקטנה ~30% ושמירה על אותו גודל לשני הצדדים */
+
+  /* Type tester */
   --tester-btn-h: 46px;
 }
 
@@ -57,32 +63,32 @@ img{max-width:100%;height:auto;display:block}
 }
 .site-header.show{ transform:translateY(0) }
 
+.header-left, .header-right{ display:flex; align-items:center; gap:12px }
+
+/* ימין: לוגו לינק, צמוד ממש לצד */
 .header-right a{
-  display:block;
-  line-height:0;
+  display:block; line-height:0;
 }
 .header-right img{
-  height: calc(var(--header-h) - 16px); /* צמוד לימין */
+  height: var(--header-icon-h);
 }
 
-/* טייפטסטר משמאל - תמונת כפתור */
+/* שמאל: כפתור טייפטסטר כתמונה (רגיל/הובר) */
 .header-left .tt-btn{
   display:inline-block;
-  width:auto; height: calc(var(--header-h) - 18px);
-  aspect-ratio: 980 / 164; /* פרופורציה של התמונות שסיפקת */
+  width:auto;
+  height: var(--header-icon-h);
+  aspect-ratio: 980 / 164; /* יחס מהקובץ שסיפקת */
   background: center / contain no-repeat url("typetester.webp");
-  filter: drop-shadow(0 0 0 transparent); /* לא צללים */
 }
 .header-left .tt-btn:hover,
 .header-left .tt-btn:focus{
   background-image:url("typetesterhover.webp");
 }
-.header-left .tt-btn:active{ transform:translateY(0.5px) }
-
-/* ריווח פנימי הכללי */
-.section{padding-inline:var(--edge-pad)}
 
 /* ====== HERO (האדום + תמונה) ====== */
+.section{padding-inline:var(--edge-pad)}
+
 .hero{
   background:var(--red);
   padding: clamp(24px, 3.4vw, 36px) var(--edge-pad);
@@ -92,27 +98,30 @@ img{max-width:100%;height:auto;display:block}
   display:grid; place-items:center;
 }
 .hero-img{
-  /* תמונה גדולה במרכז; בדסקטופ ממלאת ~85% רוחב */
+  /* תמונה גדולה במרכז; בדסקטופ ~85% רוחב; במובייל כמעט מלאה */
   width:min(85vw, 1280px);
   max-width:calc(100% - 2*var(--edge-pad));
   height:auto;
 }
 @media (max-width:720px){
-  .hero-img{
-    width:min(96vw, 920px);
-  }
+  .hero-img{ width:min(96vw, 920px) }
 }
 
-/* ====== PLACEHOLDER לתוכן שלך (לבן) ====== */
+/* ====== PLACEHOLDER לתוכן הלבן שלך ====== */
 .white-start{ background:var(--white); }
+.content { padding: 64px var(--edge-pad) 160px; background:#fff }
+.content h2{ font-family:"AZ-Normal"; font-size: clamp(28px, 4.5vw, 48px); margin:0 0 16px }
+.content p{ font-family:"AZ-Normal"; font-size: clamp(16px, 2.2vw, 22px); margin:0 0 12px }
 
-/* ====== TYPE TESTER (מובייל-פרנדלי) ====== */
+/* ====== TYPE TESTER (Modal) ====== */
 #typeTester{
   position:fixed; inset:0;
   background:rgba(0,0,0,.65);
   display:none; z-index:2000;
 }
 #typeTester.open{ display:block }
+
+/* כרטיס בסיסי */
 .tt-card{
   position:fixed; inset: clamp(10px,4vh,28px) clamp(8px,4vw,28px);
   background:var(--white);
@@ -121,7 +130,7 @@ img{max-width:100%;height:auto;display:block}
   grid-template-rows: auto 1fr auto;
 }
 
-/* שורת משקלים קומפקטית */
+/* ===== מובייל (ברירת מחדל): שורת משקלים קומפקטית + כפתורי תחתית ===== */
 .tt-weights{
   font-family:"AZ-HalfWide", system-ui, sans-serif; /* חצי־רחב */
   font-size: clamp(16px, 2.8vw, 20px);
@@ -137,7 +146,6 @@ img{max-width:100%;height:auto;display:block}
 .tt-weights span + button{ margin-inline:.35em }
 .tt-weights .active{ color:var(--red) }
 
-/* אזור הטקסט */
 .tt-body{
   padding: clamp(8px, 1.8vw, 18px) var(--edge-pad);
   display:grid; place-items:center;
@@ -149,15 +157,11 @@ img{max-width:100%;height:auto;display:block}
   outline:none;
   line-height:1.02;
   word-break:break-word;
-  /* גדול בדיפולט; בדסקטופ גדול יותר */
-  font-size: clamp(40px, 14vw, 160px);
-  font-family:"AZ-Random", system-ui, sans-serif; /* דיפולט – רנדום */
-}
-@media (min-width:900px){
-  .tt-text{ font-size: clamp(72px, 9vw, 240px) }
+  font-size: clamp(40px, 14vw, 160px);   /* גדול במובייל */
+  font-family:"AZ-Random", system-ui, sans-serif; /* דיפולט—רנדום */
 }
 
-/* תחתית קבועה – כפתורים אדומים */
+/* תחתית קבועה – כפתורים אדומים (מובייל) */
 .tt-actions{
   position:relative;
   border-top:1px solid var(--black);
@@ -176,16 +180,50 @@ img{max-width:100%;height:auto;display:block}
 }
 .tt-actions .cta:active{ transform:translateY(.5px) }
 
-/* במובייל הקטנת ה-header button שיהיה לא חתוך */
-@media (max-width:560px){
-  .header-left .tt-btn{ height: calc(var(--header-h) - 22px) }
-  .header-right img{ height: calc(var(--header-h) - 22px) }
+/* ===== דסקטופ: חזרת לפריסה "המקורית" ===== */
+@media (min-width: 900px){
+  .tt-card{
+    grid-template-rows: auto 1fr; /* אין כפתורים בתחתית */
+  }
+  .tt-weights{ display:none }     /* לא מציגים קומפקטי בדסקטופ */
+
+  /* סרגל עליון עם משקלים גדולים וכפתורים בצד */
+  .tt-toolbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:12px var(--edge-pad);
+    border-bottom:1px solid var(--black);
+    gap:12px;
+  }
+  .tt-toolbar-left{ display:flex; gap:10px; flex-wrap:wrap }
+  .tt-weight-btn{
+    min-width: 112px;
+    padding:10px 14px;
+    border:1px solid var(--black);
+    background:#fff;
+    font-family:"AZ-HalfWide", system-ui, sans-serif;
+    font-size:18px; cursor:pointer;
+  }
+  .tt-weight-btn.active{ background:#000; color:#fff }
+  .tt-toolbar-right{ display:flex; gap:10px }
+  .tt-toolbar-right .cta{
+    padding:10px 14px;
+    border:1px solid var(--black);
+    background:var(--red); color:#fff;
+    font-family:"AZ-Normal", system-ui, sans-serif; cursor:pointer;
+  }
+
+  /* מסתירים כפתורי תחתית */
+  .tt-actions{ display:none }
+
+  /* טקסט הדגמה גדול יותר בדסקטופ */
+  .tt-text{ font-size: clamp(72px, 9vw, 240px) }
 }
 
-/* דוגמא/תוכן אחר – לא משנים את מה שכבר יש לך */
-.content { padding: 64px var(--edge-pad) 160px; background:#fff }
-.content h2{ font-family:"AZ-Normal"; font-size: clamp(28px, 4.5vw, 48px); margin:0 0 16px }
-.content p{ font-family:"AZ-Normal"; font-size: clamp(16px, 2.2vw, 22px); margin:0 0 12px }
+/* הקטנת אייקוני ההדר במובייל כדי שלא ייחתכו */
+@media (max-width:560px){
+  .header-left .tt-btn{ height: var(--header-icon-h) }
+  .header-right img{ height: var(--header-icon-h) }
+}
 </style>
 </head>
 <body>
@@ -210,9 +248,9 @@ img{max-width:100%;height:auto;display:block}
   </div>
 </header>
 
-<!-- ====== תחילת הלבן (ה־header מתחיל כאן להיות נראה) ====== -->
+<!-- ====== תחילת הלבן (כשהוא נכנס — ההדר מופיע) ====== -->
 <section class="white-start section" id="whiteStart">
-  <!-- פה מגיע כל שאר התוכן הלבן שלך (השארתי דוגמה קצרה שלא שוברת לך כלום) -->
+  <!-- כאן ממשיך האתר שלך כרגיל -->
   <div class="content">
     <h2>אלטע זאכן — תיאור קצר</h2>
     <p>כאן נשאר כל התוכן שכבר יש לך (דוגמאות טקסט, תמונות, גליף־גריד, וכו׳). לא נגעתי בחלקים האלה בקוד—רק בהדר ובטסטר.</p>
@@ -222,6 +260,22 @@ img{max-width:100%;height:auto;display:block}
 <!-- ====== TYPE TESTER (Modal) ====== -->
 <div id="typeTester" role="dialog" aria-modal="true" aria-labelledby="ttTitle">
   <div class="tt-card">
+
+    <!-- דסקטופ: סרגל עליון "מקורי" -->
+    <div class="tt-toolbar" id="ttToolbar" hidden>
+      <div class="tt-toolbar-left">
+        <button class="tt-weight-btn active" data-face="AZ-Normal">נורמל</button>
+        <button class="tt-weight-btn" data-face="AZ-HalfWide">חצי־רחב</button>
+        <button class="tt-weight-btn" data-face="AZ-Wide">רחב</button>
+        <button class="tt-weight-btn" data-face="AZ-Random">רנדום</button>
+      </div>
+      <div class="tt-toolbar-right">
+        <button class="cta" id="closeTesterTop">סגירה</button>
+        <button class="cta" id="buyLinkTop">רכישה</button>
+      </div>
+    </div>
+
+    <!-- מובייל: שורה קומפקטית -->
     <div class="tt-weights" id="ttWeights">
       <button data-face="AZ-Normal" class="active">נורמל</button><span>|</span>
       <button data-face="AZ-HalfWide">חצי־רחב</button><span>|</span>
@@ -240,6 +294,7 @@ img{max-width:100%;height:auto;display:block}
       </div>
     </div>
 
+    <!-- מובייל: כפתורי תחתית -->
     <div class="tt-actions">
       <button class="cta" id="closeTester">סגירה</button>
       <button class="cta" id="buyLink">רכישה</button>
@@ -254,7 +309,6 @@ img{max-width:100%;height:auto;display:block}
   const header = document.getElementById('siteHeader');
   const whiteStart = document.getElementById('whiteStart');
   const io = new IntersectionObserver(([e])=>{
-    // כשמתחילים לראות את הלבן – מציגים הדר
     if(e.isIntersecting) header.classList.add('show');
     else header.classList.remove('show');
   }, {threshold: 0.01});
@@ -265,37 +319,73 @@ img{max-width:100%;height:auto;display:block}
 (function(){
   const modal = document.getElementById('typeTester');
   const open = document.getElementById('openTester');
-  const closeBtn = document.getElementById('closeTester');
-  const buyBtn = document.getElementById('buyLink');
-  const weights = document.getElementById('ttWeights');
+
+  const closeBtnBottom = document.getElementById('closeTester');
+  const buyBtnBottom   = document.getElementById('buyLink');
+
+  const toolbar = document.getElementById('ttToolbar');
+  const closeBtnTop = document.getElementById('closeTesterTop');
+  const buyBtnTop   = document.getElementById('buyLinkTop');
+
+  const weightsCompact = document.getElementById('ttWeights');
   const text = document.getElementById('ttText');
+
+  function isDesktop(){ return window.matchMedia('(min-width:900px)').matches }
 
   function openModal(){
     modal.classList.add('open');
-    modal.querySelector('.tt-card').focus?.();
+    // בדסקטופ מציגים את הסרגל העליון
+    if(isDesktop()) toolbar.removeAttribute('hidden');
+    else toolbar.setAttribute('hidden','');
   }
   function closeModal(){ modal.classList.remove('open') }
 
   open.addEventListener('click', (e)=>{ e.preventDefault(); openModal() });
-  closeBtn.addEventListener('click', closeModal);
-  modal.addEventListener('click', (e)=>{ if(e.target === modal) closeModal() });
 
-  // קנייה – שים את הלינק האמיתי
-  buyBtn.addEventListener('click', ()=>{ window.open('https://hafontia.com', '_blank') });
-
-  // החלפת משפחת פונט
-  weights.addEventListener('click', (e)=>{
-    const btn = e.target.closest('button[data-face]');
-    if(!btn) return;
-    weights.querySelectorAll('button').forEach(b=>b.classList.toggle('active', b===btn));
-    text.style.fontFamily = btn.dataset.face + ', system-ui, sans-serif';
+  // סגירה/קנייה — למעלה ולמטה
+  ;[closeBtnBottom, closeBtnTop].forEach(btn=>{
+    btn && btn.addEventListener('click', closeModal)
+  });
+  ;[buyBtnBottom, buyBtnTop].forEach(btn=>{
+    btn && btn.addEventListener('click', ()=>{ window.open('https://hafontia.com', '_blank') })
   });
 
-  // דיפולט – רנדום (כמו שביקשת), אבל שורת המשקלים מוצגת בחצי־רחב
-  text.style.fontFamily = 'AZ-Random, system-ui, sans-serif';
+  // החלפת משפחת פונט (עובד לשני הסרגלים)
+  function setFace(face){
+    text.style.fontFamily = face + ', system-ui, sans-serif';
+  }
+  function activateIn(container, btn){
+    container.querySelectorAll('[data-face]').forEach(b=>b.classList?.remove('active'));
+    btn.classList?.add('active');
+  }
+
+  // קומפקטי (מובייל)
+  weightsCompact.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button[data-face]');
+    if(!btn) return;
+    activateIn(weightsCompact, btn);
+    setFace(btn.dataset.face);
+  });
+
+  // סרגל דסקטופ
+  toolbar.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button[data-face]');
+    if(!btn) return;
+    activateIn(toolbar, btn);
+    setFace(btn.dataset.face);
+  });
+
+  // דיפולט – רנדום (כמו שביקשת), אבל משקלים מובייל מוצגים בחצי־רחב
+  setFace('AZ-Random');
+
+  // התאמה בזמן שינוי רוחב – מחליף בין שני מצבים
+  window.addEventListener('resize', ()=>{
+    if(!modal.classList.contains('open')) return;
+    if(isDesktop()) toolbar.removeAttribute('hidden'); else toolbar.setAttribute('hidden','');
+  });
 })();
 
-/* אופציונלי: למנוע זיהוי ספרות כלינקים בטלפונים */
+/* למנוע זיהוי ספרות כטלפון בטלפונים */
 document.querySelectorAll('meta[name=format-detection]').forEach(m=>m.remove());
 const m = document.createElement('meta');
 m.setAttribute('name','format-detection'); m.setAttribute('content','telephone=no'); document.head.appendChild(m);
