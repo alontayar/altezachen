@@ -1,406 +1,535 @@
 <!doctype html>
 <html lang="he" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Alte Zachen — Mini Site</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="format-detection" content="telephone=no">
+<title>אלטע זאכן — Alte Zachen</title>
+<meta name="theme-color" content="#ff0000">
 
-  <!-- ====== FONTS (קבצי woff2/woff יושבים בשורש הרפו) ====== -->
-  <style>
-    @font-face{
-      font-family:"AlteZachen Normal";
-      src:url("AlteZachen-Normal.woff2") format("woff2"),
-          url("AlteZachen-Normal.woff") format("woff");
-      font-display:swap;
-    }
-    @font-face{
-      font-family:"AlteZachen HalfWide";
-      src:url("AlteZachen-HalfWide.woff2") format("woff2"),
-          url("AlteZachen-HalfWide.woff") format("woff");
-      font-display:swap;
-    }
-    @font-face{
-      font-family:"AlteZachen Wide";
-      src:url("AlteZachen-Wide.woff2") format("woff2"),
-          url("AlteZachen-Wide.woff") format("woff");
-      font-display:swap;
-    }
-    @font-face{
-      font-family:"AlteZachen Random";
-      src:url("AlteZachen-Random.woff2") format("woff2"),
-          url("AlteZachen-Random.woff") format("woff");
-      font-display:swap;
-    }
+<!-- Preload fonts -->
+<link rel="preload" href="AlteZachen-Wide.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="AlteZachen-HalfWide.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="AlteZachen-Normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="AlteZachen-Random.woff2" as="font" type="font/woff2" crossorigin>
 
-    :root{
-      --red:#ff0000;
-      --black:#000;
-      --white:#fff;
+<style>
+/* ===== FONTS ===== */
+@font-face{font-family:"AlteZachen Normal";   src:url("AlteZachen-Normal.woff2") format("woff2"),url("AlteZachen-Normal.woff") format("woff");font-display:swap}
+@font-face{font-family:"AlteZachen HalfWide"; src:url("AlteZachen-HalfWide.woff2") format("woff2"),url("AlteZachen-HalfWide.woff") format("woff");font-display:swap}
+@font-face{font-family:"AlteZachen Wide";     src:url("AlteZachen-Wide.woff2") format("woff2"),url("AlteZachen-Wide.woff") format("woff");font-display:swap}
+@font-face{font-family:"AlteZachen Random";   src:url("AlteZachen-Random.woff2") format("woff2"),url("AlteZachen-Random.woff") format("woff");font-display:swap}
 
-      /* טיפטסטר */
-      --tester-bg-mobile:#fff;
-      --tester-text-mobile:#000;   /* אם תרצה טקסט לבן, שנה ל-#fff */
-      --tester-btn-on:#ff0000;
-      --tester-btn-off:#000;
-    }
+:root{
+  --red:#ff0000; --black:#000; --white:#fff;
 
-    html,body{
-      margin:0;
-      padding:0;
-      background:#e5e5e5;
-      color:#000;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "AlteZachen Normal", sans-serif;
-      line-height:1.2;
-    }
+  /* Header sizing */
+  --header-h: 60px;
+  --icon-h-desktop: 28px;           /* גובה בסיסי לאייקונים בדסקטופ */
+  --icon-h-mobile: 18px;            /* גובה בסיסי לאייקונים במובייל */
 
-    /* ===== Sticky Header ===== */
-    .head{
-      position:fixed;
-      inset-inline:0;
-      top:0;
-      z-index:9999;
-      background:var(--red);
-      border-bottom:1px solid var(--black);  /* stroke = 1px */
-      transform:translateY(-100%);
-      transition:transform .35s ease;
-    }
-    .head.reveal{ transform:translateY(0); }
-    .head-inner{
-      max-width:1400px;
-      margin:0 auto;
-      display:flex;
-      align-items:center;
-      justify-content:space-between; /* הלוגו לימין, טייפטסטר לשמאל */
-      padding:8px 10px;
-      gap:8px;
-    }
-    .head-tt{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      color:var(--black);
-      background:transparent;
-      border:1px solid var(--black);
-      padding:4px 10px;
-      text-decoration:none;
-      font-family:"AlteZachen HalfWide", system-ui, sans-serif;
-      font-size:clamp(14px, 1.2vw, 18px);
-      line-height:1;
-      transition:background .18s ease, color .18s ease;
-    }
-    .head-tt:hover{
-      background:var(--black);
-      color:var(--red);
-    }
-    .head-logo{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      text-decoration:none;
-      padding:2px 6px; /* ניתן לשינוי כדי לשלוט בהיט־אריאה */
-    }
-    .head-logo img{
-      height:calc(36px * .95);  /* ↓ 95% מהגודל הקודם */
-      width:auto;
-      display:block;
-    }
-    @media (max-width:600px){
-      .head-inner{ padding:6px 8px; }
-      .head-logo img{ height:calc(24px * .95); } /* גם במובייל 95% */
-      .head-tt{ font-size:clamp(13px, 3.8vw, 16px); padding:4px 8px; }
-    }
+  /* Grid padding */
+  --grid-pad:6vw;
+}
 
-    /* ===== Hero אדום עם תמונה במרכז (גלילה אופקית לא נדרשת) ===== */
-    .hero{
-      background:var(--red);
-      padding: clamp(16px, 4vw, 28px) 0; /* מעט אוויר מעל/מתחת לתמונה */
-    }
-    .hero-wrap{
-      max-width:min(92vw, 1320px);
-      margin:0 auto;
-      padding:0 clamp(16px, 5vw, 48px);
-      display:flex;
-      justify-content:center;
-    }
-    .hero img{
-      display:block;
-      width:100%;
-      height:auto;     /* חשוב: גוללים כדי לראות את כל הגובה */
-      object-fit:contain;
-      border:0;
-    }
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial;line-height:1.2;text-align:center}
+img{display:block;max-width:100%;height:auto}
 
-    /* סמון אינספקטור שסוף ההירו לזיהוי ההדר */
-    .hero-sentinel{ height:1px; }
+/* ================== STICKY HEADER ================== */
+.site-head{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  background:var(--red); border-bottom:1px solid #000;
+  transform:translateY(-110%); transition:transform .35s ease;
+}
+.site-head.show{ transform:translateY(0) }
 
-    /* ===== תוכן placeholder (שמור על הקיים אם יש לך תוכן אמיתי) ===== */
-    .section{
-      max-width:1200px;
-      margin:0 auto;
-      padding: clamp(24px, 6vw, 64px) clamp(16px, 4vw, 24px);
-      background:#e5e5e5;
-    }
+/* LTR פנימי לשליטה בצדדים */
+.head-inner{
+  direction:ltr;
+  width:100%;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:6px 8px; gap:8px;
+}
 
-    /* ====== Typetester (Modal) ====== */
-    .tt-backdrop{
-      position:fixed; inset:0; z-index:9998;
-      background:rgba(0,0,0,.45);
-      opacity:0; pointer-events:none;
-      transition:opacity .18s ease;
-    }
-    .tt-backdrop.on{ opacity:1; pointer-events:auto; }
+/* === החלפת צדדים בדסקטופ: טסטר שמאל, לוגו ימין === */
+.head-left, .head-right{ display:flex;align-items:center; flex:1 }
+.head-right{ order:2; justify-content:flex-end }   /* לוגו — ימין */
+.head-left { order:1; justify-content:flex-start } /* טסטר — שמאל */
 
-    .tt-modal{
-      position:fixed; inset:0; z-index:10000;
-      display:flex; align-items:center; justify-content:center;
-      opacity:0; pointer-events:none; transform:scale(.98);
-      transition:opacity .18s ease, transform .18s ease;
-    }
-    .tt-modal.on{ opacity:1; pointer-events:auto; transform:scale(1); }
+/* LOGO */
+.head-logo{ display:inline-flex; align-items:center; text-decoration:none }
+.head-logo img{
+  height:calc(var(--icon-h-desktop) * .8); /* 80% בדסקטופ */
+  width:auto;
+}
 
-    /* ===== Desktop style ===== */
-    .tt-panel{
-      width:min(1200px, 92vw);
-      height:min(86vh, 900px);
-      background:#111; color:#fff;
-      border:1px solid #000;
-      box-shadow:0 10px 40px rgba(0,0,0,.35);
-      display:grid;
-      grid-template-rows:auto 1fr auto;
-    }
-    .tt-top{
-      display:flex; align-items:center; justify-content:center;
-      gap:16px; padding:10px 12px; background:#0d0d0d;
-      border-bottom:1px solid #222;
-    }
-    .tt-weight{
-      font-family:"AlteZachen HalfWide","AlteZachen Normal",system-ui,sans-serif;
-      font-size:clamp(13px, .95vw, 16px);
-      color:#bbb; cursor:pointer;
-      user-select:none; -webkit-user-select:none;
-    }
-    .tt-weight.active{ color:var(--tester-btn-on); }
-    .tt-editor{
-      padding: clamp(8px, 2vw, 24px) clamp(10px, 3vw, 28px);
-      overflow:auto;
-      display:flex; align-items:center; justify-content:center;
-    }
-    .tt-text{
-      outline:none; border:none; background:transparent; color:#fff;
-      font-size:clamp(48px, 9vw, 160px);
-      font-family:"AlteZachen Random","AlteZachen HalfWide","AlteZachen Normal",system-ui,sans-serif;
-      text-align:center; line-height:1.06;
-      width:100%;
-      white-space:pre-wrap;
-    }
-    .tt-bottom{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:10px 12px; background:#0d0d0d; border-top:1px solid #222;
-    }
-    .tt-btn{
-      display:inline-flex; align-items:center; justify-content:center;
-      height:42px; padding:0 14px; border:1px solid #fff;
-      background:#111; color:#fff; text-decoration:none; cursor:pointer;
-      font-family:"AlteZachen HalfWide","AlteZachen Normal",system-ui,sans-serif;
-      font-size:clamp(13px, .95vw, 16px);
-    }
-    .tt-btn:hover{ background:#fff; color:#000; }
+/* TYPE TESTER BUTTON */
+.head-tt{ display:inline-flex; align-items:center; cursor:pointer; border:none; background:transparent; padding:0 }
+.head-tt img{ height:var(--icon-h-desktop); width:auto }
+.head-tt .tt-hover{ display:none }
+.head-tt:hover .tt-default{ display:none }
+.head-tt:hover .tt-hover{ display:block }
 
-    /* ===== Mobile typetester redesign ===== */
-    @media (max-width:600px){
-      .tt-panel{
-        width:100vw; height:100dvh; max-height:none;
-        background:var(--tester-bg-mobile); color:var(--tester-text-mobile);
-        border:none; box-shadow:none;
-        grid-template-rows:auto 1fr auto;
-      }
-      .tt-top{
-        background:transparent; border-bottom:1px solid #ddd;
-        padding:10px 12px;
-        justify-content:center;
-      }
-      .tt-top .tt-weight{
-        color:var(--tester-btn-off);
-        font-size:clamp(14px, 4.2vw, 18px);
-      }
-      .tt-top .tt-weight.active{ color:var(--tester-btn-on); }
-      .tt-top .sep{ color:#888; margin:0 10px; }
+/* === מובייל: לוגו לימין, טייפטסטר לשמאל + הקטנות === */
+@media (max-width:600px){
+  .head-inner{ padding:6px 10px; gap:10px }
 
-      .tt-editor{
-        background:var(--tester-bg-mobile);
-        padding: 8px 12px;
-        align-items:center; justify-content:center;
-      }
-      .tt-text{
-        color:var(--tester-text-mobile);
-        font-size: min(20vw, 72px);               /* גדול מאד בדיפולט */
-        text-align:center;
-        font-family:"AlteZachen Random","AlteZachen HalfWide","AlteZachen Normal",system-ui,sans-serif;
-      }
-      .tt-bottom{
-        position:fixed; left:0; right:0; bottom:0;
-        background:var(--tester-bg-mobile);
-        border-top:1px solid #ddd;
-        padding:10px 12px;
-      }
-      .tt-btn{
-        height:44px; font-size:16px; border-color:#000; color:#000; background:#fff;
-      }
-      .tt-btn.buy{ margin-inline-start:auto; }
-      .tt-btn.close{ margin-inline-end:auto; }
-    }
+  .head-right{ order:2; justify-content:flex-end }  /* לוגו — ימין */
+  .head-left { order:1; justify-content:flex-start }/* טסטר — שמאל */
 
-    /* ===== Utilities ===== */
-    .hide{ display:none!important; }
-  </style>
+  .head-tt img{ height:var(--icon-h-mobile) }
+  .head-logo img{ height:calc(var(--icon-h-mobile) * .7) } /* 70% במובייל */
+}
+
+/* ========= SECTIONS ========= */
+.section{padding:80px 16px}
+.section.white{background:#fff}
+.wrap{max-width:1320px;margin:0 auto}
+
+/* HERO (אדום + תמונה לגלילה) */
+#hero.hero-landing{background:#ff0000;padding:0;margin:0;width:100vw}
+#hero.hero-landing .hero-media{
+  display:block;margin:0 auto;
+  width:min(92vw,1600px);max-width:92vw;height:auto;object-fit:contain;
+}
+@media (max-width:767px){
+  #hero.hero-landing .hero-media{width:100vw;max-width:100vw;height:auto}
+}
+
+/* specimen blocks */
+.huge{font-size:12vw;line-height:.88;margin:0}
+.big {font-size:9vw; line-height:.9;  margin:.06em 0}
+.mid {font-size:6vw; line-height:.96; margin:.1em 0}
+@media (min-width:1200px){.huge{font-size:160px}.big{font-size:170px}.mid{font-size:86px}}
+.weight{font-size:24px;font-weight:700;margin-bottom:8px}
+@media (max-width:600px){.weight{font-size:18px;margin-bottom:4px}}
+.section.spec{padding-top:56px;padding-bottom:56px}
+
+/* ===== GLYPH GRID (גרסה הנקייה) ===== */
+.glyphs-shell{padding-left:var(--grid-pad);padding-right:var(--grid-pad)}
+.glyphs-wrap{display:flex;gap:16px;align-items:flex-start;direction:ltr}
+.preview-col{flex:0 0 38%;max-width:700px;min-width:300px;position:sticky;top:16px}
+.grid-col{flex:1 1 auto;min-width:320px}
+.cell.filler{background:#fff}.cell.filler .glyph{display:none}
+
+.preview-box{width:100%;height:0;padding-bottom:100%;border:1px solid #000;background:#fff;position:relative;overflow:hidden}
+.preview-glyph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#ff0000;font-family:"AlteZachen Normal","AlteZachen Wide";line-height:1;text-align:center;font-size:30vw;max-font-size:600px;transform:translateY(-16%)}
+@media (min-width:1400px){.preview-glyph{font-size:600px}}
+.preview-meta{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font:13px/1.2 Arial,Helvetica,sans-serif;color:#000}
+
+.tabs{display:flex;flex-direction:row-reverse;border:1px solid #000;margin-top:8px}
+.tab{flex:1 1 33%;appearance:none;border:0;margin:0;padding:.7em 1.1em;background:#fff;color:#000;cursor:pointer;font-weight:700;font-size:18px;border-left:1px solid #000}
+.tab:last-child{border-left:0}.tab.active{background:#000;color:#fff}
+@media (min-width:1024px){.tab{font-size:20px}}
+
+.cat{margin-bottom:24px}
+.grid{--cell:var(--cellPx);display:inline-grid;grid-template-columns:repeat(var(--cols),var(--cell));grid-auto-rows:var(--cell);gap:1px;background:#000;padding:1px}
+.cell{width:var(--cell);height:var(--cell);background:#fff;display:flex;align-items:center;justify-content:center;user-select:none;-webkit-user-select:none}
+.glyph{color:#000;line-height:1;transform:translateY(-6%);font-family:"AlteZachen Normal";font-size:calc(var(--cell)*.62);transition:color .08s ease,background-color .08s ease}
+@media (hover:hover){.cell:hover .glyph{color:#fff}.cell:hover{background:#000}}
+.sepLine{height:16px}
+
+@media (max-width:600px){
+  .cat{margin-bottom:12px}.sepLine{height:10px}
+  .glyphs-wrap{display:block}.preview-col{display:none!important}.grid-col{width:100%;max-width:none}
+  :root{--grid-pad:4vw}
+}
+
+/* Mobile tap preview */
+.touch-preview{position:fixed;left:0;top:0;width:0;height:0;display:none;border:1px solid #000;background:#fff;z-index:70;align-items:center;justify-content:center;touch-action:manipulation}
+.tp-glyph{color:#000;font-family:"AlteZachen Normal";line-height:1;transform:translateY(-16%)}
+
+/* Red takeover */
+.about-stage{height:200vh}
+.about-stick{position:sticky;top:0;height:100vh;background:#ff0000;color:#fff;display:flex;align-items:center;justify-content:center;padding:8vw 6vw}
+.about-content{max-width:1200px;margin:0 auto;font-family:"AlteZachen Normal","AlteZachen Wide";font-size:7vw;line-height:1.12}
+@media (min-width:1200px){.about-content{font-size:72px}}
+
+/* ===== TYPE TESTER ===== */
+.tester{position:fixed;inset:0;background:#000;color:#fff;z-index:1200;display:none;overflow:auto}
+.tester.open{display:block}
+
+/* Desktop toolbar: GRID — Close | Weights | Buy */
+.tester-bar{position:sticky;top:0;background:#000;padding:10px 12px;z-index:1210}
+.tbar-grid{
+  display:grid; grid-template-columns:auto 1fr auto;
+  align-items:center; gap:12px;
+}
+.tbar-close{ justify-self:start }
+.tbar-weights{ justify-self:center }
+.tbar-buy{ justify-self:end }
+
+/* desktop weight buttons */
+.tweights{display:flex;gap:10px;flex-wrap:nowrap}
+.tweights .tbtn{appearance:none;cursor:pointer;font-weight:700;padding:.58em 1.1em;border:1px solid #ff0000;background:#ff0000;color:#fff;font-family:"AlteZachen Normal";font-size:18px;white-space:nowrap}
+.tweights .tbtn:hover{background:#fff;color:#000;border-color:#fff}
+
+/* mobile weights – inline row (HalfWide + big + active red) */
+.m-weights{display:none}
+@media (max-width:600px){
+  .tweights{display:none}
+  .m-weights{
+    display:flex;gap:10px;justify-content:center;align-items:center;
+    font-family:"AlteZachen HalfWide"; font-size:22px; line-height:1;
+    padding:2px 0;
+  }
+  .m-weights button{background:none;border:0;color:#fff;cursor:pointer;padding:0}
+  .m-weights button.active{color:#ff0000}
+  .m-weights .sep{opacity:.6}
+}
+
+/* purchase/close buttons */
+.tbtn{appearance:none;cursor:pointer;font-weight:700;padding:.58em 1.1em;border:1px solid #ff0000;background:#ff0000;color:#fff;font-family:"AlteZachen Normal";font-size:18px}
+.tbtn:hover{background:#fff;color:#000;border-color:#fff}
+
+/* desktop top actions always visible */
+.buy-top,.close-top{display:inline-flex}
+
+/* mobile bottom actions fixed */
+.tester-foot{display:none}
+@media (max-width:600px){
+  .buy-top,.close-top{display:none}
+  .tester-foot{
+    position:fixed;left:0;right:0;bottom:0;display:flex;
+    gap:10px;justify-content:space-between;background:#000;
+    padding:10px 12px; z-index:1220
+  }
+}
+
+/* editable text — even bigger */
+.tester-text{
+  outline:none;border:0;width:100%;
+  font-family:"AlteZachen Normal";
+  font-size:clamp(240px,28vw,920px); /* desktop base */
+  line-height:.9; text-align:center; white-space:pre-wrap; word-break:break-word; color:#fff;
+  margin:6vh auto 12vh; padding:0 12px;
+}
+@media (max-width:600px){
+  .tester-text{
+    font-size:clamp(64px,26vw,1400px); /* יותר גדול במובייל */
+    margin:6vh auto 18vh;              /* מקום לכפתורי התחתית */
+    line-height:.9;
+  }
+}
+</style>
 </head>
 <body>
 
-  <!-- ===== Sticky Header (נחשף רק אחרי ההירו) ===== -->
-  <header id="head" class="head" aria-label="site header">
-    <div class="head-inner">
-      <!-- שמאל: טייפטסטר -->
-      <a id="openTester" class="head-tt" href="#typetester" role="button" aria-controls="typetester" aria-expanded="false">↤טייפטסטר</a>
-      <!-- ימין: לוגו הפונטיה -->
-      <a class="head-logo" href="https://hafontia.com" target="_blank" rel="noopener">
-        <img src="logoheader.webp" alt="hafontia" />
+<!-- ================== HEADER ================== -->
+<header class="site-head" id="siteHead" aria-label="ראש האתר">
+  <div class="head-inner">
+    <!-- שמאל (בדסקטופ): טסטר | ימין: לוגו. במובייל אותו סדר (טסטר שמאל, לוגו ימין) -->
+    <div class="head-left">
+      <button class="head-tt" id="openTester" aria-label="פתח טייפטסטר">
+        <img class="tt-default" src="typetester.webp" alt="">
+        <img class="tt-hover"   src="typetesterhover.webp" alt="">
+      </button>
+    </div>
+    <div class="head-right">
+      <a class="head-logo" href="https://hafontia.com" target="_blank" rel="noopener" aria-label="הפונטיה">
+        <img src="logoheader.webp" alt="hafontia">
       </a>
     </div>
-  </header>
+  </div>
+</header>
 
-  <!-- ===== HERO אדום עם תמונה במרכז (אפשר לגלול כדי לראות את כל גובה התמונה) ===== -->
-  <section class="hero" id="hero">
-    <div class="hero-wrap">
-      <img src="Asset 1.webp" alt="אלטע זאכן — לוגו/פוסטר" />
+<!-- ================== HERO IMAGE ================== -->
+<section id="hero" class="hero-landing">
+  <img src="hero.webp" class="hero-media" alt="">
+</section>
+
+<!-- ================== SPECIMEN BLOCKS ================== -->
+<section class="section white spec">
+  <div class="wrap">
+    <div class="weight" style="font-family:'AlteZachen Normal'">נורמל</div>
+    <div class="big"  style="font-family:'AlteZachen Normal'">מחמם</div>
+    <div class="mid"  style="font-family:'AlteZachen Normal'">
+      אתה שומר על בריאותך בהשתמשך במים מינרליים מצוינים ומעולים, סחטיין!
     </div>
-  </section>
-  <!-- סמן סוף ההירו עבור הופעת ההדר -->
-  <div id="heroEnd" class="hero-sentinel" aria-hidden="true"></div>
+  </div>
+</section>
 
-  <!-- ===== כאן ממשיך התוכן שלך (שמתי Placeholder) ===== -->
-  <section class="section" id="content">
-    <h2 style="font-family:'AlteZachen HalfWide', sans-serif; margin-top:0;">דוגמאות, טקסטים, גריד גליפים וכו׳</h2>
-    <p>השארתי את המבנה נקי כדי שתוכל להדביק כאן את שאר הסקשנים שלך (הטקסטים, הדוגמאות והגריד שהכנו).</p>
-  </section>
+<section class="section white spec">
+  <div class="wrap">
+    <div class="weight" style="font-family:'AlteZachen HalfWide'">חצי־רחב</div>
+    <div class="big" style="font-family:'AlteZachen HalfWide'">קונים/מוכרים/</div>
+    <div class="big" style="font-family:'AlteZachen HalfWide'">הכל בזזזזזול!</div>
+  </div>
+</section>
 
-  <!-- ===== Typetester (Modal) ===== -->
-  <div id="ttBackdrop" class="tt-backdrop" aria-hidden="true"></div>
+<section class="section white spec" dir="ltr">
+  <div class="wrap">
+    <div class="weight" style="font-family:'AlteZachen Wide'">רחב</div>
+    <div class="mid"  style="font-family:'AlteZachen Wide'">
+      IN 1920, MANDATORY PALESTINE (פלשתינה/ישראל) WAS ESTABLISHED UNDER BRITISH MANDATE, LEADING TO VARIOUS FLAG DESIGNS.
+    </div>
+  </div>
+</section>
 
-  <section id="typetester" class="tt-modal" role="dialog" aria-modal="true" aria-label="טסט לפונט">
-    <div class="tt-panel">
-      <!-- TOP: משקלים -->
-      <div class="tt-top">
-        <!-- מובייל: שורת טקסט עם מפרידים; דסקטופ: עדיין כפתורי טקסט, כולם פה -->
-        <span class="tt-weight" data-w="normal"   style="display:none"></span>
-        <button class="tt-weight" data-w="normal"   type="button">נורמל</button>
-        <span class="sep">|</span>
-        <button class="tt-weight" data-w="halfw"    type="button">חצי־רחב</button>
-        <span class="sep">|</span>
-        <button class="tt-weight" data-w="wide"     type="button">רחב</button>
-        <span class="sep">|</span>
-        <button class="tt-weight active" data-w="random"   type="button">רנדום</button>
-      </div>
+<section class="section white spec">
+  <div class="wrap">
+    <div class="weight" style="font-family:'AlteZachen Random'">רנדום</div>
+    <div class="big" style="font-family:'AlteZachen Random'">אלטע זאכן — הכל בזזזזזול!</div>
+  </div>
+</section>
 
-      <!-- EDITOR -->
-      <div class="tt-editor">
-        <div id="ttText"
-             class="tt-text"
-             contenteditable="true"
-             spellcheck="false"
-             role="textbox"
-             aria-multiline="true">סברינה קרפנר המלכה!!!1</div>
-      </div>
-
-      <!-- BOTTOM BUTTONS -->
-      <div class="tt-bottom">
-        <a class="tt-btn close" href="#" id="ttClose">סגירה</a>
-        <a class="tt-btn buy"   href="https://hafontia.com" target="_blank" rel="noopener">רכישה</a>
+<!-- ================== GLYPH GRID ================== -->
+<section class="section white glyphs-shell" id="glyphs">
+  <div class="glyphs-wrap">
+    <div class="preview-col">
+      <div class="preview-box"><div id="bigGlyph" class="preview-glyph" aria-live="polite">א</div></div>
+      <div class="preview-meta"><span id="glyphName">HEBREW LETTER ALEF</span><span id="glyphCode">U+05D0</span></div>
+      <div class="tabs" role="tablist" aria-label="Weights">
+        <button class="tab"        data-face="AlteZachen Wide"     style="font-family:'AlteZachen Wide'">רחב</button>
+        <button class="tab"        data-face="AlteZachen HalfWide" style="font-family:'AlteZachen HalfWide'">חצי־רחב</button>
+        <button class="tab active" data-face="AlteZachen Normal"   style="font-family:'AlteZachen Normal'">נורמל</button>
       </div>
     </div>
-  </section>
+    <div class="grid-col" id="gridCol">
+      <div id="cats"></div>
+    </div>
+  </div>
+</section>
 
-  <!-- ===== Scripts ===== -->
-  <script>
-    // ===== Sticky header reveal only after hero =====
-    (function(){
-      const head = document.getElementById('head');
-      const sentinel = document.getElementById('heroEnd');
-      if('IntersectionObserver' in window && head && sentinel){
-        const io = new IntersectionObserver((entries)=>{
-          entries.forEach(e=>{
-            // כשהסמן נראה (בתחתית ההירו) — נחשוף את ההדר
-            if(e.isIntersecting){ head.classList.add('reveal'); io.unobserve(sentinel); }
-          });
-        },{root:null, threshold:0});
-        io.observe(sentinel);
-      }else{
-        // גיבוי: אם אין IO, נחשוף אחרי טעינה
-        window.addEventListener('load', ()=> head.classList.add('reveal'));
-      }
-    })();
+<!-- takeover -->
+<section class="about-stage" id="about">
+  <div class="about-stick">
+    <div class="about-content">
+      אלטע זאכן הוא פונט עברי בהשראת לטרינג וכרזות מודפסות משנות ה־30 וה־40... שלושה משקלים — נורמל, חצי־רחב, רחב — ולצידם “רנדום”.
+    </div>
+  </div>
+</section>
 
-    // ===== Typetester open/close =====
-    const openBtn   = document.getElementById('openTester');
-    const modal     = document.getElementById('typetester');
-    const backdrop  = document.getElementById('ttBackdrop');
-    const closeBtn  = document.getElementById('ttClose');
-    const ttText    = document.getElementById('ttText');
-    const weights   = Array.from(document.querySelectorAll('.tt-weight'));
+<!-- ================== TYPE TESTER ================== -->
+<div class="tester" id="tester" aria-hidden="true">
+  <div class="tester-bar">
+    <div class="tbar-grid">
+      <div class="tbar-close">
+        <button class="tbtn close-top" id="closeTester">סגירה</button>
+      </div>
+      <div class="tbar-weights">
+        <!-- desktop weight buttons -->
+        <div class="tweights" id="testerWeights">
+          <button class="tbtn" data-face="AlteZachen Normal">נורמל</button>
+          <button class="tbtn" data-face="AlteZachen HalfWide">חצי־רחב</button>
+          <button class="tbtn" data-face="AlteZachen Wide">רחב</button>
+          <button class="tbtn" data-face="AlteZachen Random">רנדום</button>
+        </div>
+        <!-- mobile weight row -->
+        <div class="m-weights" id="mWeights">
+          <button data-face="AlteZachen Normal"    class="active">נורמל</button>
+          <span class="sep">|</span>
+          <button data-face="AlteZachen HalfWide">חצי־רחב</button>
+          <span class="sep">|</span>
+          <button data-face="AlteZachen Wide">רחב</button>
+          <span class="sep">|</span>
+          <button data-face="AlteZachen Random">רנדום</button>
+        </div>
+      </div>
+      <div class="tbar-buy">
+        <button class="tbtn buy-top" id="buyInside">רכישה</button>
+      </div>
+    </div>
+  </div>
 
-    const applyWeight = (w)=>{
-      weights.forEach(b=>b.classList.toggle('active', b.dataset.w===w));
-      // עדיפות: רנדום > חצי־רחב > נורמל
-      switch(w){
-        case 'wide':
-          ttText.style.fontFamily = `"AlteZachen Wide","AlteZachen HalfWide","AlteZachen Normal",system-ui,sans-serif`;
-          break;
-        case 'halfw':
-          ttText.style.fontFamily = `"AlteZachen HalfWide","AlteZachen Normal",system-ui,sans-serif`;
-          break;
-        case 'normal':
-          ttText.style.fontFamily = `"AlteZachen Normal",system-ui,sans-serif`;
-          break;
-        default: // random
-          ttText.style.fontFamily = `"AlteZachen Random","AlteZachen HalfWide","AlteZachen Normal",system-ui,sans-serif`;
-      }
-    };
+  <div id="testerText" class="tester-text" contenteditable="true" spellcheck="false">סברינה קרפנטר המלכה!!!1</div>
 
-    const openTester = (e)=>{
-      e && e.preventDefault();
-      modal.classList.add('on');
-      backdrop.classList.add('on');
-      openBtn?.setAttribute('aria-expanded','true');
-      // דיפולט: רנדום
-      applyWeight('random');
-      // פוקוס לתיבת הטקסט
-      setTimeout(()=>{
-        const r = document.createRange();
-        const s = window.getSelection();
-        r.selectNodeContents(ttText);
-        r.collapse(false);
-        s.removeAllRanges(); s.addRange(r);
-        ttText.focus();
-      }, 50);
-    };
-    const closeTester = (e)=>{
-      e && e.preventDefault();
-      modal.classList.remove('on');
-      backdrop.classList.remove('on');
-      openBtn?.setAttribute('aria-expanded','false');
-    };
+  <div class="tester-foot">
+    <button class="tbtn" id="buyMobile">רכישה</button>
+    <button class="tbtn" id="closeMobile">סגירה</button>
+  </div>
+</div>
 
-    openBtn?.addEventListener('click', openTester);
-    backdrop?.addEventListener('click', closeTester);
-    closeBtn?.addEventListener('click', closeTester);
-    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeTester(); });
+<!-- tap preview for mobile grid -->
+<div class="touch-preview" id="touchPreview" aria-hidden="true"><div class="tp-glyph" id="tpGlyph">א</div></div>
 
-    // לעדכן משקל בלחיצה
-    weights.forEach(b=>{
-      b.addEventListener('click', ()=> applyWeight(b.dataset.w));
+<script>
+/* ===== Header reveal only after hero red ends ===== */
+(()=>{const head=document.getElementById('siteHead'), hero=document.getElementById('hero');
+function sync(){const cut=hero?hero.offsetTop+hero.offsetHeight-1:0; if(pageYOffset>cut) head.classList.add('show'); else head.classList.remove('show');}
+addEventListener('scroll',sync,{passive:true}); addEventListener('resize',sync); document.addEventListener('DOMContentLoaded',sync);})();
+
+/* ===== GLYPH DATA (4 קטגוריות) ===== */
+const HEB1="אבגדהוזחטיכךלמםנןסעפףצץקרשת";
+const HEB2="אַ אָ אּ בּ גּ דּ הּ וּ וֹ זּ טּ יּ ךּ כּ לּ מּ נּ סּ ףּ פּ צּ קּ רּ שּ שׁ שׂ שּׁ שּׂ תּ";
+const LAT1="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const LAT2="Á Ă Â Ä À Ā Å Ã Æ Ć Ç Č Ď Đ É Ě Ê Ë È Ē Ė Ə Ğ Ġ Ģ Ĥ";
+const LAT3="Í Ĭ Î Ï Ì İ Į Ĵ Ķ Ĺ Ľ Ł Ń Ň Ñ Ó Ô Ö Ò Ō Õ Œ Þ Ŕ Ř Ŗ Ś Ş Ș ß Ť Ţ Ú Û Ü Ù Ū Ů Ű Ų Ŵ Ŷ Ÿ Ý Ź Ž Ż Ǐ Ĺ Ń";
+const CYR="А Б В Г Д Е Ё Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ Ъ Ы Ь Э Ю Я Є Ї І Ґ";
+const NUM="0 1 2 3 4 5 6 7 8 9";
+const FRAC="½ ¼ ¾ ⅜ ⅝ ⅞";
+const CURR="¢ ¤ $ € ₽ ₪ £ ¥";
+const PUNC=". , ; : … ! ? ¿ • * # / \\ – — ― _ ( ) { } [ ] „ “ ” « » ‹ › ‚ ‘ ’";
+const MISC="☺ ☹ @ & ¶ © ® ℗ ™ ° | ¦";
+const GEOM="█ □ ▲ ▶ ▼ ◀ △ ○ ●";
+const ARROWS="↻ ↓ ↑ → ← ↗ ↖ ↘ ↙ ⤓ ⤒ ↔ ↕ ↤ ↥ ↦ ↧ ↰ ↱ ↲ ↳";
+const MATH="− × ÷ = ≠ > < ≥ ≤ ± ≈ ~ ¬ ∅ % ‰";
+
+const CATS=[
+  { label:"Hebrew",  chunks:[HEB1, HEB2] },
+  { label:"Latin",   chunks:[LAT1, LAT2, LAT3] },
+  { label:"Cyrillic",chunks:[CYR] },
+  { label:"Everything", chunks:[
+      NUM,
+      { text:NUM, feat:'"onum" 1', variant:'oldstyle-nums' },
+      { text:NUM, feat:'"ss03" 1' },
+      { text:NUM, feat:'"ss04" 1' },
+      FRAC, CURR, PUNC, MISC, GEOM, ARROWS, MATH
+  ] }
+];
+
+/* ===== GRID BUILD ===== */
+let currentFace="AlteZachen Normal";
+const catsHolder=document.getElementById('cats'), gridCol=document.getElementById('gridCol');
+const bigGlyph=document.getElementById('bigGlyph'), glyphName=document.getElementById('glyphName'), glyphCode=document.getElementById('glyphCode');
+
+function isMobile(){ return matchMedia('(max-width:600px)').matches; }
+function colsPerRow(){ return isMobile()?10:15; }
+function measureCell(){
+  const cols=colsPerRow();
+  const w=gridCol.clientWidth||innerWidth;
+  const borders=(cols+1)*1+2;
+  const px=Math.floor((w-borders)/cols);
+  document.documentElement.style.setProperty('--cellPx',px+'px');
+  return px;
+}
+function eachChar(str,cb){ for(let i=0;i<str.length;i++){ const ch=str[i]; if(ch===" "||ch==="\n"||ch==="\t") continue; cb(ch);} }
+function cellEl(ch,feat,variant){
+  const cell=document.createElement('div'); cell.className='cell';
+  const s=document.createElement('span'); s.className='glyph';
+  s.style.fontFamily='"'+currentFace+'",system-ui';
+  if(feat) s.style.fontFeatureSettings=feat;
+  if(variant==='oldstyle-nums') s.style.fontVariantNumeric='oldstyle-nums';
+  s.textContent=ch; cell.appendChild(s);
+  cell.addEventListener('mouseenter',()=>{ if(!isMobile()) showGlyph(ch,feat); });
+  cell.addEventListener('click',()=> onCellTap(cell,ch,feat));
+  return cell;
+}
+function buildCats(){
+  catsHolder.innerHTML="";
+  const cols=colsPerRow(); measureCell();
+  CATS.forEach((cat,ci)=>{
+    const wrap=document.createElement('div'); wrap.className='cat';
+    const grid=document.createElement('div'); grid.className='grid';
+    grid.style.setProperty('--cols',cols);
+    cat.chunks.forEach(chk=>{
+      const text=typeof chk==="object"?chk.text:chk;
+      const feat=typeof chk==="object"?chk.feat:"";
+      const variant=typeof chk==="object"?chk.variant:"";
+      eachChar(text,(ch)=> grid.appendChild( cellEl(ch,feat,variant) ));
     });
+    const total=grid.children.length, rem= total % cols;
+    if(rem!==0){ for(let k=0;k<(cols-rem);k++){ const f=document.createElement('div'); f.className='cell filler'; grid.appendChild(f); } }
+    wrap.appendChild(grid); catsHolder.appendChild(wrap);
+    if(ci<CATS.length-1){ const sep=document.createElement('div'); sep.className='sepLine'; catsHolder.appendChild(sep); }
+  });
+  showGlyph('א');
+}
+function rebuildFaces(){
+  document.querySelectorAll('.glyph').forEach(el=>{ el.style.fontFamily='"'+currentFace+'",system-ui'; });
+  const fs=bigGlyph.style.fontFeatureSettings||"normal";
+  bigGlyph.style.fontFamily='"'+currentFace+'","AlteZachen Wide",system-ui';
+  bigGlyph.style.fontFeatureSettings=fs;
+}
 
-    // נוחות: אם היו קישורים עם hash ל-#typetester
-    if(location.hash==="#typetester"){ openTester(); }
-  </script>
+/* big preview */
+function showGlyph(ch,feat){
+  if(bigGlyph){
+    bigGlyph.textContent=ch;
+    bigGlyph.style.fontFamily='"'+currentFace+'","AlteZachen Wide",system-ui';
+    bigGlyph.style.fontFeatureSettings=feat||"normal";
+  }
+  glyphName.textContent=nameOf(ch);
+  glyphCode.textContent=codeOf(ch);
+}
+const HEB_NAMES={"א":"HEBREW LETTER ALEF","ב":"HEBREW LETTER BET","ג":"HEBREW LETTER GIMEL","ד":"HEBREW LETTER DALET","ה":"HEBREW LETTER HE","ו":"HEBREW LETTER VAV","ז":"HEBREW LETTER ZAYIN","ח":"HEBREW LETTER HET","ט":"HEBREW LETTER TET","י":"HEBREW LETTER YOD","כ":"HEBREW LETTER KAF","ך":"HEBREW LETTER FINAL KAF","ל":"HEBREW LETTER LAMED","מ":"HEBREW LETTER MEM","ם":"HEBREW LETTER FINAL MEM","נ":"HEBREW LETTER NUN","ן":"HEBREW LETTER FINAL NUN","ס":"HEBREW LETTER SAMEKH","ע":"HEBREW LETTER AYIN","פ":"HEBREW LETTER PE","ף":"HEBREW LETTER FINAL PE","צ":"HEBREW LETTER TSADI","ץ":"HEBREW LETTER FINAL TSADI","ק":"HEBREW LETTER QOF","ר":"HEBREW LETTER RESH","ש":"HEBREW LETTER SHIN","ת":"HEBREW LETTER TAV"};
+function nameOf(ch){ if(HEB_NAMES[ch])return HEB_NAMES[ch]; const cp=ch.codePointAt(0); if(ch>='A'&&ch<='Z')return"LATIN CAPITAL LETTER "+ch; if(ch>='0'&&ch<='9')return"DIGIT "+ch; let h=cp.toString(16).toUpperCase(); while(h.length<4)h="0"+h; return"U+"+h }
+function codeOf(ch){ let h=ch.codePointAt(0).toString(16).toUpperCase(); while(h.length<4)h="0"+h; return"U+"+h }
+
+/* Mobile tap preview */
+const overlay=document.getElementById('touchPreview'), tpGlyph=document.getElementById('tpGlyph');
+function hideOverlay(){ overlay.style.display='none'; overlay.setAttribute('aria-hidden','true'); }
+function onCellTap(cell,ch,feat){
+  if(!isMobile()) return;
+  const r=cell.getBoundingClientRect();
+  const size=Math.min(innerWidth*0.9, r.width*3.6);
+  let left=r.left+r.width/2-size/2, top=r.top+r.height/2-size/2;
+  left=Math.max(6,Math.min(left,innerWidth-size-6));
+  top =Math.max(6,Math.min(top ,innerHeight-size-6));
+  overlay.style.cssText='display:flex;left:'+left+'px;top:'+top+'px;width:'+size+'px;height:'+size+'px';
+  tpGlyph.textContent=ch; tpGlyph.style.fontFamily='"'+currentFace+'",system-ui'; tpGlyph.style.fontFeatureSettings=feat||'normal'; tpGlyph.style.fontSize=(size*0.76)+'px';
+  overlay.setAttribute('aria-hidden','false');
+}
+overlay.addEventListener('click',hideOverlay);
+addEventListener('scroll',()=>{ if(isMobile()) hideOverlay(); },{passive:true});
+
+/* tabs */
+document.querySelectorAll('.tabs .tab').forEach(t=>{
+  t.addEventListener('click',function(){
+    document.querySelectorAll('.tabs .tab').forEach(x=>x.classList.remove('active'));
+    this.classList.add('active'); currentFace=this.dataset.face; rebuildFaces();
+  });
+});
+
+/* ===== TYPE TESTER ===== */
+const tester=document.getElementById('tester');
+const open=document.getElementById('openTester');
+const closeTop=document.getElementById('closeTester');
+const buyTop=document.getElementById('buyInside');
+const closeMob=document.getElementById('closeMobile');
+const buyMob=document.getElementById('buyMobile');
+const tWeights=document.getElementById('testerWeights');
+const mWeights=document.getElementById('mWeights');
+const tText=document.getElementById('testerText');
+
+function openTester(){ tester.classList.add('open'); tester.setAttribute('aria-hidden','false'); requestAnimationFrame(fitTester); }
+function closeTester(){ tester.classList.remove('open'); tester.setAttribute('aria-hidden','true'); }
+if(open) open.onclick=openTester;
+if(closeTop) closeTop.onclick=closeTester;
+if(buyTop) buyTop.onclick=()=>location.href='#';
+if(closeMob) closeMob.onclick=closeTester;
+if(buyMob) buyMob.onclick=()=>location.href='#';
+
+/* desktop weights */
+tWeights.querySelectorAll('button').forEach(btn=>{
+  btn.onclick=()=>{ tText.style.fontFamily='"'+btn.dataset.face+'",system-ui'; fitTester(); };
+});
+/* mobile weights — active = red, font = HalfWide */
+mWeights.querySelectorAll('button').forEach(btn=>{
+  btn.onclick=()=>{ mWeights.querySelectorAll('button').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); tText.style.fontFamily='"'+btn.dataset.face+'",system-ui'; fitTester(); };
+});
+
+/* grow text to max (stronger) */
+function fitTester(){
+  if(matchMedia('(max-width:600px)').matches){
+    const maxW=innerWidth*0.95, maxH=innerHeight*0.82;
+    let size=Math.min(maxW,maxH); tText.style.fontSize=size+'px';
+    let guard=90; while(guard-- && tText.scrollWidth<maxW*0.92 && tText.scrollHeight<maxH*0.9){ size*=1.14; tText.style.fontSize=size+'px'; }
+    guard=50; while(guard-- && (tText.scrollWidth>maxW || tText.scrollHeight>maxH)){ size*=0.94; tText.style.fontSize=size+'px'; }
+  }else{
+    const maxW=innerWidth*0.98, maxH=innerHeight*0.84;
+    let size=Math.min(820, maxH); tText.style.fontSize=size+'px';
+    let guard=80; while(guard-- && tText.scrollWidth<maxW*0.96 && tText.scrollHeight<maxH*0.94){ size+=24; tText.style.fontSize=size+'px'; }
+    guard=40; while(guard-- && (tText.scrollWidth>maxW || tText.scrollHeight>maxH)){ size-=14; tText.style.fontSize=size+'px'; }
+  }
+}
+tText.addEventListener('input',()=>requestAnimationFrame(fitTester));
+addEventListener('resize',()=>{ if(tester.classList.contains('open')) requestAnimationFrame(fitTester); });
+
+/* ===== Build glyph grid ===== */
+function colsPerRow(){ return matchMedia('(max-width:600px)').matches?10:15; }
+function measureCell(){
+  const cols=colsPerRow(); const w=gridCol.clientWidth||innerWidth;
+  const px=Math.floor((w-(cols+1)*1-2)/cols); document.documentElement.style.setProperty('--cellPx',px+'px'); return px;
+}
+addEventListener('resize',()=>{ measureCell(); buildCats(); });
+document.addEventListener('DOMContentLoaded',()=>{ measureCell(); buildCats(); });
+
+/* helpers */
+function nameOf(ch){ if(HEB_NAMES[ch])return HEB_NAMES[ch]; const cp=ch.codePointAt(0); if(ch>='A'&&ch<='Z')return"LATIN CAPITAL LETTER "+ch; if(ch>='0'&&ch<='9')return"DIGIT "+ch; let h=cp.toString(16).toUpperCase(); while(h.length<4)h="0"+h; return"U+"+h }
+function codeOf(ch){ let h=ch.codePointAt(0).toString(16).toUpperCase(); while(h.length<4)h="0"+h; return"U+"+h }
+</script>
 </body>
 </html>
