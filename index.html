@@ -84,8 +84,41 @@ img{display:block;max-width:100%;height:auto}
 }
 
 /* ========= SECTIONS ========= */
-.section{padding:50px 16px}
-.section.white{background:#fff}
+/*.section{padding:50px 16px}
+.section.white{background:#fff}*/
+/* מחליף את החסימה .section הקיימת */
+.section{
+  /* שים לב להגדלה משמעותית של ה-padding */
+  padding-block: clamp(40px, 8vw, 140px);   /* למעלה/למטה */
+  padding-inline: clamp(20px, 6vw, 80px);   /* ימין/שמאל */
+
+  max-width: min(1400px, 94vw);             /* שורה קצת רחבה יותר */
+  margin: 0 auto;
+  background: #e5e5e5;
+}
+
+/* דסקטופ – עוד קצת אוויר */
+@media (min-width: 1024px){
+  .section{
+    padding-block: clamp(72px, 10vw, 160px);
+    padding-inline: clamp(32px, 8vw, 120px);
+    max-width: min(1600px, 92vw);
+  }
+}
+
+/* אופציונלי: להרגיש יותר “נשימה” בטקסט עצמו */
+.section p{
+  line-height: 1.35;     /* 1.3–1.45 עובד נהדר לטקסטים הגדולים ששמת */
+  font-size: clamp(18px, 1.4vw, 24px); /* אם רוצים להגדיל מעט */
+}
+
+
+
+
+
+
+
+
 .wrap{max-width:1320px;margin:0 auto}
 
 /* HERO (אדום + תמונה לגלילה) */
