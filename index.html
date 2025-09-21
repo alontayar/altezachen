@@ -70,27 +70,37 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
 /* ===== MAIN (לבן) ===== */
 .white{background:#fff; padding:min(6vh,80px) clamp(12px,4vw,40px)}
 
-/* ===== TYPE TESTER – fixed grey window, auto-fit text ===== */
+/* ===== TYPE TESTER – fixed grey window, edge-to-edge feel ===== */
 .tester-section{ display:flex; justify-content:center; }
 
 .tester{
-  width:min(92vw, 1200px);       /* קבוע (ריספונסיבי למסך, לא לטקסט) */
-  height:28vh;                   /* קבוע בדסקטופ */
+  width:98vw;                    /* כמעט עד הקצה תמיד */
+  height:clamp(20vh, 22vh, 24vh);/* ספקטרום קטן ודחוס בדסקטופ */
   background:var(--grey);
   border-radius:14px;
-  padding: clamp(12px, 2vw, 18px);
+  padding: clamp(8px, 1.2vw, 14px);  /* מסגרת הדוקה */
   display:flex; flex-direction:column;
   align-items:center;            /* מרכז אופקית את התוכן הפנימי */
-  justify-content:flex-start;    /* שורת המשקלים למעלה */
-  gap: clamp(10px, 2vw, 16px);
+  justify-content:flex-start;    /* כפתורי המשקלים למעלה */
+  gap: clamp(6px, 1.2vw, 10px);  /* רווח קטן בין המשקלים לטקסט */
   user-select:text;
   -webkit-tap-highlight-color:transparent;
+  margin-inline:auto;
+}
+
+@supports(padding: max(0px)){
+  /* התחשבות ב-notches של מובייל */
+  .tester{ width: calc(100vw - max(env(safe-area-inset-left), 6px) - max(env(safe-area-inset-right), 6px)); }
 }
 
 @media (max-width:700px){
   .site-header img{height:24px}
   .hero-wrap{padding-block:40px 56px}
-  .tester{ height:34vh; width:min(94vw, 1200px) }
+  .tester{
+    height:clamp(24vh, 28vh, 30vh);   /* קצת יותר גבוה במובייל, עדיין ספקטרום קטן */
+    padding: clamp(8px, 2.5vw, 12px);
+    gap: clamp(6px, 2vw, 10px);
+  }
 }
 
 /* משקלים – ממורכזים */
@@ -109,21 +119,21 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
 }
 .tt-btn.active{ background:var(--red); color:#fff; border-color:var(--red) }
 
-/* אזור הטקסט – ממורכז לגמרי, ללא outline, ממלא את החלון */
+/* אזור הטקסט – מרכז אנכי/אופקי, ללא גלילה, ממלא עד קצה */
 .tt-window{
   position:relative;
-  flex:1;                         /* תופס את כל הגובה שנשאר מתחת לכפתורים */
+  flex:1;                         /* גובה דינמי קטן – צמוד למשקלים */
   width:100%;
-  display:flex; align-items:center; justify-content:center; /* ממרכז אנכית ואופקית */
-  overflow:hidden;                /* לעולם לא יופיע scrollbar פנימי */
-  border-radius:10px;             /* קצת רכות גם בפנים */
+  display:flex; align-items:center; justify-content:center; /* מרכז אנכית ואופקית */
+  overflow:hidden;                /* אין גלילה פנימית */
+  border-radius:10px;
 }
 
 .tt-canvas{
   /* טיפוגרפיה */
   --f: 180px;
   font-size: var(--f);
-  line-height: 1;                 /* שלא ייחתך אנכית */
+  line-height: 1;
   font-kerning: normal;
   font-feature-settings: "kern" 1, "liga" 1;
   -webkit-font-smoothing: antialiased;
@@ -136,12 +146,12 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
   outline:none; border:none;
   caret-color:#000;
 
-  /* התנהגות שורה אחת שממלאת רוחב */
+  /* ממלא תמיד את הרוחב של החלון */
   white-space:nowrap;
   text-align:center; direction:rtl;
 
-  /* ריפוד קטן כדי שלא יידבק לקצה */
-  padding-inline: clamp(6px,1.2vw,10px);
+  /* ריפוד קטן כדי להיות "כמעט עד הקצה" */
+  padding-inline: clamp(4px, 1vw, 8px);
 }
 .tt-canvas:focus{ outline:none; }
 </style>
@@ -168,7 +178,7 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
 <!-- ===== MAIN ===== -->
 <main class="white" aria-label="Main">
 
-  <!-- Tester אחד – חלון קבוע, טקסט ממלא תמיד, בלי סליידר -->
+  <!-- Tester אחד – חלון כמעט עד קצה המסך, גובה דחוס, טקסט ממלא תמיד -->
   <section class="tester-section">
     <div class="tester" data-default-font="AlteZachen-Random">
       <div class="tt-weights">
@@ -186,7 +196,7 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
 
 </main>
 
-<!-- ===== JS – auto-fit to fixed window (רוחב/גובה) ===== -->
+<!-- ===== JS – auto-fit text to fixed window ===== -->
 <script>
 (function(){
   const tester  = document.querySelector('.tester');
@@ -196,7 +206,7 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
   const weights = tester.querySelectorAll('.tt-btn');
   const defFont = tester.getAttribute('data-default-font') || 'AlteZachen-Random';
 
-  // החל משקל ברירת-מחדל
+  // משקל דיפולט
   canvas.style.fontFamily = `"${defFont}", system-ui, sans-serif`;
   weights.forEach(b=>{
     b.classList.toggle('active', b.dataset.font === defFont);
@@ -208,17 +218,15 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
     });
   });
 
-  // התאמת גודל פונט כך שהטקסט ימלא את חלון התצוגה (רוחב וגם גובה)
+  // התאמת גודל פונט כך שהטקסט ימלא את חלון התצוגה (רוחב וגם גובה) ללא שינוי בגודל החלון
   function fitToWindow(){
     const win = canvas.parentElement; // .tt-window
 
     // מימדים זמינים באמת (פנימיים, אחרי padding קטן של הקנבס)
     const csCanvas = getComputedStyle(canvas);
     const padX = parseFloat(csCanvas.paddingInlineStart) + parseFloat(csCanvas.paddingInlineEnd);
-    const padY = 0; // line-height=1, ואין padding אנכי משמעותי
-
     const availW = Math.max(10, win.clientWidth  - padX);
-    const availH = Math.max(10, win.clientHeight - padY);
+    const availH = Math.max(10, win.clientHeight);
 
     // מודד נסתר
     const meas = document.createElement('span');
@@ -232,16 +240,16 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
     meas.textContent = (canvas.textContent || '').trim() || 'אלטע זאכן';
     document.body.appendChild(meas);
 
-    // חיפוש בינארי: הגבלה גם לפי רוחב וגם לפי גובה
+    // חיפוש בינארי לפי רוחב וגובה
     let lo=8, hi=1000, best=16;
     while(lo<=hi){
       const mid = Math.floor((lo+hi)/2);
       meas.style.fontSize = mid + 'px';
       const r = meas.getBoundingClientRect();
       if (r.width <= availW && r.height <= availH){
-        best = mid; lo = mid + 1; // אפשר לגדול עוד
+        best = mid; lo = mid + 1;
       } else {
-        hi = mid - 1; // גדול מדי
+        hi = mid - 1;
       }
     }
 
@@ -253,9 +261,6 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
   fitToWindow();
   window.addEventListener('resize', fitToWindow, {passive:true});
   canvas.addEventListener('input', fitToWindow);
-
-  // מניעת outline/כחול במובייל
-  canvas.addEventListener('focus', ()=>canvas.style.outline='none');
 })();
 </script>
 
