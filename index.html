@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>אלטע זאכן — Specimen</title>
 
-<!-- ===== FONTS (no folders; keep in repo root) ===== -->
+<!-- ===== FONTS (root; no folders) ===== -->
 <style>
 @font-face{
   font-family:"AlteZachen-Normal";
@@ -39,12 +39,12 @@
 /* ===== Base ===== */
 :root{
   --red:#ff0000;
-  --grey:#e9edf2;           /* אפור מעט כהה יותר (חלון) */
+  --grey:#e9edf2;   /* אפור טיפה פחות בהיר */
 }
 html,body{margin:0;background:#fff;color:#000; overflow-x:hidden;}
 body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Arial, sans-serif}
 
-/* ===== Sticky header (פשוט לדוגמה) ===== */
+/* ===== Sticky header (פשוט) ===== */
 .site-header{
   position:sticky; top:-1px; z-index:50;
   background:var(--red); border-bottom:1px solid #000;
@@ -53,7 +53,7 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
 .site-header .logo-link{display:inline-flex; align-items:center}
 .site-header img{height:28px; width:auto; display:block}
 
-/* ===== HERO אדום (תמונה) ===== */
+/* ===== HERO אדום ===== */
 .hero-red{background:var(--red)}
 .hero-wrap{
   max-width:min(92vw, 1400px);
@@ -65,22 +65,23 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
   width:min(88vw, 1400px); height:auto; object-fit:contain;
 }
 
-/* ===== MAIN ===== */
+/* ===== MAIN (לבן) ===== */
 .white{background:#fff; padding:min(6vh,80px) clamp(12px,4vw,40px)}
 
-/* ===== TYPE TESTER – חלון קבוע ברוחב, גובה זורם קטן ===== */
+/* ===== TYPE TESTER – fixed grey window, edge-to-edge feel ===== */
 .tester-section{ display:flex; justify-content:center; }
 
 .tester{
-  /* רוחב קבוע יחסית למסך – לא משתנה עם התוכן */
+  /* כמעט עד הקצה, בלי לגרום ל-overflow */
   width: min(98vw, 1600px);
-  margin-inline:auto;
-
   background:var(--grey);
   border-radius:16px;
   padding: clamp(8px, 1.2vw, 14px);
-  display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
-  gap: var(--g, 6px);              /* ירווח קטן בין המשקלים לטקסט; מצטמצם כשקצר */
+  display:flex; flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  gap: clamp(6px, 1.2vw, 8px);   /* רווח קטן בין המשקלים לטקסט */
+  margin-inline:auto;
 }
 
 @supports(padding: max(0px)){
@@ -90,7 +91,9 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
 @media (max-width:700px){
   .site-header img{height:24px}
   .hero-wrap{padding-block:40px 56px}
-  .tester{ width: calc(100vw - 12px); }
+  .tester{
+    width: calc(100vw - 12px);
+  }
 }
 
 /* משקלים – ממורכזים */
@@ -109,18 +112,18 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
 }
 .tt-btn.active{ background:var(--red); color:#fff; border-color:var(--red) }
 
-/* חלון הטקסט – רוחב קבוע 100%, גובה יישלט ב-JS (זורם מלמטה בלבד) */
+/* אזור הטקסט – ממורכז אנכית/אופקית; גובה החלון נקבע דינמית ב-JS */
 .tt-window{
   position:relative;
-  width:100%;                     /* לא זז לצדדים */
-  border-radius:12px;
+  width:100%;
+  border-radius:12px;               /* קצוות מעוגלים גם בפנים */
   display:flex; align-items:center; justify-content:center;
-  overflow:hidden;                 /* בלי גלילה פנימית */
-  transition:height .16s ease;     /* תנועה עדינה בגובה */
+  overflow:hidden;                  /* אין גלילה פנימית */
+  transition:height .18s ease;      /* תנועה קטנה ונעימה בגובה */
 }
 
-/* הטקסט */
 .tt-canvas{
+  /* טיפוגרפיה */
   --f: 180px;
   font-size: var(--f);
   line-height: 1;
@@ -132,16 +135,15 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
   font-family:"AlteZachen-Random", system-ui, sans-serif;
   color:#000; background:transparent;
 
+  /* עריכה – שקוף, בלי outline/מסגרות */
   outline:none; border:none; caret-color:#000;
 
-  white-space:nowrap;              /* שורה אחת */
+  /* שורה אחת הממלאת רוחב; מיושר לאמצע; רזרבות קטנות */
+  white-space:nowrap;
   text-align:center; direction:rtl;
-
-  display:block;                   /* לא inline-block → לא מרחיב קונטיינר */
-  max-width:100%;                  /* לעולם לא יעבור את רוחב החלון */
   padding-inline: clamp(4px, 1vw, 8px);
-  padding-bottom: 10px;            /* רזרבה לדסנדרים */
-  transform: translateY(-2.5%);    /* הרמה אופטית קלה */
+  padding-bottom: 8px;              /* רזרבה לדסנדרים (ן, ם, ך...) */
+  transform: translateY(-3%);       /* הרמה אופטית קטנה */
 }
 .tt-canvas:focus{ outline:none; }
 </style>
@@ -168,6 +170,7 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
 <!-- ===== MAIN ===== -->
 <main class="white" aria-label="Main">
 
+  <!-- Tester אחד – חלון כמעט עד קצה המסך, גובה דינמי דחוס, טקסט ממלא תמיד -->
   <section class="tester-section">
     <div class="tester" data-default-font="AlteZachen-Random">
       <div class="tt-weights">
@@ -185,10 +188,9 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
 
 </main>
 
-<!-- ===== JS – Baseline = “אלטע זאכן”; גודל מקס למסך; חלון זורם אנכית בלבד ===== -->
+<!-- ===== JS – auto-fit + cap + tighter height behavior ===== -->
 <script>
 (function(){
-  const BASE_TEXT = 'אלטע זאכן';         // 9 תווים – זה הבייסליין המקסימלי לפי המסך
   const tester  = document.querySelector('.tester');
   if(!tester) return;
 
@@ -196,113 +198,108 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
   const winBox  = document.getElementById('ttWin');
   const weights = tester.querySelectorAll('.tt-btn');
   const defFont = tester.getAttribute('data-default-font') || 'AlteZachen-Random';
-  const mql     = window.matchMedia('(max-width:700px)');
 
-  // תקרת פונט (בטיחות) – גבוהה בדסקטופ, נמוכה יותר במובייל
-  const FONT_MAX_DESKTOP = 1400;
-  const FONT_MAX_MOBILE  = 520;
-
-  let baselineSize = null; // הגודל של “אלטע זאכן” לחלון הנוכחי (מקס למסך)
-
-  // מודד נסתר לשימוש חוזר
-  const meas = document.createElement('span');
-  Object.assign(meas.style, {
-    position:'absolute', visibility:'hidden', pointerEvents:'none',
-    whiteSpace:'nowrap', lineHeight:'1'
-  });
-  document.body.appendChild(meas);
-
-  // קובע משפחת גופן ומחשב baselineSize מחדש
-  function setFontFamily(ff){
-    canvas.style.fontFamily = `"${ff}", system-ui, sans-serif`;
-    baselineSize = computeFit(BASE_TEXT, currentAvailW(), currentAvailH());
-    fitAll(); // התאמה ראשונית
-  }
-
-  // רוחב/גובה זמינים בטסט־וינדו (פנימי, בלי לשנות רוחב הקונטיינר)
-  function currentAvailW(){
-    const cs = getComputedStyle(canvas);
-    const padX = parseFloat(cs.paddingInlineStart) + parseFloat(cs.paddingInlineEnd);
-    return Math.max(10, winBox.clientWidth - padX - 2);
-  }
-  function currentAvailH(){
-    // גובה שהטקסט יכול לתפוס כרגע; בתחילה נקבע ע"י JS, בהמשך נעדכן
-    // נשאיר guard קטן לדסנדרים
-    return Math.max(10, winBox.clientHeight - 8);
-  }
-
-  // מחשב גודל פונט שמתאים גם לרוחב וגם לגובה (בינארי) + תקרת בטיחות
-  function computeFit(text, availW, availH){
-    const cs = getComputedStyle(canvas);
-    meas.style.fontFamily    = cs.fontFamily;
-    meas.style.letterSpacing = cs.letterSpacing;
-    meas.textContent         = (text || '').trim() || BASE_TEXT;
-
-    const FONT_MAX = mql.matches ? FONT_MAX_MOBILE : FONT_MAX_DESKTOP;
-
-    let lo = 8, hi = FONT_MAX, best = 16;
-    while (lo <= hi){
-      const mid = Math.floor((lo + hi) / 2);
-      meas.style.fontSize = mid + 'px';
-      const r = meas.getBoundingClientRect();
-      const fits = (r.width <= availW) && (r.height * 1.06 <= availH); // guard גובה
-      if (fits){ best = mid; lo = mid + 1; } else { hi = mid - 1; }
-    }
-    return best;
-  }
-
-  // לוגיקה ראשית:
-  // 1) גובה החלון (אנכי בלבד) — קצר: גבוה; ארוך: נמוך (טווח דחוס)
-  // 2) גודל פונט — לא יעלה על baselineSize; ככל שמוסיפים טקסט → יורד
-  function fitAll(){
-    const txt = (canvas.textContent || '').trim() || BASE_TEXT;
-    const len = [...txt].length;
-
-    // טווחי גובה דחוסים
-    const isMobile = mql.matches;
-    const minVh = isMobile ? 20 : 16;
-    const maxVh = isMobile ? 32 : 26;
-
-    // בסיס: קצר (<=9) = קרוב ל-maxVh; ארוך → מצטמצם
-    const shrink = Math.min(12, Math.max(0, (len - 9) * 0.5)); // קצב צמצום מהיר יותר
-    let desiredVh = maxVh - shrink;
-    if (desiredVh < minVh) desiredVh = minVh;
-
-    // קבע גובה חלון לפני מדידת גודל הפונט (כדי שה-available H יהיה נכון)
-    winBox.style.height = desiredVh + 'vh';
-
-    // חשב גודל פונט שיתאים לרוחב/גובה הנוכחיים
-    const sizeForText = computeFit(txt, currentAvailW(), currentAvailH());
-
-    // הגבלת מקסימום: לא לגדול מעבר ל-baselineSize (אלטע זאכן ממלא מסך)
-    const finalSize = Math.min(sizeForText, baselineSize || sizeForText);
-
-    // החלת גודל
-    canvas.style.setProperty('--f', finalSize + 'px');
-
-    // ריווח קטן בין המשקלים לטקסט — כמעט נצמד כשקצר
-    tester.style.setProperty('--g', (len <= 9 ? 4 : 8) + 'px');
-  }
-
-  // מאזינים
+  // דיפולט משקל
+  canvas.style.fontFamily = `"${defFont}", system-ui, sans-serif`;
   weights.forEach(b=>{
     b.classList.toggle('active', b.dataset.font === defFont);
     b.addEventListener('click', ()=>{
       weights.forEach(x=>x.classList.remove('active'));
       b.classList.add('active');
-      setFontFamily(b.dataset.font);
+      canvas.style.fontFamily = `"${b.dataset.font}", system-ui, sans-serif`;
+      fitAll();
     });
   });
 
-  setFontFamily(defFont);
+  // התאמת חלון: קפיל פונט מקסימום + גובה דחוס יותר ככל שהטקסט ארוך
+  function fitAll(){
+    const txt = (canvas.textContent || '').trim() || 'אלטע זאכן';
 
-  // כשמסך משתנה — לחשב מחדש את baselineSize למסך הנוכחי
-  window.addEventListener('resize', ()=>{
-    baselineSize = computeFit(BASE_TEXT, currentAvailW(), currentAvailH());
-    fitAll();
-  }, {passive:true});
+    // מודד נסתר כדי לכייל רוחב/גובה
+    const meas = document.createElement('span');
+    meas.style.whiteSpace = 'nowrap';
+    meas.style.visibility = 'hidden';
+    meas.style.position   = 'absolute';
+    meas.style.pointerEvents = 'none';
 
+    const csCanvas = getComputedStyle(canvas);
+    meas.style.fontFamily = csCanvas.fontFamily;
+    meas.style.letterSpacing = csCanvas.letterSpacing;
+    meas.style.lineHeight = '1';
+    meas.textContent = txt;
+    document.body.appendChild(meas);
+
+    // רוחב זמין: רוחב הקופסה פחות padding פנימי קטן
+    const padX = parseFloat(csCanvas.paddingInlineStart) + parseFloat(csCanvas.paddingInlineEnd);
+    const availW = Math.max(10, winBox.clientWidth - padX - 2); // שוליים קטנים כדי למנוע חיתוך צדדי
+
+    // תקרת פונט: בדסקטופ גבוהה, במובייל נמוכה יותר כדי להימנע מחיתוך
+    const isMobile = window.matchMedia('(max-width:700px)').matches;
+    const FONT_MAX = isMobile ? 420 : 1000; // מקסימום גודל פונט
+
+    // הגדלה בינארית עד למגבלות רוחב/גובה/תקרה
+    // guard לדסנדרים + מרווח קטן תחתון
+    const descenderGuard = 1.10;
+    let lo=8, hi=FONT_MAX, best=16;
+
+    while(lo<=hi){
+      const mid = Math.floor((lo+hi)/2);
+      meas.style.fontSize = mid + 'px';
+      const r = meas.getBoundingClientRect();
+      const fitsWidth = (r.width <= availW);
+      const fitsHeight = true; // הגובה של החלון יכויל בהמשך; כאן רק לא נחרוג רוחב
+      if (fitsWidth && fitsHeight){
+        best = mid; lo = mid + 1;
+      } else {
+        hi = mid - 1;
+      }
+    }
+
+    // גובה הטקסט בפועל (עם guard לדסנדרים)
+    meas.style.fontSize = best + 'px';
+    const textHpx = meas.getBoundingClientRect().height * descenderGuard + 8; // +8px רזרבה תחתונה
+    document.body.removeChild(meas);
+
+    // קבע את גודל הפונט
+    canvas.style.setProperty('--f', best + 'px');
+
+    // התנהגות גובה החלון: קצר -> גבוה יותר; ארוך -> נמוך יותר (טווח דחוס)
+    // בסיס לפי גובה טקסט, עם "ענישה" קלה לפי אורך המחרוזת כדי לצמצם את החלל העליון.
+    const len = [...txt].length;
+    const isVeryShort = len <= 6;
+    const isShort     = len <= 12;
+
+    // טווחים שונים לדסקטופ/מובייל
+    const baseMinVh = isMobile ? 20 : 16;
+    const baseMaxVh = isMobile ? 30 : 24;
+
+    // המר px -> vh
+    const pxToVh = (px)=> (px / window.innerHeight) * 100;
+    let desiredVh = pxToVh(textHpx);
+
+    // צמצום נוסף לפי אורך (יותר ארוך => יותר קטן)
+    const shrinkBonus = Math.min(6, Math.max(0, (len - 8) * 0.25)); // עד ~6vh פחות
+    desiredVh = desiredVh - shrinkBonus;
+
+    // הידוק לטווח
+    if (isVeryShort) {
+      // מילים ראשונות גדולות – אפשר לאפשר קצת יותר
+      desiredVh = Math.min(baseMaxVh, Math.max(baseMinVh + 2, desiredVh));
+    } else if (isShort) {
+      desiredVh = Math.min(baseMaxVh - 1, Math.max(baseMinVh + 1, desiredVh));
+    } else {
+      desiredVh = Math.min(baseMaxVh - 2, Math.max(baseMinVh, desiredVh));
+    }
+
+    winBox.style.height = desiredVh + 'vh';
+  }
+
+  // טריגרים
+  fitAll();
+  window.addEventListener('resize', fitAll, {passive:true});
   canvas.addEventListener('input', fitAll);
+
+  // ניקוי outline במובייל/דסקטופ
   canvas.addEventListener('focus', ()=>canvas.style.outline='none');
 })();
 </script>
