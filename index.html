@@ -281,6 +281,38 @@ img{display:block;max-width:100%;height:auto}
     line-height:.7;
   }
 }
+
+
+
+/* ——— לינקים ככפתורים (ללא קו תחתון) ——— */
+a.tbtn{
+  text-decoration:none;
+}
+a.tbtn:hover,
+a.tbtn:focus,
+a.tbtn:active{
+  text-decoration:none;
+}
+
+/* ——— מצב active וה־hover/focus ——— */
+.tester .tbtn:is(.active, :hover, :focus-visible),
+.tester .m-weights button:is(.active, :hover, :focus-visible){
+  color:#000;
+  background:#fff;
+  border-color:#000;
+}
+
+/* אופציונלי אם יש חוקים עקשניים לפני כן */
+.tester .tbtn.active,
+.tester .m-weights button.active{
+  color:#000 !important;
+  background:#fff !important;
+  border-color:#000 !important;
+}
+
+
+
+
 </style>
 </head>
 <body>
@@ -380,7 +412,7 @@ img{display:block;max-width:100%;height:auto}
 
 <section id="hero" class="hero-landing">
   <img src="hero4.webp" class="hero-media" alt="">
-   <div class="weightt" style="font-family:'AlteZachen Random'">© HAFONTIA/ALON TAYAR (2025)</div>
+   <div class="weightt" style="font-family:'AlteZachen Random'">HAFONTIA/ALON TAYAR (2025)©</div>
 </section>
 
 <!-- ================== TYPE TESTER ================== -->
