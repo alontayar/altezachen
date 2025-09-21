@@ -39,12 +39,12 @@
 /* ===== Base ===== */
 :root{
   --red:#ff0000;
-  --grey:#e9edf2;   /* אפור מעט כהה יותר */
+  --grey:#e9edf2;       /* אפור מעט כהה יותר */
 }
 html,body{margin:0;background:#fff;color:#000; overflow-x:hidden;}
 body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Arial, sans-serif}
 
-/* ===== Sticky header (פשוט) ===== */
+/* ===== Sticky header ===== */
 .site-header{
   position:sticky; top:-1px; z-index:50;
   background:var(--red); border-bottom:1px solid #000;
@@ -65,22 +65,20 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
   width:min(88vw, 1400px); height:auto; object-fit:contain;
 }
 
-/* ===== MAIN (לבן) ===== */
+/* ===== MAIN ===== */
 .white{background:#fff; padding:min(6vh,80px) clamp(12px,4vw,40px)}
 
-/* ===== TYPE TESTER – fixed grey window, edge-to-edge feel ===== */
+/* ===== TYPE TESTER – window nearly edge-to-edge ===== */
 .tester-section{ display:flex; justify-content:center; }
 
 .tester{
-  /* כמעט עד הקצה, בלי overflow */
   width: min(98vw, 1600px);
   background:var(--grey);
   border-radius:16px;
   padding: clamp(8px, 1.2vw, 14px);
   display:flex; flex-direction:column;
-  align-items:center;
-  justify-content:flex-start;
-  gap: var(--g, 8px);            /* יישלט ב-JS (מצטמצם כשקצר) */
+  align-items:center; justify-content:flex-start;
+  gap: var(--g, 6px);               /* יצטמצם כשמעט טקסט */
   margin-inline:auto;
 }
 
@@ -94,7 +92,7 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
   .tester{ width: calc(100vw - 12px); }
 }
 
-/* משקלים – ממורכזים */
+/* משקלים */
 .tt-weights{
   display:flex; justify-content:center; align-items:center;
   gap:10px; flex-wrap:wrap;
@@ -110,16 +108,17 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
 }
 .tt-btn.active{ background:var(--red); color:#fff; border-color:var(--red) }
 
-/* אזור הטקסט – ממורכז אנכית/אופקית; גובה החלון דינמי דחוס */
+/* חלון הטקסט – גובה זורם קטן, לא זז לצדדים, קצוות מעוגלים */
 .tt-window{
   position:relative;
   width:100%;
-  border-radius:12px;               /* קצוות מעוגלים גם בפנים */
+  border-radius:12px;
   display:flex; align-items:center; justify-content:center;
-  overflow:hidden;                  /* אין גלילה פנימית */
-  transition:height .18s ease;      /* תנועה קטנה ונעימה בגובה */
+  overflow:hidden;                 /* לא נרצה גלילה פנימית */
+  transition:height .18s ease;     /* תנועה עדינה בגובה */
 }
 
+/* הטקסט */
 .tt-canvas{
   /* טיפוגרפיה */
   --f: 180px;
@@ -133,15 +132,14 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
   font-family:"AlteZachen-Random", system-ui, sans-serif;
   color:#000; background:transparent;
 
-  /* עריכה – שקוף, בלי outline/מסגרות */
+  /* עריכה – שקוף, בלי outline */
   outline:none; border:none; caret-color:#000;
 
-  /* שורה אחת הממלאת רוחב; מיושר לאמצע; רזרבות קטנות */
-  white-space:nowrap;
+  white-space:nowrap;             /* שורה אחת */
   text-align:center; direction:rtl;
   padding-inline: clamp(4px, 1vw, 8px);
-  padding-bottom: 8px;              /* רזרבה לדסנדרים (ן, ך...) */
-  transform: translateY(-3%);       /* הרמה אופטית קלה */
+  padding-bottom: 10px;           /* רזרבה לדסנדרים */
+  transform: translateY(-2.5%);   /* הרמה אופטית קלה */
 }
 .tt-canvas:focus{ outline:none; }
 </style>
@@ -168,7 +166,6 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
 <!-- ===== MAIN ===== -->
 <main class="white" aria-label="Main">
 
-  <!-- Tester אחד – חלון כמעט עד קצה המסך, גובה דינמי דחוס, טקסט ממלא תמיד -->
   <section class="tester-section">
     <div class="tester" data-default-font="AlteZachen-Random">
       <div class="tt-weights">
@@ -186,69 +183,68 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
 
 </main>
 
-<!-- ===== JS – baseline 9 chars + cap + tighter height & gap ===== -->
+<!-- ===== JS – Baseline 9 chars; fit to width+height; dynamic tight height ===== -->
 <script>
 (function(){
+  const BASE_TEXT = 'אלטע זאכן';   // 9 תווים – בייסליין
   const tester  = document.querySelector('.tester');
   if(!tester) return;
 
-  const BASE_TEXT = 'אלטע זאכן';     // baseline — 9 תווים
   const canvas  = document.getElementById('tt');
   const winBox  = document.getElementById('ttWin');
   const weights = tester.querySelectorAll('.tt-btn');
   const defFont = tester.getAttribute('data-default-font') || 'AlteZachen-Random';
+  const mql     = window.matchMedia('(max-width:700px)');
 
-  let baselineSize = null;           // ייחשב לכל משקל
-  const isMobileMq = window.matchMedia('(max-width:700px)');
+  // תקרת פונט – גבוהה בדסקטופ, נמוכה יותר במובייל (נגד חיתוך)
+  const FONT_MAX_DESKTOP = 1300;
+  const FONT_MAX_MOBILE  = 480;
 
-  // דיפולט משקל
-  function setFontFamily(f){
-    canvas.style.fontFamily = `"${f}", system-ui, sans-serif`;
-    baselineSize = computeSize(BASE_TEXT);   // לחשב מחדש לבייסליין (9 תווים) עבור המשקל הנוכחי
-    fitAll();
-  }
+  let baselineSize = null; // יחשב לכל משקל
 
-  weights.forEach(b=>{
-    b.classList.toggle('active', b.dataset.font === defFont);
-    b.addEventListener('click', ()=>{
-      weights.forEach(x=>x.classList.remove('active'));
-      b.classList.add('active');
-      setFontFamily(b.dataset.font);
-    });
-  });
-  setFontFamily(defFont);
-
-  // מודד נסתר משותף
+  // מודד נסתר
   const meas = document.createElement('span');
   Object.assign(meas.style, {
-    whiteSpace:'nowrap',
-    visibility:'hidden',
-    position:'absolute',
-    pointerEvents:'none',
-    lineHeight:'1'
+    position:'absolute', visibility:'hidden', pointerEvents:'none',
+    whiteSpace:'nowrap', lineHeight:'1'
   });
   document.body.appendChild(meas);
 
-  // מחשב גודל פונט מקסימלי לטקסט כך שיתאים לרוחב הזמין (height נמדד אחרי)
-  function computeSize(text){
-    const csCanvas = getComputedStyle(canvas);
-    meas.style.fontFamily   = csCanvas.fontFamily;
-    meas.style.letterSpacing= csCanvas.letterSpacing;
-    meas.textContent        = (text || '').trim() || BASE_TEXT;
+  function setFontFamily(ff){
+    canvas.style.fontFamily = `"${ff}", system-ui, sans-serif`;
+    baselineSize = computeSize(BASE_TEXT, currentAvailW(), currentAvailH()); // בייסליין לפי חלון נוכחי
+    fitAll();
+  }
 
-    const padX = parseFloat(csCanvas.paddingInlineStart) + parseFloat(csCanvas.paddingInlineEnd);
-    const availW = Math.max(10, winBox.clientWidth - padX - 2); // מרווח זעיר כדי למנוע חיתוך צדדי
+  // רוחב/גובה זמינים בחלון (מביא בחשבון padding פנימי)
+  function currentAvailW(){
+    const cs = getComputedStyle(canvas);
+    const padX = parseFloat(cs.paddingInlineStart) + parseFloat(cs.paddingInlineEnd);
+    return Math.max(10, winBox.clientWidth - padX - 2);
+  }
+  function currentAvailH(){
+    // נוסיף Guard לדסנדרים וקצת רווח
+    return Math.max(10, winBox.clientHeight - 10);
+  }
 
-    // תקרת פונט (מונעת חיתוך בדסקטופ כשהטקסט קצר מאוד)
-    const isMobile = isMobileMq.matches;
-    const FONT_MAX = isMobile ? 420 : 1000;
+  // חשב גודל שמתאים גם לרוחב וגם לגובה
+  function computeSize(text, availW, availH){
+    const cs = getComputedStyle(canvas);
+    meas.style.fontFamily    = cs.fontFamily;
+    meas.style.letterSpacing = cs.letterSpacing;
+    meas.textContent         = (text || '').trim() || BASE_TEXT;
 
-    let lo=8, hi=FONT_MAX, best=16;
-    while(lo<=hi){
-      const mid = Math.floor((lo+hi)/2);
+    const FONT_MAX = mql.matches ? FONT_MAX_MOBILE : FONT_MAX_DESKTOP;
+
+    // חיפוש בינארי עם שתי מגבלות
+    let lo = 8, hi = FONT_MAX, best = 16;
+    while (lo <= hi){
+      const mid = Math.floor((lo + hi) / 2);
       meas.style.fontSize = mid + 'px';
-      const w = meas.getBoundingClientRect().width;
-      if (w <= availW){ best = mid; lo = mid+1; } else { hi = mid-1; }
+      const r = meas.getBoundingClientRect();
+      // שמירה קטנה לגובה לדסנדרים + אנטי-חיתוך צדדי כבר ב-availW
+      const fits = (r.width <= availW) && (r.height * 1.06 <= availH);
+      if (fits){ best = mid; lo = mid + 1; } else { hi = mid - 1; }
     }
     return best;
   }
@@ -257,42 +253,43 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
     const txt = (canvas.textContent || '').trim() || BASE_TEXT;
     const len = [...txt].length;
 
-    // גודל עבור הטקסט הנוכחי + clamp לבייסליין (9 תווים)
-    const sizeCurrent = computeSize(txt);
-    const sizeFinal   = Math.min(sizeCurrent, baselineSize || sizeCurrent);
-
-    // קבע גודל פונט, ומדוד גובה בפיקסלים עם רזרבה לדסנדרים
-    meas.style.fontSize = sizeFinal + 'px';
-    const descGuard = 1.10;
-    const textHpx   = meas.getBoundingClientRect().height * descGuard + 8; // +8px רזרבה תחתונה
-    canvas.style.setProperty('--f', sizeFinal + 'px');
-
-    // קבע גובה חלון — קצר -> יותר גבוה; ארוך -> יותר נמוך (טווח דחוס)
-    const isMobile  = isMobileMq.matches;
-    const baseMinVh = isMobile ? 20 : 16;
-    const baseMaxVh = isMobile ? 30 : 24;
-
-    const pxToVh = (px)=> (px / window.innerHeight) * 100;
-    let desiredVh = pxToVh(textHpx);
-
-    // צמצום חזק יותר ככל שאורך הטקסט גדול; מתמקד ב"למטה"
-    const shrink = Math.min(8, Math.max(0, (len - 9) * 0.35)); // עד ~8vh
-    desiredVh = desiredVh - shrink;
-
-    // הידוק לטווח
-    desiredVh = Math.min(baseMaxVh, Math.max(baseMinVh, desiredVh));
+    // קודם קובעים גובה חלון דינמי “צפוף”
+    // קצר → גבוה יותר; ארוך → נמוך יותר (מלמטה), בטווח קטן שלא “מקפיץ”
+    const isMobile = mql.matches;
+    const minVh = isMobile ? 20 : 16;
+    const maxVh = isMobile ? 30 : 26;
+    const shrinkVh = Math.min(10, Math.max(0, (len - 9) * 0.45)); // יותר ארוך => יותר נמוך
+    // בסיס גבוה כשקצר, ויורד עם האורך
+    let desiredVh = maxVh - shrinkVh;
+    if (desiredVh < minVh) desiredVh = minVh;
     winBox.style.height = desiredVh + 'vh';
 
-    // ריווח בין המשקלים לטקסט — קצר => רווח קטן
-    const gapPx = (len <= 9) ? 4 : 8;
-    tester.style.setProperty('--g', gapPx + 'px');
+    // עכשיו מחשבים פונט לפי הרוחב והגובה החדשים
+    const sizeForText = computeSize(txt, currentAvailW(), currentAvailH());
+
+    // כלל “אלטע זאכן בסיס”: אם פחות מ־9 תווים — אל תגדיל מעבר לבייסליין
+    const finalSize = (len < 9 && baselineSize) ? Math.min(sizeForText, baselineSize) : sizeForText;
+
+    // קבע פונט
+    canvas.style.setProperty('--f', finalSize + 'px');
+
+    // ריווח בין הכפתורים לטקסט: קטן מאוד כשקצר
+    tester.style.setProperty('--g', (len <= 9 ? 4 : 8) + 'px');
   }
 
-  // טריגרים
-  window.addEventListener('resize', ()=>{ baselineSize = computeSize(BASE_TEXT); fitAll(); }, {passive:true});
-  canvas.addEventListener('input', fitAll);
+  // מאזינים
+  weights.forEach(b=>{
+    b.classList.toggle('active', b.dataset.font === defFont);
+    b.addEventListener('click', ()=>{
+      weights.forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      setFontFamily(b.dataset.font);
+    });
+  });
 
-  // ניקוי outline
+  setFontFamily(defFont);
+  window.addEventListener('resize', ()=>{ baselineSize = computeSize(BASE_TEXT, currentAvailW(), currentAvailH()); fitAll(); }, {passive:true});
+  canvas.addEventListener('input', fitAll);
   canvas.addEventListener('focus', ()=>canvas.style.outline='none');
 })();
 </script>
