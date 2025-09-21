@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>אלטע זאכן — Specimen</title>
 
-<!-- ===== FONTS (root; no folders) ===== -->
+<!-- ===== FONTS (root) ===== -->
 <style>
 @font-face{
   font-family:"AlteZachen-Normal";
@@ -39,14 +39,14 @@
 /* ===== Base ===== */
 :root{
   --red:#ff0000;
+  --grey:#f4f6f8; /* בהיר יותר */
   --black:#000;
   --page-max:1400px;
-  --grey:#f2f4f6; /* בהיר יותר */
 }
 html,body{margin:0;background:#fff;color:#000}
 body{font-family:"AlteZachen-Normal", system-ui, -apple-system, Segoe UI, Arial, sans-serif}
 
-/* ===== Sticky header (לוגו בימין) ===== */
+/* ===== Sticky header ===== */
 .site-header{
   position:sticky; top:-1px; z-index:50;
   background:var(--red); border-bottom:1px solid #000;
@@ -70,11 +70,11 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, Segoe UI, Arial,
 /* ===== WHITE SECTION ===== */
 .white{background:#fff; padding:min(6vh,80px) clamp(12px,4vw,40px);}
 
-/* ===== Diatype-style TYPE TESTER (one instance) ===== */
+/* ===== One DINAMO-like tester ===== */
 .tester{
   background:var(--grey);
   border-radius:14px;
-  box-shadow: inset 0 0 0 1px #d9dee3;
+  box-shadow: inset 0 0 0 1px #e2e6ea;
   padding: clamp(10px, 2vw, 18px);
   margin-block: clamp(18px, 4vw, 44px);
 }
@@ -85,7 +85,7 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, Segoe UI, Arial,
 }
 .tester .tt-weights{display:flex; gap:8px; flex-wrap:wrap}
 
-/* כפתורי המשקלים — חצי רחב */
+/* כפתורי משקלים — HalfWide */
 .tester .tt-btn{
   font-family:"AlteZachen-HalfWide", system-ui, sans-serif;
   font-size: clamp(12px,1.25vw,16px);
@@ -97,20 +97,20 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, Segoe UI, Arial,
 }
 .tester .tt-btn.active{background:var(--red); color:#fff; border-color:var(--red);}
 
-/* סליידר — קו שחור דק + עיגול שחור שטוח */
+/* סליידר קצר יותר — קו שחור דק + עיגול שחור */
 .tester .tt-slider{display:flex; align-items:center; gap:10px}
-.tester .tt-slider span{font:500 12px/1 system-ui, sans-serif; color:#333}
-.tester input[type="range"]{width:min(46vw, 420px); -webkit-appearance:none; appearance:none; background:transparent;}
-/* track */
+.tester input[type="range"]{
+  width:min(30vw, 300px); /* קצר יותר */
+  -webkit-appearance:none; appearance:none; background:transparent;
+}
 .tester input[type="range"]::-webkit-slider-runnable-track{height:2px;background:#000;border-radius:2px}
 .tester input[type="range"]::-moz-range-track{height:2px;background:#000;border-radius:2px}
-/* thumb */
 .tester input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;border-radius:50%;background:#000;border:0;margin-top:-7px}
 .tester input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#000;border:0}
 
-/* קנבס: גובה קבוע בחצי, גלילה פנימית */
+/* קנבס — למלא את הרוחב תמיד, בלי עמודות */
 .tester .tt-canvas{
-  --f: 180px;                 /* נשלט ב-JS */
+  --f: 180px;
   font-size: var(--f);
   line-height: 0.92;
   font-family: "AlteZachen-Random", system-ui, sans-serif;
@@ -119,21 +119,23 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, Segoe UI, Arial,
   padding-inline: clamp(6px,1.2vw,10px);
   padding-block: clamp(8px,1.5vw,14px);
 
-  height: 24vh;              /* FIXED */
-  overflow: auto;            /* גלילה בתוך החלון */
-  word-break: keep-all;
-  overflow-wrap: normal;
-  hyphens: manual;
-
-  column-gap: clamp(18px, 2vw, 28px);
-  column-fill: balance;
+  /* למלא רוחב שורה אחת */
+  white-space: nowrap;
+  overflow: hidden;           /* לא לשבור שורה; ננהל גובה בנפרד */
+  display:block;
 }
 
-/* מובייל — קצת יותר גובה */
+/* גובה ברירת־מחדל + גדילה קטנה לפי הסליידר */
+.tester .tt-shell{
+  min-height:24vh;            /* בסיס */
+  max-height:34vh;            /* יעלה עם הסליידר */
+  overflow:auto;              /* גלילה פנימית אם צריך */
+}
+
 @media (max-width: 700px){
   .site-header img{height:24px}
   .hero-wrap{padding-block:40px 56px}
-  .tester .tt-canvas{height:30vh}
+  .tester .tt-shell{min-height:30vh; max-height:40vh}
 }
 </style>
 </head>
@@ -150,7 +152,7 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, Segoe UI, Arial,
 <section class="hero-red" aria-label="Hero">
   <div class="hero-wrap">
     <picture>
-      <source srcset="hero2.webp" type="image/webp" />
+      <source src="hero2.webp" type="image/webp" />
       <img class="hero-img" src="Asset 1.webp" alt="אלטע זאכן — ראש העמוד" />
     </picture>
   </div>
@@ -159,24 +161,22 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, Segoe UI, Arial,
 <!-- ===== MAIN ===== -->
 <main class="white" aria-label="Main">
 
-  <!-- === SINGLE TESTER === -->
+  <!-- Tester אחד -->
   <section class="tester" data-default-font="AlteZachen-Random">
     <div class="tt-controls">
       <div class="tt-weights">
-        <!-- הסדר נשאר, רק רנדום הועבר לצד השני -->
         <button class="tt-btn" data-font="AlteZachen-Normal">נורמל</button>
         <button class="tt-btn" data-font="AlteZachen-HalfWide">חצי־רחב</button>
         <button class="tt-btn" data-font="AlteZachen-Wide">רחב</button>
         <button class="tt-btn active" data-font="AlteZachen-Random">רנדום</button>
       </div>
-      <label class="tt-slider">
-        <span>Size/Layout</span>
-        <input type="range" min="28" max="340" step="1" value="190" />
-      </label>
+      <div class="tt-slider">
+        <input type="range" min="0" max="100" step="1" value="50" />
+      </div>
     </div>
 
-    <div class="tt-canvas" contenteditable="true">
-אלטע&nbsp;זאכן. טקסט נסיוני ארוך מאוד שמיועד לבחון פריסה דינמית בשלוש עמודות, ללא שבירת מילים וללא חיתוך של המילה הראשונה. ככל שמקטינים את הגודל, מופיע יותר תוכן; כאשר עוברים נקודות סף—הפריסה קופצת לשתי עמודות ואז לשלוש, עם איזון ויזואלי בין הטורים ושמירה על ריווח קטן בשוליים. הטקסט כאן ממשיך במכוון כדי למלא גלילה פנימית בחלון הקבוע: זה יכול להיות תיאור על כרזות ותוויות מתקופת המעבר, על חיתוך אותיות מהדפוס הישן, על תנועה בין שפה גבוהה לשפת רחוב, ועל המפגש בין עברית, לטינית וקירילית בתוך אותו משטח. אפשר להדביק כאן טקסט משלכם, לשנות משקל בלחיצת כפתור, ולשחק בסליידר עד שמוצאים את סקאלת הגודל המדויקת. עוד פסקה להארכה: הגישה כאן היא “להראות את המכניקה”—המשתמש רואה כיצד המערכת מפרקת משפטים לשורות, מחלקת לעמודות כשהגודל מצטמצם, ושומרת על קריאות גם במקרי קצה. אם תרצו, ניתן להוסיף סימני פיסוק, מספרים, וסימנים טיפוגרפיים רבים כדי לבדוק טקסטורות שונות. והכי חשוב: המילה הראשונה לא נשברת, הפידינג נשאר עדין, והחלון הקבוע מאפשר לבחון תנועה בתוך מסגרת יציבה.
+    <div class="tt-shell">
+      <div class="tt-canvas" contenteditable="true">אלטע זאכן</div>
     </div>
   </section>
 
@@ -189,11 +189,14 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, Segoe UI, Arial,
   if(!tester) return;
 
   const range   = tester.querySelector('input[type="range"]');
+  const shell   = tester.querySelector('.tt-shell');
   const canvas  = tester.querySelector('.tt-canvas');
   const buttons = tester.querySelectorAll('.tt-btn');
   const defFont = tester.getAttribute('data-default-font') || 'AlteZachen-Random';
 
-  // ברירת מחדל של משקל
+  // baseline לגודל עבור 4 תווים — שלא נגדל מעבר לזה כשיש פחות מ-4
+  let sizeForFour = null;
+
   canvas.style.fontFamily = `"${defFont}", system-ui, sans-serif`;
   buttons.forEach(b=>{
     b.classList.toggle('active', b.dataset.font === defFont);
@@ -201,28 +204,77 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, Segoe UI, Arial,
       buttons.forEach(x=>x.classList.remove('active'));
       b.classList.add('active');
       canvas.style.fontFamily = `"${b.dataset.font}", system-ui, sans-serif`;
-      keepFirstLine(canvas);
+      fitText();
     });
   });
 
-  // גודל + מעבר עמודות (החלון בגובה קבוע; הטקסט יגלול בפנים)
-  const applySize = (px)=>{
-    canvas.style.setProperty('--f', px + 'px');
-    let cols = 1;
-    if (px <= 150) cols = 2;
-    if (px <= 90)  cols = 3;
-    canvas.style.columnCount = cols;
-    keepFirstLine(canvas);
+  // הסליידר שולט רק על מקס-גובה (מאפשר לגדול קצת מטה)
+  const applyMaxHeight = () =>{
+    const minH = getComputedStyle(shell).getPropertyValue('--minH');
+    // נבחר סקאלה פשוטה בין min/max הקיימים ב-CSS
+    const isMobile = window.matchMedia('(max-width:700px)').matches;
+    const baseMin = isMobile ? 30 : 24; // vh
+    const baseMax = isMobile ? 40 : 34; // vh
+    const t = +range.value / 100;       // 0..1
+    const vh = Math.round(baseMin + (baseMax-baseMin)*t);
+    shell.style.maxHeight = vh + 'vh';
   };
-  applySize(+range.value);
-  range.addEventListener('input', e=>applySize(+e.target.value));
+  applyMaxHeight();
+  range.addEventListener('input', applyMaxHeight);
 
-  // ריווח קטן בתחילת השורה כדי למנוע חיתוך המילה הראשונה
-  function keepFirstLine(el){
-    const fs = parseFloat(getComputedStyle(el).fontSize)||0;
-    el.style.paddingInlineStart = Math.max(4, fs*0.1) + 'px';
-    el.style.paddingInlineEnd   = Math.max(4, fs*0.06) + 'px';
+  // פונקציה שמתאימה את גודל הפונט כדי למלא את כל הרוחב
+  function fitText(){
+    const txt = canvas.textContent.trim() || 'אלטע זאכן';
+    const len = [...txt].length;
+
+    // גבולות לחיפוש בינארי
+    const min = 24;        // לא נרד מתחת
+    const max = 720;       // תקרה סבירה
+    const padInline = parseFloat(getComputedStyle(canvas).paddingInlineStart) +
+                      parseFloat(getComputedStyle(canvas).paddingInlineEnd);
+    const target = canvas.clientWidth - padInline;
+
+    // מכשיר עזר למדידה
+    const meas = document.createElement('span');
+    meas.style.whiteSpace = 'nowrap';
+    meas.style.visibility = 'hidden';
+    meas.style.position = 'absolute';
+    meas.style.pointerEvents = 'none';
+    meas.style.fontFamily = getComputedStyle(canvas).fontFamily;
+    meas.style.letterSpacing = getComputedStyle(canvas).letterSpacing;
+    meas.textContent = txt;
+    document.body.appendChild(meas);
+
+    // אם טרם חושב baseline ל-4 תווים – חשב פעם אחת
+    if(sizeForFour === null){
+      sizeForFour = computeSize('אלטע');
+    }
+
+    // חישוב הגודל המתאים לטקסט הנוכחי
+    const computed = computeSize(txt);
+    const finalSize = (len < 4) ? Math.min(computed, sizeForFour) : computed;
+
+    canvas.style.setProperty('--f', finalSize + 'px');
+
+    document.body.removeChild(meas);
+
+    function computeSize(sample){
+      let lo=min, hi=max, best=min;
+      meas.textContent = sample;
+      while(lo<=hi){
+        const mid = Math.floor((lo+hi)/2);
+        meas.style.fontSize = mid+'px';
+        const w = meas.getBoundingClientRect().width;
+        if(w<=target){ best=mid; lo=mid+1; } else { hi=mid-1; }
+      }
+      return best;
+    }
   }
+
+  // טריגרים
+  fitText();
+  window.addEventListener('resize', fitText);
+  canvas.addEventListener('input', fitText);
 })();
 </script>
 
