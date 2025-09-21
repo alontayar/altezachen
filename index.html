@@ -39,23 +39,12 @@ img{display:block;max-width:100%;height:auto}
   display:flex;align-items:center;justify-content:space-between;
   padding:6px 8px; gap:8px;
 }
-.head-left,.head-right{display:flex;align-items:center;flex:1}
-.head-right{order:2;justify-content:flex-end}  /* לוגו — ימין */
-.head-left{order:1;justify-content:flex-start} /* טסטר — שמאל */
+.head-right{display:flex;align-items:center;justify-content:flex-end;flex:1}
 .head-logo{display:inline-flex;align-items:center;text-decoration:none;padding:2px 6px}
 .head-logo img{height:calc(var(--icon-h-desktop)*.95);width:auto;display:block} /* 95% */
-.head-tt{
-  display:inline-flex;align-items:center;justify-content:center;
-  color:#000;background:#fff;border:1px solid #000;
-  padding:4px 10px;text-decoration:none;line-height:1;
-  font-family:"AlteZachen HalfWide",system-ui,sans-serif;
-  font-size:clamp(14px,1.2vw,18px);
-}
-.head-tt:hover{background:#000;color:#ff0000}
 @media (max-width:600px){
   .head-inner{padding:6px 8px}
   .head-logo img{height:calc(var(--icon-h-mobile)*.95)} /* 95% גם במובייל */
-  .head-tt{font-size:clamp(13px,3.8vw,16px);padding:4px 8px}
 }
 
 /* ========= SECTIONS ========= */
@@ -79,7 +68,7 @@ img{display:block;max-width:100%;height:auto}
 #hero2 .hero-media{display:block;margin:0 auto;width:min(92vw,1600px);max-width:92vw;height:auto;object-fit:contain}
 @media (max-width:767px){#hero2 .hero-media{width:100vw;max-width:100vw;height:auto}}
 
-/* specimen blocks (השארנו בקצר) */
+/* specimen blocks (קיים) */
 .huge{font-size:12vw;line-height:.7;margin:0}
 .big{font-size:9vw;line-height:.7;margin:.06em 0}
 .mid{font-size:6vw;line-height:.96;margin:.1em 0}
@@ -117,20 +106,22 @@ img{display:block;max-width:100%;height:auto}
 .touch-preview{position:fixed;left:0;top:0;width:0;height:0;display:none;border:1px solid #000;background:#fff;z-index:70;align-items:center;justify-content:center;touch-action:manipulation}
 .tp-glyph{color:#000;font-family:"AlteZachen Normal";line-height:1;transform:translateY(-16%)}
 
-/* ===== INLINE TYPE TESTERS (חדשים) ===== */
-.inline-tt{ text-align:right; }
-.inline-tt .tt-row{
-  border-top:1px solid #000;border-bottom:1px solid #000;
-  padding-block: clamp(16px,2.8vw,28px);
-  margin-block: clamp(8px,2vw,18px);
+/* ===== INLINE TYPE TESTERS (במקום החלון) ===== */
+.section.inline-tt{
+  /* תופס את כל רוחב המסך בדסקטופ – בלי שוליים אופקיים */
+  max-width:100vw; width:100vw; padding-inline:0;
 }
+.inline-tt{ text-align:right; }
+
+/* שורת משקלים (גדול יותר + HalfWide) */
 .inline-tt .weights{
-  display:flex;justify-content:center;align-items:center;gap:12px;
+  display:flex;justify-content:center;align-items:center;gap:16px;
   font-family:"AlteZachen HalfWide","AlteZachen Normal",system-ui,sans-serif;
-  font-size:clamp(16px,1.6vw,22px); line-height:1;
-  margin-bottom: clamp(10px,1.8vw,16px);
+  font-size:clamp(18px,2.2vw,34px); line-height:1;
+  margin-bottom: clamp(12px,2vw,20px);
   user-select:none;
 }
+/* כפתורים — טקסט נקי (בלי מסגרות) */
 .inline-tt .weights button{
   appearance:none;background:none;border:0;cursor:pointer;
   color:#000;padding:0;margin:0;
@@ -138,33 +129,45 @@ img{display:block;max-width:100%;height:auto}
 .inline-tt .weights .sep{opacity:.6}
 .inline-tt .weights button.active{ color:#ff0000; }
 
+/* שורת הטקסט עצמה */
 .inline-tt .text{
   outline:none;border:0;background:transparent;color:#000;
   font-family:"AlteZachen Random","AlteZachen HalfWide","AlteZachen Normal",system-ui,sans-serif;
   line-height:1.02; text-align:right; white-space:pre-wrap; word-break:break-word;
+  width:100%;
+  /* שים לב: אין padding אופקי בסקשן – זה ממש עד קצות המסך */
 }
 
 /* גדלים לדוגמה */
-.inline-tt .text.xl{ font-size:clamp(64px,12vw,220px) }
-.inline-tt .text.md{ font-size:clamp(22px,3.4vw,40px); line-height:1.18 }
+.inline-tt .text.xl{ 
+  font-size: clamp(64px, 12vw, 260px);
+  line-height: 0.9; /* קטן יותר לבלוק XL הראשון */
+}
+.inline-tt .text.md{
+  font-size: clamp(22px, 3.4vw, 40px); 
+  line-height: 1.18;
+}
 
-/* התאמות מובייל */
+/* בלוק טיפוגרפיה – בלי קווי מסגרת מעל/מתחת */
+.inline-tt .tt-row{
+  /* מבוטל: border-top/bottom */
+  margin-block: clamp(8px,2vw,18px);
+  padding-block: clamp(8px,1.2vw,16px);
+}
+
+/* מובייל – קצת התאמות */
 @media (max-width:600px){
-  .inline-tt .weights{ font-size:clamp(16px,4.4vw,20px) }
-  .inline-tt .text.xl{ font-size:clamp(48px,15vw,180px) }
-  .inline-tt .text.md{ font-size:clamp(18px,5vw,28px) }
+  .inline-tt .weights{ font-size:clamp(16px,5vw,24px); gap:12px }
+  .inline-tt .text.xl{ font-size: clamp(48px, 15vw, 200px) }
+  .inline-tt .text.md{ font-size: clamp(18px, 5vw, 28px) }
 }
 </style>
 </head>
 <body>
 
-<!-- ================== HEADER ================== -->
+<!-- ================== HEADER (רק לוגו, ללא כפתור טייפטסטר) ================== -->
 <header class="site-head" id="siteHead" aria-label="ראש האתר">
   <div class="head-inner">
-    <div class="head-left">
-      <!-- גלילה לטייפטסטרים בתוך העמוד -->
-      <a class="head-tt" href="#inline-tt">↤טייפטסטר</a>
-    </div>
     <div class="head-right">
       <a class="head-logo" href="https://hafontia.com" target="_blank" rel="noopener" aria-label="הפונטיה">
         <img src="logoheader.webp" alt="hafontia">
@@ -217,16 +220,7 @@ img{display:block;max-width:100%;height:auto}
   </div>
 </section>
 
-<!-- ================== BLOCKS / GLYPH GRID (החלקים שלך כרגיל) ================== -->
-<section class="section white spec">
-  <div class="wrap">
-    <div class="weight" style="font-family:'AlteZachen Normal'">נורמל</div>
-    <div class="mid" style="font-family:'AlteZachen Normal'">
-אַלְטֶה זָאכְן, פירושו ביידיש: "דברים ישנים"… (דוגמה קצרה)
-    </div>
-  </div>
-</section>
-
+<!-- ================== GLYPH GRID (נשאר כרגיל) ================== -->
 <section class="section white glyphs-shell" id="glyphs">
   <div class="glyphs-wrap">
     <div class="preview-col">
