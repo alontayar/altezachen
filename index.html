@@ -7,31 +7,20 @@
 <title>אלטע זאכן — Alte Zachen</title>
 <meta name="theme-color" content="#ff0000">
 
-<!-- Preload fonts -->
-<link rel="preload" href="AlteZachen-Wide.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="AlteZachen-HalfWide.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="AlteZachen-Normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="AlteZachen-Random.woff2" as="font" type="font/woff2" crossorigin>
-
+<!-- ===== FONTS (קבצי woff/woff2 בשורש) ===== -->
 <style>
-/* ===== FONTS ===== */
-@font-face{font-family:"AlteZachen Normal";   src:url("AlteZachen-Normal.woff2") format("woff2"),url("AlteZachen-Normal.woff") format("woff");font-display:swap}
-@font-face{font-family:"AlteZachen HalfWide"; src:url("AlteZachen-HalfWide.woff2") format("woff2"),url("AlteZachen-HalfWide.woff") format("woff");font-display:swap}
-@font-face{font-family:"AlteZachen Wide";     src:url("AlteZachen-Wide.woff2") format("woff2"),url("AlteZachen-Wide.woff") format("woff");font-display:swap}
-@font-face{font-family:"AlteZachen Random";   src:url("AlteZachen-Random.woff2") format("woff2"),url("AlteZachen-Random.woff") format("woff");font-display:swap}
+@font-face{font-family:"AlteZachen Normal";src:url("AlteZachen-Normal.woff2") format("woff2"),url("AlteZachen-Normal.woff") format("woff");font-display:swap}
+@font-face{font-family:"AlteZachen HalfWide";src:url("AlteZachen-HalfWide.woff2") format("woff2"),url("AlteZachen-HalfWide.woff") format("woff");font-display:swap}
+@font-face{font-family:"AlteZachen Wide";src:url("AlteZachen-Wide.woff2") format("woff2"),url("AlteZachen-Wide.woff") format("woff");font-display:swap}
+@font-face{font-family:"AlteZachen Random";src:url("AlteZachen-Random.woff2") format("woff2"),url("AlteZachen-Random.woff") format("woff");font-display:swap}
 
 :root{
   --red:#ff0000; --black:#000; --white:#fff;
-
-  /* Header sizing */
-  --header-h: 60px;
-  --icon-h-desktop: 28px;           /* גובה בסיסי לאייקונים בדסקטופ */
-  --icon-h-mobile: 18px;            /* גובה בסיסי לאייקונים במובייל */
-
-  /* Grid padding */
+  --header-h:60px; --icon-h-desktop:28px; --icon-h-mobile:18px;
   --grid-pad:6vw;
 }
 
+/* Reset */
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial;line-height:1.2;text-align:center}
@@ -44,161 +33,80 @@ img{display:block;max-width:100%;height:auto}
   transform:translateY(-110%); transition:transform .35s ease;
 }
 .site-head.show{ transform:translateY(0) }
-
-/* LTR פנימי לשליטה בצדדים */
 .head-inner{
   direction:ltr;
   width:100%;
   display:flex;align-items:center;justify-content:space-between;
   padding:6px 8px; gap:8px;
 }
-
-/* === החלפת צדדים בדסקטופ: טסטר שמאל, לוגו ימין === */
-.head-left, .head-right{ display:flex;align-items:center; flex:1 }
-.head-right{ order:2; justify-content:flex-end }   /* לוגו — ימין */
-.head-left { order:1; justify-content:flex-start } /* טסטר — שמאל */
-
-/* LOGO */
-.head-logo{ display:inline-flex; align-items:center; text-decoration:none }
-.head-logo img{
-  height:calc(var(--icon-h-desktop) * .8); /* 80% בדסקטופ */
-  width:auto;
+.head-left,.head-right{display:flex;align-items:center;flex:1}
+.head-right{order:2;justify-content:flex-end}  /* לוגו — ימין */
+.head-left{order:1;justify-content:flex-start} /* טסטר — שמאל */
+.head-logo{display:inline-flex;align-items:center;text-decoration:none;padding:2px 6px}
+.head-logo img{height:calc(var(--icon-h-desktop)*.95);width:auto;display:block} /* 95% */
+.head-tt{
+  display:inline-flex;align-items:center;justify-content:center;
+  color:#000;background:#fff;border:1px solid #000;
+  padding:4px 10px;text-decoration:none;line-height:1;
+  font-family:"AlteZachen HalfWide",system-ui,sans-serif;
+  font-size:clamp(14px,1.2vw,18px);
 }
-
-/* TYPE TESTER BUTTON */
-.head-tt{ display:inline-flex; align-items:center; cursor:pointer; border:none; background:transparent; padding:0 }
-.head-tt img{ height:var(--icon-h-desktop); width:auto }
-.head-tt .tt-hover{ display:none }
-.head-tt:hover .tt-default{ display:none }
-.head-tt:hover .tt-hover{ display:block }
-
-/* === מובייל: לוגו לימין, טייפטסטר לשמאל + הקטנות === */
+.head-tt:hover{background:#000;color:#ff0000}
 @media (max-width:600px){
-  .head-inner{ padding:6px 10px; gap:10px }
-
-  .head-right{ order:2; justify-content:flex-end }  /* לוגו — ימין */
-  .head-left { order:1; justify-content:flex-start }/* טסטר — שמאל */
-
-  .head-tt img{ height:var(--icon-h-mobile) }
-  .head-logo img{ height:calc(var(--icon-h-mobile) * .7) } /* 70% במובייל */
+  .head-inner{padding:6px 8px}
+  .head-logo img{height:calc(var(--icon-h-mobile)*.95)} /* 95% גם במובייל */
+  .head-tt{font-size:clamp(13px,3.8vw,16px);padding:4px 8px}
 }
 
 /* ========= SECTIONS ========= */
-/*.section{padding:50px 16px}
-.section.white{background:#fff}*/
-/* מחליף את החסימה .section הקיימת */
 .section{
-  /* שים לב להגדלה משמעותית של ה-padding */
-  padding-block: clamp(40px, 8vw, 100px);   /* למעלה/למטה */
-  padding-inline: clamp(30px, 9vw, 100px);   /* ימין/שמאל */
-
-  max-width: min(1800px, 180vw);             /* שורה קצת רחבה יותר */
-  margin: 0 auto;
-  background: #ffffff;
+  padding-block: clamp(40px,8vw,100px);
+  padding-inline: clamp(30px,9vw,100px);
+  max-width:min(1700px,95vw);
+  margin:0 auto;background:#fff;text-align:inherit;
 }
-
-/* דסקטופ – עוד קצת אוויר */
-@media (min-width: 1024px){
-  .section{
-    padding-block: clamp(72px, 10vw, 100px);
-    padding-inline: clamp(32px, 8vw, 120px);
-    max-width: min(1700px, 130vw);
-  }
-}
-
-/* אופציונלי: להרגיש יותר “נשימה” בטקסט עצמו */
-.section p{
-  line-height: 1.35;     /* 1.3–1.45 עובד נהדר לטקסטים הגדולים ששמת */
-  font-size: clamp(18px, 1.4vw, 24px); /* אם רוצים להגדיל מעט */
-}
-
-
-
-
-
-
-
-
 .wrap{max-width:1420px;margin:0 auto}
 
-/* HERO (אדום + תמונה לגלילה) */
-#hero.hero-landing{background:#ff0000;padding:0;margin:0;width:100vw}
-#hero.hero-landing .hero-media{
-  display:block;margin:0 auto;
-  width:min(92vw,1600px);max-width:92vw;height:auto;object-fit:contain;
-}
-@media (max-width:767px){
-  #hero.hero-landing .hero-media{width:100vw;max-width:100vw;height:auto}
-}
+/* ========= HERO (אדום + תמונה) ========= */
+#heroRed{background:#ff0000;padding:0;margin:0;width:100vw}
+#heroRed .hero-media{display:block;margin:0 auto;width:min(92vw,1600px);max-width:92vw;height:auto;object-fit:contain}
+@media (max-width:767px){#heroRed .hero-media{width:100vw;max-width:100vw;height:auto}}
+/* סמן סוף ה־Hero לזיהוי ההדר */
+.hero-sentinel{height:1px}
 
+/* ========= HERO2 (לבן + תמונה) ========= */
+#hero2{background:#ffffff;padding:0;margin:0;width:100vw}
+#hero2 .hero-media{display:block;margin:0 auto;width:min(92vw,1600px);max-width:92vw;height:auto;object-fit:contain}
+@media (max-width:767px){#hero2 .hero-media{width:100vw;max-width:100vw;height:auto}}
 
-
-/* HERO (אדום + תמונה לגלילה) */
-#hero.hero-landingg{background:#ffffff;padding:0;margin:0;width:100vw}
-#hero.hero-landingg .hero-media{
-  display:block;margin:0 auto;
-  width:min(92vw,1600px);max-width:92vw;height:auto;object-fit:contain;
-}
-@media (max-width:767px){
-  #hero.hero-landingg .hero-media{width:100vw;max-width:100vw;height:auto}
-}
-
-
-
-
-/* specimen blocks */
+/* specimen blocks (השארנו בקצר) */
 .huge{font-size:12vw;line-height:.7;margin:0}
-.big {font-size:9vw; line-height:.7;  margin:.06em 0}
-.mid {font-size:6vw; line-height:.96; margin:.1em 0}
+.big{font-size:9vw;line-height:.7;margin:.06em 0}
+.mid{font-size:6vw;line-height:.96;margin:.1em 0}
 @media (min-width:1200px){.huge{font-size:160px}.big{font-size:300px}.mid{font-size:120px}}
 .weight{font-size:24px;font-weight:700;margin-bottom:8px}
 @media (max-width:600px){.weight{font-size:14px;margin-bottom:4px}}
 
-
-
-.weightt{
-  font-size:24px;
-  font-weight:700;
-  margin-bottom:8px;
-  color:#fff;
-}
-@media (max-width:600px){
-  .weightt{
-    font-size:14px;
-    margin-bottom:4px;
-    color:#fff; /* optional here; inherits from above */
-  }
-}
-
-
-
-
-.section.spec{padding-top:56px;padding-bottom:56px}
-
-/* ===== GLYPH GRID (גרסה הנקייה) ===== */
+/* ===== GLYPH GRID (כמו אצלך) ===== */
 .glyphs-shell{padding-left:var(--grid-pad);padding-right:var(--grid-pad)}
 .glyphs-wrap{display:flex;gap:16px;align-items:flex-start;direction:ltr}
 .preview-col{flex:0 0 38%;max-width:700px;min-width:300px;position:sticky;top:16px}
 .grid-col{flex:1 1 auto;min-width:320px}
 .cell.filler{background:#fff}.cell.filler .glyph{display:none}
-
 .preview-box{width:100%;height:0;padding-bottom:100%;border:1px solid #000;background:#fff;position:relative;overflow:hidden}
-.preview-glyph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#ff0000;font-family:"AlteZachen Normal","AlteZachen Wide";line-height:1;text-align:center;font-size:30vw;max-font-size:600px;transform:translateY(-16%)}
+.preview-glyph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#ff0000;font-family:"AlteZachen Normal","AlteZachen Wide";line-height:1;text-align:center;font-size:30vw;transform:translateY(-16%)}
 @media (min-width:1400px){.preview-glyph{font-size:600px}}
 .preview-meta{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font:13px/1.2 Arial,Helvetica,sans-serif;color:#000}
-
 .tabs{display:flex;flex-direction:row-reverse;border:1px solid #000;margin-top:8px}
 .tab{flex:1 1 33%;appearance:none;border:0;margin:0;padding:.7em 1.1em;background:#fff;color:#000;cursor:pointer;font-weight:700;font-size:18px;border-left:1px solid #000}
 .tab:last-child{border-left:0}.tab.active{background:#000;color:#fff}
 @media (min-width:1024px){.tab{font-size:20px}}
-
 .cat{margin-bottom:24px}
 .grid{--cell:var(--cellPx);display:inline-grid;grid-template-columns:repeat(var(--cols),var(--cell));grid-auto-rows:var(--cell);gap:1px;background:#000;padding:1px}
 .cell{width:var(--cell);height:var(--cell);background:#fff;display:flex;align-items:center;justify-content:center;user-select:none;-webkit-user-select:none}
 .glyph{color:#000;line-height:1;transform:translateY(-6%);font-family:"AlteZachen Normal";font-size:calc(var(--cell)*.62);transition:color .08s ease,background-color .08s ease}
 @media (hover:hover){.cell:hover .glyph{color:#fff}.cell:hover{background:#000}}
 .sepLine{height:16px}
-
 @media (max-width:600px){
   .cat{margin-bottom:12px}.sepLine{height:10px}
   .glyphs-wrap{display:block}.preview-col{display:none!important}.grid-col{width:100%;max-width:none}
@@ -209,89 +117,42 @@ img{display:block;max-width:100%;height:auto}
 .touch-preview{position:fixed;left:0;top:0;width:0;height:0;display:none;border:1px solid #000;background:#fff;z-index:70;align-items:center;justify-content:center;touch-action:manipulation}
 .tp-glyph{color:#000;font-family:"AlteZachen Normal";line-height:1;transform:translateY(-16%)}
 
-/* Red takeover */
-.about-stage{height:200vh}
-.about-stick{position:sticky;top:0;height:100vh;background:#ff0000;color:#fff;display:flex;align-items:center;justify-content:center;padding:8vw 6vw}
-.about-content{max-width:1200px;margin:0 auto;font-family:"AlteZachen Normal","AlteZachen Wide";font-size:7vw;line-height:1.12}
-@media (min-width:1200px){.about-content{font-size:72px}}
-
-/* ===== TYPE TESTER ===== */
-.tester{position:fixed;inset:0;background:#000;color:#fff;z-index:1200;display:none;overflow:auto}
-.tester.open{display:block}
-
-/* Desktop toolbar: GRID — Close | Weights | Buy */
-.tester-bar{position:sticky;top:0;background:#000;padding:10px 12px;z-index:1210}
-.tbar-grid{
-  display:grid; grid-template-columns:auto 1fr auto;
-  align-items:center; gap:12px;
+/* ===== INLINE TYPE TESTERS (חדשים) ===== */
+.inline-tt{ text-align:right; }
+.inline-tt .tt-row{
+  border-top:1px solid #000;border-bottom:1px solid #000;
+  padding-block: clamp(16px,2.8vw,28px);
+  margin-block: clamp(8px,2vw,18px);
 }
-.tbar-close{ justify-self:start }
-.tbar-weights{ justify-self:center }
-.tbar-buy{ justify-self:end }
+.inline-tt .weights{
+  display:flex;justify-content:center;align-items:center;gap:12px;
+  font-family:"AlteZachen HalfWide","AlteZachen Normal",system-ui,sans-serif;
+  font-size:clamp(16px,1.6vw,22px); line-height:1;
+  margin-bottom: clamp(10px,1.8vw,16px);
+  user-select:none;
+}
+.inline-tt .weights button{
+  appearance:none;background:none;border:0;cursor:pointer;
+  color:#000;padding:0;margin:0;
+}
+.inline-tt .weights .sep{opacity:.6}
+.inline-tt .weights button.active{ color:#ff0000; }
 
-/* desktop weight buttons */
-.tweights{display:flex;gap:10px;flex-wrap:nowrap}
-.tweights .tbtn{appearance:none;cursor:pointer;font-weight:700;padding:.58em 1.1em;border:1px solid #ff0000;background:#ff0000;color:#fff;font-family:"AlteZachen Normal";font-size:18px;white-space:nowrap}
-.tweights .tbtn:hover{background:#fff;color:#000;border-color:#fff}
+.inline-tt .text{
+  outline:none;border:0;background:transparent;color:#000;
+  font-family:"AlteZachen Random","AlteZachen HalfWide","AlteZachen Normal",system-ui,sans-serif;
+  line-height:1.02; text-align:right; white-space:pre-wrap; word-break:break-word;
+}
 
-/* mobile weights – inline row (HalfWide + big + active red) */
-.m-weights{display:none}
+/* גדלים לדוגמה */
+.inline-tt .text.xl{ font-size:clamp(64px,12vw,220px) }
+.inline-tt .text.md{ font-size:clamp(22px,3.4vw,40px); line-height:1.18 }
+
+/* התאמות מובייל */
 @media (max-width:600px){
-  .tweights{display:none}
-  .m-weights{
-    display:flex;gap:10px;justify-content:center;align-items:center;
-    font-family:"AlteZachen HalfWide"; font-size:22px; line-height:1;
-    padding:2px 0;
-  }
-  .m-weights button{background:none;border:0;color:#fff;cursor:pointer;padding:0}
-  .m-weights button.active{color:#ff0000}
-  .m-weights .sep{opacity:.6}
-}
-
-/* purchase/close buttons */
-.tbtn{appearance:none;cursor:pointer;font-weight:700;padding:.58em 1.1em;border:1px solid #ff0000;background:#ff0000;color:#fff;font-family:"AlteZachen Normal";font-size:18px}
-.tbtn:hover{background:#fff;color:#000;border-color:#fff}
-
-/* desktop top actions always visible */
-.buy-top,.close-top{display:inline-flex}
-
-/* mobile bottom actions fixed */
-.tester-foot{display:none}
-@media (max-width:600px){
-  .buy-top,.close-top{display:none}
-  .tester-foot{
-    position:fixed;left:0;right:0;bottom:0;display:flex;
-    gap:10px;justify-content:space-between;background:#000;
-    padding:10px 12px; z-index:1220
-  }
-}
-
-/* editable text — even bigger */
-.tester-text{
-  outline:none;border:0;width:100%;
-  font-family:"AlteZachen Normal";
-  font-size:clamp(240px,28vw,920px); /* desktop base */
-  line-height:.85; text-align:center; white-space:pre-wrap; word-break:break-word; color:#fff;
-  margin:6vh auto 12vh; padding:0 12px;
-}
-@media (max-width:600px){
-  .tester-text{
-    font-size:clamp(240px,45vw,1400px); /* יותר גדול במובייל */
-    margin:6vh auto 18vh;              /* מקום לכפתורי התחתית */
-    line-height:.7;
-  }
-}
-
-
-
-/* ——— לינקים ככפתורים (ללא קו תחתון) ——— */
-a.tbtn{
-  text-decoration:none;
-}
-a.tbtn:hover,
-a.tbtn:focus,
-a.tbtn:active{
-  text-decoration:none;
+  .inline-tt .weights{ font-size:clamp(16px,4.4vw,20px) }
+  .inline-tt .text.xl{ font-size:clamp(48px,15vw,180px) }
+  .inline-tt .text.md{ font-size:clamp(18px,5vw,28px) }
 }
 </style>
 </head>
@@ -300,12 +161,9 @@ a.tbtn:active{
 <!-- ================== HEADER ================== -->
 <header class="site-head" id="siteHead" aria-label="ראש האתר">
   <div class="head-inner">
-    <!-- שמאל (בדסקטופ): טסטר | ימין: לוגו. במובייל אותו סדר (טסטר שמאל, לוגו ימין) -->
     <div class="head-left">
-      <button class="head-tt" id="openTester" aria-label="פתח טייפטסטר">
-        <img class="tt-default" src="typetester.webp" alt="">
-        <img class="tt-hover"   src="typetesterhover.webp" alt="">
-      </button>
+      <!-- גלילה לטייפטסטרים בתוך העמוד -->
+      <a class="head-tt" href="#inline-tt">↤טייפטסטר</a>
     </div>
     <div class="head-right">
       <a class="head-logo" href="https://hafontia.com" target="_blank" rel="noopener" aria-label="הפונטיה">
@@ -315,64 +173,69 @@ a.tbtn:active{
   </div>
 </header>
 
-<!-- ================== HERO IMAGE ================== -->
-<section id="hero" class="hero-landing">
+<!-- ================== HERO אדום ================== -->
+<section id="heroRed">
   <img src="hero.webp" class="hero-media" alt="">
 </section>
+<div id="heroSentinel" class="hero-sentinel" aria-hidden="true"></div>
 
-
-
-
-<!-- ================== HERO2 IMAGE ================== -->
-<section id="hero" class="hero-landingg">
+<!-- ================== HERO2 לבן ================== -->
+<section id="hero2">
   <img src="hero2.webp" class="hero-media" alt="">
 </section>
 
+<!-- ================== INLINE TYPE TESTERS ================== -->
+<section id="inline-tt" class="section inline-tt" aria-label="טייפטסטרים">
+  <!-- בלוק 1: גדול מאוד, דיפולט 'רנדום' -->
+  <div class="tt-row" data-tt>
+    <div class="weights" role="tablist" aria-label="Weights">
+      <button type="button" data-face="AlteZachen Normal">נורמל</button>
+      <span class="sep">|</span>
+      <button type="button" data-face="AlteZachen HalfWide">חצי־רחב</button>
+      <span class="sep">|</span>
+      <button type="button" data-face="AlteZachen Wide">רחב</button>
+      <span class="sep">|</span>
+      <button type="button" data-face="AlteZachen Random" class="active">רנדום</button>
+    </div>
+    <div class="text xl" contenteditable="true" spellcheck="false">אלטע זאכן</div>
+  </div>
 
+  <!-- בלוק 2: טקסט ~100 מילים, גודל בינוני, גם כאן דיפולט 'רנדום' -->
+  <div class="tt-row" data-tt>
+    <div class="weights" role="tablist" aria-label="Weights">
+      <button type="button" data-face="AlteZachen Normal">נורמל</button>
+      <span class="sep">|</span>
+      <button type="button" data-face="AlteZachen HalfWide">חצי־רחב</button>
+      <span class="sep">|</span>
+      <button type="button" data-face="AlteZachen Wide">רחב</button>
+      <span class="sep">|</span>
+      <button type="button" data-face="AlteZachen Random" class="active">רנדום</button>
+    </div>
+    <div class="text md" contenteditable="true" spellcheck="false">
+אלטע זאכן הוא פונט תצוגה נועז, שנולד מתוך מחקר של לטרינג מודפס וכרזות שנוצרו בארץ ישראל בראשית המאה העשרים. הקונטרסט, המתח בין הפנים לחוץ, והקצב של האותיות מייצרים טקסטורה חיה שמרגישה ידנית אך מדויקת. המשקלים נעים בין נורמל, חצי־רחב ורחב, ולצדם “רנדום” — מצב שמערבב ביניהם ומייצר וריאציה בלתי צפויה. הפונט מתאים לכותרות גדולות, כרזות, עטיפות ותצוגה דיגיטלית, ובעיקר לתוכן שמבקש להעביר נוכחות תרבותית מקומית עם טוויסט עכשווי.
+    </div>
+  </div>
+</section>
 
-
-
-<!-- ================== SPECIMEN BLOCKS ================== -->
+<!-- ================== BLOCKS / GLYPH GRID (החלקים שלך כרגיל) ================== -->
 <section class="section white spec">
   <div class="wrap">
     <div class="weight" style="font-family:'AlteZachen Normal'">נורמל</div>
-
-    <div class="mid"  style="font-family:'AlteZachen Normal'">
-אַלְטֶה זָאכְן, פירושו ביידיש: "דברים ישנים". הכינוי דבק ברוכלים הסוחרים במוצרי חשמל, ריהוט, כלי בית משומשים וכדומה. הכינוי דבק בהם שכן זו הייתה קריאתם המסורתית בעודם עוברים בין בתי קהל לקוחותיהם ומצהירים על מרכולתם בקולי קולות . את החפצים הסוחרים היו קונים מתושבי המקום, אשר היו מציעים את חפציהם הישנים שאין בהם צורך עוד.    </div>
+    <div class="mid" style="font-family:'AlteZachen Normal'">
+אַלְטֶה זָאכְן, פירושו ביידיש: "דברים ישנים"… (דוגמה קצרה)
+    </div>
   </div>
 </section>
 
-
-
-<section class="section white spec">
-  <div class="wrap">
-    <div class="weight" style="font-family:'AlteZachen Random'">רנדום</div>
-    <div class="mid" style="font-family:'AlteZachen Random'">
-באנגלית בריטית האיש נקרא Rag-and-bone man מכיוון שבתקופה האדוארדיאנית אספו סמרטוטים לעשיית נייר (בתרבות הפופולרית, זכה שם זה למספר שימושים, למשל הזמר ראג-אנד-בון מאן שלקח את שמו מכינוי זה).
-</div>
-  </div>
-</section>
-
-
-<!-- ================== HERO3 IMAGE ================== -->
-<section id="hero" class="hero-landingg">
-    <div class="weight" style="font-family:'AlteZachen Normal'">פיצ׳רים</div>
-  <img src="hero3.webp" class="hero-media" alt="">
-</section>
-
-
-
-
-<!-- ================== GLYPH GRID ================== -->
 <section class="section white glyphs-shell" id="glyphs">
   <div class="glyphs-wrap">
     <div class="preview-col">
       <div class="preview-box"><div id="bigGlyph" class="preview-glyph" aria-live="polite">א</div></div>
       <div class="preview-meta"><span id="glyphName">HEBREW LETTER ALEF</span><span id="glyphCode">U+05D0</span></div>
       <div class="tabs" role="tablist" aria-label="Weights">
-        <button class="tab"        data-face="AlteZachen Wide"     style="font-family:'AlteZachen Wide'">רחב</button>
-        <button class="tab"        data-face="AlteZachen HalfWide" style="font-family:'AlteZachen HalfWide'">חצי־רחב</button>
-        <button class="tab active" data-face="AlteZachen Normal"   style="font-family:'AlteZachen Normal'">נורמל</button>
+        <button class="tab" data-face="AlteZachen Wide" style="font-family:'AlteZachen Wide'">רחב</button>
+        <button class="tab" data-face="AlteZachen HalfWide" style="font-family:'AlteZachen HalfWide'">חצי־רחב</button>
+        <button class="tab active" data-face="AlteZachen Normal" style="font-family:'AlteZachen Normal'">נורמל</button>
       </div>
     </div>
     <div class="grid-col" id="gridCol">
@@ -381,83 +244,27 @@ a.tbtn:active{
   </div>
 </section>
 
-<!-- takeover -->
-<!-- <section class="about-stage" id="about">
-  <div class="about-stick">
-    <div class="about-content">
-      אלטע זאכן הוא פונט עברי בהשראת לטרינג וכרזות מודפסות משנות ה־30 וה־40... שלושה משקלים — נורמל, חצי־רחב, רחב — ולצידם “רנדום”.
-    </div>
-  </div>
-</section> -->
-
-<section id="hero" class="hero-landing">
-  <br><br>
-  <img src="hero4.webp" class="hero-media" alt="">
-   <div class="weightt" style="font-family:'AlteZachen Random'">HAFONTIA/ALON TAYAR (2025)©</div>
-   <br><br>
+<!-- ================== HERO4 (חתימה) ================== -->
+<section id="heroRed">
+  <br><img src="hero4.webp" class="hero-media" alt="">
+  <div class="weight" style="font-family:'AlteZachen Random';color:#fff">HAFONTIA / ALON TAYAR (2025)©</div><br>
 </section>
-
-<!-- ================== TYPE TESTER ================== -->
-
-<div class="tester" id="tester" aria-hidden="true">
-  <div class="tester-bar">
-    <div class="tbar-grid">
-      <!-- היה כאן close; עכשיו רכישה מצד שמאל/תחילת השורה -->
-      <div class="tbar-close">
-        <a class="tbtn buy-top" id="buyInside" href="https://hafontia.com/family/altezachen/" target="_blank" rel="noopener">רכישה</a>
-      </div>
-
-      <div class="tbar-weights">
-        <!-- desktop weight buttons -->
-        <div class="tweights" id="testerWeights">
-          <button class="tbtn" data-face="AlteZachen Normal">נורמל</button>
-          <button class="tbtn" data-face="AlteZachen HalfWide">חצי־רחב</button>
-          <button class="tbtn" data-face="AlteZachen Wide">רחב</button>
-          <button class="tbtn active" data-face="AlteZachen Random">רנדום</button>
-        </div>
-        <!-- mobile weight row -->
-        <div class="m-weights" id="mWeights">
-          <button data-face="AlteZachen Normal">נורמל</button>
-          <span class="sep">|</span>
-          <button data-face="AlteZachen HalfWide">חצי־רחב</button>
-          <span class="sep">|</span>
-          <button data-face="AlteZachen Wide">רחב</button>
-          <span class="sep">|</span>
-          <button data-face="AlteZachen Random" class="active">רנדום</button>
-        </div>
-      </div>
-
-      <!-- היה כאן buy; עכשיו סגירה מצד ימין/סוף השורה -->
-      <div class="tbar-buy">
-        <button class="tbtn close-top" id="closeTester">סגירה</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="testerText" class="tester-text" contenteditable="true" spellcheck="false">סברינה קרפנטר המלכה!!!1</div>
-
-  <div class="tester-foot">
-    <!-- החלפת סדר הכפתורים גם בפוטר -->
-    <button class="tbtn" id="closeMobile">סגירה</button>
-    <a class="tbtn" id="buyMobile" href="https://hafontia.com/family/altezachen/" target="_blank" rel="noopener">רכישה</a>
-  </div>
-</div>
-
-
-
-
-
 
 <!-- tap preview for mobile grid -->
 <div class="touch-preview" id="touchPreview" aria-hidden="true"><div class="tp-glyph" id="tpGlyph">א</div></div>
 
 <script>
-/* ===== Header reveal only after hero red ends ===== */
-(()=>{const head=document.getElementById('siteHead'), hero=document.getElementById('hero');
-function sync(){const cut=hero?hero.offsetTop+hero.offsetHeight-1:0; if(pageYOffset>cut) head.classList.add('show'); else head.classList.remove('show');}
-addEventListener('scroll',sync,{passive:true}); addEventListener('resize',sync); document.addEventListener('DOMContentLoaded',sync);})();
+/* ===== Header reveal only after the first red hero ===== */
+(()=>{ const head=document.getElementById('siteHead'); const sent=document.getElementById('heroSentinel');
+  if('IntersectionObserver' in window && head && sent){
+    const io=new IntersectionObserver(es=>{
+      es.forEach(e=>{ if(e.isIntersecting){ head.classList.add('show'); io.unobserve(sent); } });
+    },{threshold:0});
+    io.observe(sent);
+  } else { window.addEventListener('load',()=>head.classList.add('show')); }
+})();
 
-/* ===== GLYPH DATA (4 קטגוריות) ===== */
+/* ===== GLYPH GRID DATA ===== */
 const HEB1="אבגדהוזחטיכךלמםנןסעפףצץקרשת";
 const HEB2="אַ אָ אּ בּ גּ דּ הּ וּ וֹ זּ טּ יּ ךּ כּ לּ מּ נּ סּ ףּ פּ צּ קּ רּ שּ שׁ שׂ שּׁ שּׂ תּ";
 const LAT1="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -486,7 +293,7 @@ const CATS=[
   ] }
 ];
 
-/* ===== GRID BUILD ===== */
+/* ===== GLYPH GRID BUILD ===== */
 let currentFace="AlteZachen Normal";
 const catsHolder=document.getElementById('cats'), gridCol=document.getElementById('gridCol');
 const bigGlyph=document.getElementById('bigGlyph'), glyphName=document.getElementById('glyphName'), glyphCode=document.getElementById('glyphCode');
@@ -554,7 +361,7 @@ const HEB_NAMES={"א":"HEBREW LETTER ALEF","ב":"HEBREW LETTER BET","ג":"HEBREW
 function nameOf(ch){ if(HEB_NAMES[ch])return HEB_NAMES[ch]; const cp=ch.codePointAt(0); if(ch>='A'&&ch<='Z')return"LATIN CAPITAL LETTER "+ch; if(ch>='0'&&ch<='9')return"DIGIT "+ch; let h=cp.toString(16).toUpperCase(); while(h.length<4)h="0"+h; return"U+"+h }
 function codeOf(ch){ let h=ch.codePointAt(0).toString(16).toUpperCase(); while(h.length<4)h="0"+h; return"U+"+h }
 
-/* Mobile tap preview */
+/* Mobile tap overlay */
 const overlay=document.getElementById('touchPreview'), tpGlyph=document.getElementById('tpGlyph');
 function hideOverlay(){ overlay.style.display='none'; overlay.setAttribute('aria-hidden','true'); }
 function onCellTap(cell,ch,feat){
@@ -571,7 +378,7 @@ function onCellTap(cell,ch,feat){
 overlay.addEventListener('click',hideOverlay);
 addEventListener('scroll',()=>{ if(isMobile()) hideOverlay(); },{passive:true});
 
-/* tabs */
+/* tabs for big preview */
 document.querySelectorAll('.tabs .tab').forEach(t=>{
   t.addEventListener('click',function(){
     document.querySelectorAll('.tabs .tab').forEach(x=>x.classList.remove('active'));
@@ -579,52 +386,7 @@ document.querySelectorAll('.tabs .tab').forEach(t=>{
   });
 });
 
-/* ===== TYPE TESTER ===== */
-const tester=document.getElementById('tester');
-const open=document.getElementById('openTester');
-const closeTop=document.getElementById('closeTester');
-const buyTop=document.getElementById('buyInside');
-const closeMob=document.getElementById('closeMobile');
-const buyMob=document.getElementById('buyMobile');
-const tWeights=document.getElementById('testerWeights');
-const mWeights=document.getElementById('mWeights');
-const tText=document.getElementById('testerText');
-
-function openTester(){ tester.classList.add('open'); tester.setAttribute('aria-hidden','false'); requestAnimationFrame(fitTester); }
-function closeTester(){ tester.classList.remove('open'); tester.setAttribute('aria-hidden','true'); }
-if(open) open.onclick=openTester;
-if(closeTop) closeTop.onclick=closeTester;
-if(buyTop) buyTop.onclick=()=>location.href='#';
-if(closeMob) closeMob.onclick=closeTester;
-if(buyMob) buyMob.onclick=()=>location.href='#';
-
-/* desktop weights */
-tWeights.querySelectorAll('button').forEach(btn=>{
-  btn.onclick=()=>{ tText.style.fontFamily='"'+btn.dataset.face+'",system-ui'; fitTester(); };
-});
-/* mobile weights — active = red, font = HalfWide */
-mWeights.querySelectorAll('button').forEach(btn=>{
-  btn.onclick=()=>{ mWeights.querySelectorAll('button').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); tText.style.fontFamily='"'+btn.dataset.face+'",system-ui'; fitTester(); };
-});
-
-/* grow text to max (stronger) */
-function fitTester(){
-  if(matchMedia('(max-width:600px)').matches){
-    const maxW=innerWidth*0.95, maxH=innerHeight*0.82;
-    let size=Math.min(maxW,maxH); tText.style.fontSize=size+'px';
-    let guard=90; while(guard-- && tText.scrollWidth<maxW*0.92 && tText.scrollHeight<maxH*0.9){ size*=1.14; tText.style.fontSize=size+'px'; }
-    guard=50; while(guard-- && (tText.scrollWidth>maxW || tText.scrollHeight>maxH)){ size*=0.94; tText.style.fontSize=size+'px'; }
-  }else{
-    const maxW=innerWidth*0.98, maxH=innerHeight*0.84;
-    let size=Math.min(820, maxH); tText.style.fontSize=size+'px';
-    let guard=80; while(guard-- && tText.scrollWidth<maxW*0.96 && tText.scrollHeight<maxH*0.94){ size+=24; tText.style.fontSize=size+'px'; }
-    guard=40; while(guard-- && (tText.scrollWidth>maxW || tText.scrollHeight>maxH)){ size-=14; tText.style.fontSize=size+'px'; }
-  }
-}
-tText.addEventListener('input',()=>requestAnimationFrame(fitTester));
-addEventListener('resize',()=>{ if(tester.classList.contains('open')) requestAnimationFrame(fitTester); });
-
-/* ===== Build glyph grid ===== */
+/* ===== Build glyph grid on load/resize ===== */
 function colsPerRow(){ return matchMedia('(max-width:600px)').matches?10:15; }
 function measureCell(){
   const cols=colsPerRow(); const w=gridCol.clientWidth||innerWidth;
@@ -633,9 +395,19 @@ function measureCell(){
 addEventListener('resize',()=>{ measureCell(); buildCats(); });
 document.addEventListener('DOMContentLoaded',()=>{ measureCell(); buildCats(); });
 
-/* helpers */
-function nameOf(ch){ if(HEB_NAMES[ch])return HEB_NAMES[ch]; const cp=ch.codePointAt(0); if(ch>='A'&&ch<='Z')return"LATIN CAPITAL LETTER "+ch; if(ch>='0'&&ch<='9')return"DIGIT "+ch; let h=cp.toString(16).toUpperCase(); while(h.length<4)h="0"+h; return"U+"+h }
-function codeOf(ch){ let h=ch.codePointAt(0).toString(16).toUpperCase(); while(h.length<4)h="0"+h; return"U+"+h }
+/* ===== INLINE TYPE TESTERS LOGIC ===== */
+function applyInlineWeight(row, face){
+  const txt=row.querySelector('.text');
+  txt.style.fontFamily = `"${face}","AlteZachen HalfWide","AlteZachen Normal",system-ui,sans-serif`;
+  row.querySelectorAll('.weights button').forEach(b=> b.classList.toggle('active', b.dataset.face===face));
+}
+document.querySelectorAll('[data-tt]').forEach(row=>{
+  // דיפולט: רנדום
+  applyInlineWeight(row,'AlteZachen Random');
+  row.querySelectorAll('.weights button').forEach(btn=>{
+    btn.addEventListener('click',()=> applyInlineWeight(row, btn.dataset.face));
+  });
+});
 </script>
 </body>
 </html>
