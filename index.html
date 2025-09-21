@@ -39,7 +39,7 @@
 /* ===== Base ===== */
 :root{
   --red:#ff0000;
-  --grey:#f4f6f8; /* בהיר יותר */
+  --grey:#f6f8fa;
   --black:#000;
   --page-max:1400px;
 }
@@ -70,20 +70,27 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, Segoe UI, Arial,
 /* ===== WHITE SECTION ===== */
 .white{background:#fff; padding:min(6vh,80px) clamp(12px,4vw,40px);}
 
-/* ===== One DINAMO-like tester ===== */
+/* ===== DINAMO-like tester (מתוקן) ===== */
 .tester{
   background:var(--grey);
   border-radius:14px;
-  box-shadow: inset 0 0 0 1px #e2e6ea;
+  /* בלי מסגרת/צל */
   padding: clamp(10px, 2vw, 18px);
   margin-block: clamp(18px, 4vw, 44px);
 }
 .tester .tt-controls{
-  display:flex; gap: clamp(8px,1.2vw,16px);
-  align-items:center; justify-content:space-between;
-  flex-wrap:wrap; margin-bottom: clamp(8px,1.6vw,18px);
+  display:flex;
+  flex-direction:row-reverse;         /* כפתורי המשקל בצד ימין */
+  justify-content:space-between; 
+  align-items:center;
+  gap: clamp(8px,1.2vw,16px);
+  flex-wrap:wrap;
+  margin-bottom: clamp(8px,1.6vw,18px);
 }
-.tester .tt-weights{display:flex; gap:8px; flex-wrap:wrap}
+.tester .tt-weights{
+  display:flex; gap:8px; flex-wrap:wrap;
+  justify-content:flex-start;         /* לא באמצע */
+}
 
 /* כפתורי משקלים — HalfWide */
 .tester .tt-btn{
@@ -100,7 +107,7 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, Segoe UI, Arial,
 /* סליידר קצר יותר — קו שחור דק + עיגול שחור */
 .tester .tt-slider{display:flex; align-items:center; gap:10px}
 .tester input[type="range"]{
-  width:min(30vw, 300px); /* קצר יותר */
+  width:min(30vw, 300px);
   -webkit-appearance:none; appearance:none; background:transparent;
 }
 .tester input[type="range"]::-webkit-slider-runnable-track{height:2px;background:#000;border-radius:2px}
@@ -108,34 +115,47 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, Segoe UI, Arial,
 .tester input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;border-radius:50%;background:#000;border:0;margin-top:-7px}
 .tester input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#000;border:0}
 
-/* קנבס — למלא את הרוחב תמיד, בלי עמודות */
+/* מעטפת ומשטח טקסט */
+.tester .tt-shell{
+  min-height:28vh;             /* יותר גבוה כדי שלא ייחתך */
+  max-height:42vh;
+  overflow:auto;               /* אם בכל זאת גבוה מדי — גלילה פנימית */
+  border-radius:10px;
+  background:var(--grey);
+}
+
 .tester .tt-canvas{
+  /* מילוי רוחב תמיד, שורה אחת */
+  white-space: nowrap;
+  display:block;
+
+  /* טיפוגרפיה */
   --f: 180px;
   font-size: var(--f);
-  line-height: 0.92;
-  font-family: "AlteZachen-Random", system-ui, sans-serif;
-  color:#000; background:var(--grey); border-radius:10px;
+  line-height: 1;               /* לא ייחתך אנכית */
+  font-kerning: normal;
+  font-feature-settings: "kern" 1, "liga" 1;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 
+  font-family: "AlteZachen-Random", system-ui, sans-serif;
+  color:#000; background:transparent;
+
+  /* יישור לימין */
+  text-align:right; direction:rtl;
+
+  /* רווח צד קטן */
   padding-inline: clamp(6px,1.2vw,10px);
   padding-block: clamp(8px,1.5vw,14px);
 
-  /* למלא רוחב שורה אחת */
-  white-space: nowrap;
-  overflow: hidden;           /* לא לשבור שורה; ננהל גובה בנפרד */
-  display:block;
-}
-
-/* גובה ברירת־מחדל + גדילה קטנה לפי הסליידר */
-.tester .tt-shell{
-  min-height:24vh;            /* בסיס */
-  max-height:34vh;            /* יעלה עם הסליידר */
-  overflow:auto;              /* גלילה פנימית אם צריך */
+  /* חשוב כדי שלא נראה חצי שורה: */
+  overflow: visible;
 }
 
 @media (max-width: 700px){
   .site-header img{height:24px}
   .hero-wrap{padding-block:40px 56px}
-  .tester .tt-shell{min-height:30vh; max-height:40vh}
+  .tester .tt-shell{min-height:34vh; max-height:50vh}
 }
 </style>
 </head>
@@ -185,7 +205,7 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, Segoe UI, Arial,
 <!-- ===== JS ===== -->
 <script>
 (function(){
-  const tester = document.querySelector('.tester');
+  const tester  = document.querySelector('.tester');
   if(!tester) return;
 
   const range   = tester.querySelector('input[type="range"]');
@@ -194,9 +214,7 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, Segoe UI, Arial,
   const buttons = tester.querySelectorAll('.tt-btn');
   const defFont = tester.getAttribute('data-default-font') || 'AlteZachen-Random';
 
-  // baseline לגודל עבור 4 תווים — שלא נגדל מעבר לזה כשיש פחות מ-4
-  let sizeForFour = null;
-
+  // ברירת־מחדל למשקל
   canvas.style.fontFamily = `"${defFont}", system-ui, sans-serif`;
   buttons.forEach(b=>{
     b.classList.toggle('active', b.dataset.font === defFont);
@@ -208,67 +226,51 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, Segoe UI, Arial,
     });
   });
 
-  // הסליידר שולט רק על מקס-גובה (מאפשר לגדול קצת מטה)
+  // הסליידר שולט על max-height בלבד
   const applyMaxHeight = () =>{
-    const minH = getComputedStyle(shell).getPropertyValue('--minH');
-    // נבחר סקאלה פשוטה בין min/max הקיימים ב-CSS
     const isMobile = window.matchMedia('(max-width:700px)').matches;
-    const baseMin = isMobile ? 30 : 24; // vh
-    const baseMax = isMobile ? 40 : 34; // vh
-    const t = +range.value / 100;       // 0..1
+    const baseMin = isMobile ? 34 : 28; // vh
+    const baseMax = isMobile ? 50 : 42; // vh
+    const t = +range.value / 100;
     const vh = Math.round(baseMin + (baseMax-baseMin)*t);
     shell.style.maxHeight = vh + 'vh';
   };
   applyMaxHeight();
   range.addEventListener('input', applyMaxHeight);
 
-  // פונקציה שמתאימה את גודל הפונט כדי למלא את כל הרוחב
+  // התאמת גודל לכל רוחב (גם תו בודד ממלא)
   function fitText(){
-    const txt = canvas.textContent.trim() || 'אלטע זאכן';
-    const len = [...txt].length;
+    const txt = (canvas.textContent || '').trim() || 'אלטע זאכן';
 
-    // גבולות לחיפוש בינארי
-    const min = 24;        // לא נרד מתחת
-    const max = 720;       // תקרה סבירה
-    const padInline = parseFloat(getComputedStyle(canvas).paddingInlineStart) +
-                      parseFloat(getComputedStyle(canvas).paddingInlineEnd);
-    const target = canvas.clientWidth - padInline;
+    // חישוב לפי רוחב זמין (כולל padding)
+    const padInline =
+      parseFloat(getComputedStyle(canvas).paddingInlineStart) +
+      parseFloat(getComputedStyle(canvas).paddingInlineEnd);
+    const target = Math.max(10, canvas.clientWidth - padInline);
 
-    // מכשיר עזר למדידה
+    // מודד בלתי־נראה
     const meas = document.createElement('span');
-    meas.style.whiteSpace = 'nowrap';
-    meas.style.visibility = 'hidden';
-    meas.style.position = 'absolute';
-    meas.style.pointerEvents = 'none';
-    meas.style.fontFamily = getComputedStyle(canvas).fontFamily;
-    meas.style.letterSpacing = getComputedStyle(canvas).letterSpacing;
+    Object.assign(meas.style, {
+      whiteSpace:'nowrap',
+      visibility:'hidden',
+      position:'absolute',
+      pointerEvents:'none',
+      fontFamily:getComputedStyle(canvas).fontFamily,
+      letterSpacing:getComputedStyle(canvas).letterSpacing
+    });
     meas.textContent = txt;
     document.body.appendChild(meas);
 
-    // אם טרם חושב baseline ל-4 תווים – חשב פעם אחת
-    if(sizeForFour === null){
-      sizeForFour = computeSize('אלטע');
+    // חיפוש בינארי
+    let lo=24, hi=900, best=24;
+    while(lo<=hi){
+      const mid = Math.floor((lo+hi)/2);
+      meas.style.fontSize = mid+'px';
+      const w = meas.getBoundingClientRect().width;
+      if(w<=target){ best=mid; lo=mid+1; } else { hi=mid-1; }
     }
-
-    // חישוב הגודל המתאים לטקסט הנוכחי
-    const computed = computeSize(txt);
-    const finalSize = (len < 4) ? Math.min(computed, sizeForFour) : computed;
-
-    canvas.style.setProperty('--f', finalSize + 'px');
-
+    canvas.style.setProperty('--f', best + 'px');
     document.body.removeChild(meas);
-
-    function computeSize(sample){
-      let lo=min, hi=max, best=min;
-      meas.textContent = sample;
-      while(lo<=hi){
-        const mid = Math.floor((lo+hi)/2);
-        meas.style.fontSize = mid+'px';
-        const w = meas.getBoundingClientRect().width;
-        if(w<=target){ best=mid; lo=mid+1; } else { hi=mid-1; }
-      }
-      return best;
-    }
   }
 
   // טריגרים
