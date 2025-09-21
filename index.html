@@ -70,29 +70,28 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, Segoe UI, Arial,
 /* ===== WHITE SECTION ===== */
 .white{background:#fff; padding:min(6vh,80px) clamp(12px,4vw,40px);}
 
-/* ===== DINAMO-like tester (מתוקן) ===== */
-.tester{
-  background:var(--grey);
-  border-radius:14px;
-  /* בלי מסגרת/צל */
-  padding: clamp(10px, 2vw, 18px);
-  margin-block: clamp(18px, 4vw, 44px);
-}
-.tester .tt-controls{
-  display:flex;
-  flex-direction:row-reverse;         /* כפתורי המשקל בצד ימין */
-  justify-content:space-between; 
-  align-items:center;
-  gap: clamp(8px,1.2vw,16px);
-  flex-wrap:wrap;
-  margin-bottom: clamp(8px,1.6vw,18px);
-}
-.tester .tt-weights{
-  display:flex; gap:8px; flex-wrap:wrap;
-  justify-content:flex-start;         /* לא באמצע */
+/* ===== Tester (one) — no slider, centered text, grey outer frame ===== */
+
+/* עוטף כדי למרכז את הקופסה עצמה */
+.tester-section{
+  text-align:center;      /* מרכז את הקופסה האפורה */
 }
 
-/* כפתורי משקלים — HalfWide */
+/* הקופסה האפורה החיצונית עם פינות מעוגלות — HUGS CONTENT */
+.tester{
+  display:inline-block;           /* שיצמד לגודל התוכן */
+  background:var(--grey);
+  border-radius:14px;
+  padding: clamp(12px, 2vw, 20px);  /* ריווח של המסגרת, לא של הטקסט */
+  margin-block: clamp(18px, 4vw, 44px);
+  max-width: 92vw;                 /* לא לפרוץ מסך */
+}
+
+/* כפתורי המשקלים — ממורכזים בתוך הקופסה האפורה */
+.tester .tt-weights{
+  display:flex; justify-content:center; align-items:center;
+  gap:10px; flex-wrap:wrap; margin-bottom: clamp(10px, 2vw, 18px);
+}
 .tester .tt-btn{
   font-family:"AlteZachen-HalfWide", system-ui, sans-serif;
   font-size: clamp(12px,1.25vw,16px);
@@ -104,58 +103,41 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, Segoe UI, Arial,
 }
 .tester .tt-btn.active{background:var(--red); color:#fff; border-color:var(--red);}
 
-/* סליידר קצר יותר — קו שחור דק + עיגול שחור */
-.tester .tt-slider{display:flex; align-items:center; gap:10px}
-.tester input[type="range"]{
-  width:min(30vw, 300px);
-  -webkit-appearance:none; appearance:none; background:transparent;
-}
-.tester input[type="range"]::-webkit-slider-runnable-track{height:2px;background:#000;border-radius:2px}
-.tester input[type="range"]::-moz-range-track{height:2px;background:#000;border-radius:2px}
-.tester input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;border-radius:50%;background:#000;border:0;margin-top:-7px}
-.tester input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#000;border:0}
-
-/* מעטפת ומשטח טקסט */
-.tester .tt-shell{
-  min-height:28vh;             /* יותר גבוה כדי שלא ייחתך */
-  max-height:42vh;
-  overflow:auto;               /* אם בכל זאת גבוה מדי — גלילה פנימית */
-  border-radius:10px;
-  background:var(--grey);
-}
-
+/* משטח הטקסט — מיושר לאמצע, ללא מסגרת/צל, והקופסה חובקת אותו */
 .tester .tt-canvas{
-  /* מילוי רוחב תמיד, שורה אחת */
-  white-space: nowrap;
-  display:block;
-
   /* טיפוגרפיה */
-  --f: 180px;
+  --f: clamp(48px, 14vw, 220px);   /* גודל דיפולט רספונסיבי */
   font-size: var(--f);
-  line-height: 1;               /* לא ייחתך אנכית */
+  line-height: 1;
   font-kerning: normal;
   font-feature-settings: "kern" 1, "liga" 1;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 
-  font-family: "AlteZachen-Random", system-ui, sans-serif;
+  font-family:"AlteZachen-Random", system-ui, sans-serif;
   color:#000; background:transparent;
 
-  /* יישור לימין */
-  text-align:right; direction:rtl;
+  /* מיושר לאמצע */
+  text-align:center; direction:rtl;
 
-  /* רווח צד קטן */
-  padding-inline: clamp(6px,1.2vw,10px);
-  padding-block: clamp(8px,1.5vw,14px);
-
-  /* חשוב כדי שלא נראה חצי שורה: */
+  /* הטקסט עצמו “חופשי” בתוך המסגרת */
+  display:inline-block;           /* שיגדיר את רוחב הקופסה */
+  width: fit-content;
+  max-width: 90vw;               /* כדי לא לפרוץ מסך */
+  white-space: normal;           /* מותר לשבור שורה */
+  word-break: break-word;        /* שבירה בטוחה במילים ארוכות */
   overflow: visible;
+
+  /* רווחים פנימיים קטנים סביב הטקסט */
+  padding: 4px 8px;
 }
 
-@media (max-width: 700px){
+/* מובייל: תיקון גדלים */
+@media (max-width:700px){
   .site-header img{height:24px}
   .hero-wrap{padding-block:40px 56px}
-  .tester .tt-shell{min-height:34vh; max-height:50vh}
+  .tester .tt-btn{font-size: clamp(12px,3.8vw,15px); padding:7px 9px}
+  .tester .tt-canvas{ --f: clamp(44px, 18vw, 180px); max-width: 94vw }
 }
 </style>
 </head>
@@ -181,22 +163,16 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, Segoe UI, Arial,
 <!-- ===== MAIN ===== -->
 <main class="white" aria-label="Main">
 
-  <!-- Tester אחד -->
-  <section class="tester" data-default-font="AlteZachen-Random">
-    <div class="tt-controls">
+  <!-- Tester אחד — ללא סליידר, הטקסט ממורכז, המסגרת האפורה חובקת את התוכן -->
+  <section class="tester-section">
+    <div class="tester" data-default-font="AlteZachen-Random">
       <div class="tt-weights">
         <button class="tt-btn" data-font="AlteZachen-Normal">נורמל</button>
         <button class="tt-btn" data-font="AlteZachen-HalfWide">חצי־רחב</button>
         <button class="tt-btn" data-font="AlteZachen-Wide">רחב</button>
         <button class="tt-btn active" data-font="AlteZachen-Random">רנדום</button>
       </div>
-      <div class="tt-slider">
-        <input type="range" min="0" max="100" step="1" value="50" />
-      </div>
-    </div>
-
-    <div class="tt-shell">
-      <div class="tt-canvas" contenteditable="true">אלטע זאכן</div>
+      <div class="tt-canvas" contenteditable="true" spellcheck="false">אלטע זאכן</div>
     </div>
   </section>
 
@@ -208,13 +184,11 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, Segoe UI, Arial,
   const tester  = document.querySelector('.tester');
   if(!tester) return;
 
-  const range   = tester.querySelector('input[type="range"]');
-  const shell   = tester.querySelector('.tt-shell');
   const canvas  = tester.querySelector('.tt-canvas');
   const buttons = tester.querySelectorAll('.tt-btn');
   const defFont = tester.getAttribute('data-default-font') || 'AlteZachen-Random';
 
-  // ברירת־מחדל למשקל
+  // set default font
   canvas.style.fontFamily = `"${defFont}", system-ui, sans-serif`;
   buttons.forEach(b=>{
     b.classList.toggle('active', b.dataset.font === defFont);
@@ -222,61 +196,8 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, Segoe UI, Arial,
       buttons.forEach(x=>x.classList.remove('active'));
       b.classList.add('active');
       canvas.style.fontFamily = `"${b.dataset.font}", system-ui, sans-serif`;
-      fitText();
     });
   });
-
-  // הסליידר שולט על max-height בלבד
-  const applyMaxHeight = () =>{
-    const isMobile = window.matchMedia('(max-width:700px)').matches;
-    const baseMin = isMobile ? 34 : 28; // vh
-    const baseMax = isMobile ? 50 : 42; // vh
-    const t = +range.value / 100;
-    const vh = Math.round(baseMin + (baseMax-baseMin)*t);
-    shell.style.maxHeight = vh + 'vh';
-  };
-  applyMaxHeight();
-  range.addEventListener('input', applyMaxHeight);
-
-  // התאמת גודל לכל רוחב (גם תו בודד ממלא)
-  function fitText(){
-    const txt = (canvas.textContent || '').trim() || 'אלטע זאכן';
-
-    // חישוב לפי רוחב זמין (כולל padding)
-    const padInline =
-      parseFloat(getComputedStyle(canvas).paddingInlineStart) +
-      parseFloat(getComputedStyle(canvas).paddingInlineEnd);
-    const target = Math.max(10, canvas.clientWidth - padInline);
-
-    // מודד בלתי־נראה
-    const meas = document.createElement('span');
-    Object.assign(meas.style, {
-      whiteSpace:'nowrap',
-      visibility:'hidden',
-      position:'absolute',
-      pointerEvents:'none',
-      fontFamily:getComputedStyle(canvas).fontFamily,
-      letterSpacing:getComputedStyle(canvas).letterSpacing
-    });
-    meas.textContent = txt;
-    document.body.appendChild(meas);
-
-    // חיפוש בינארי
-    let lo=24, hi=900, best=24;
-    while(lo<=hi){
-      const mid = Math.floor((lo+hi)/2);
-      meas.style.fontSize = mid+'px';
-      const w = meas.getBoundingClientRect().width;
-      if(w<=target){ best=mid; lo=mid+1; } else { hi=mid-1; }
-    }
-    canvas.style.setProperty('--f', best + 'px');
-    document.body.removeChild(meas);
-  }
-
-  // טריגרים
-  fitText();
-  window.addEventListener('resize', fitText);
-  canvas.addEventListener('input', fitText);
 })();
 </script>
 
