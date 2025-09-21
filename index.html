@@ -1,407 +1,281 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="format-detection" content="telephone=no">
-<title>אלטע זאכן — Alte Zachen</title>
-<meta name="theme-color" content="#ff0000">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>אלטע זאכן — Specimen</title>
 
-<!-- ===== FONTS (קבצי woff/woff2 בשורש) ===== -->
+<!-- ===== FONTS (root files, no folders) ===== -->
 <style>
-@font-face{font-family:"AlteZachen Normal";src:url("AlteZachen-Normal.woff2") format("woff2"),url("AlteZachen-Normal.woff") format("woff");font-display:swap}
-@font-face{font-family:"AlteZachen HalfWide";src:url("AlteZachen-HalfWide.woff2") format("woff2"),url("AlteZachen-HalfWide.woff") format("woff");font-display:swap}
-@font-face{font-family:"AlteZachen Wide";src:url("AlteZachen-Wide.woff2") format("woff2"),url("AlteZachen-Wide.woff") format("woff");font-display:swap}
-@font-face{font-family:"AlteZachen Random";src:url("AlteZachen-Random.woff2") format("woff2"),url("AlteZachen-Random.woff") format("woff");font-display:swap}
+@font-face{
+  font-family:"AlteZachen-Normal";
+  src:
+    url("AlteZachen-Normal.woff2") format("woff2"),
+    url("AlteZachen-Normal.woff") format("woff"),
+    url("AlteZachen-Normal.otf") format("opentype");
+  font-display:swap;
+}
+@font-face{
+  font-family:"AlteZachen-HalfWide";
+  src:
+    url("AlteZachen-HalfWide.woff2") format("woff2"),
+    url("AlteZachen-HalfWide.woff") format("woff"),
+    url("AlteZachen-HalfWide.otf") format("opentype");
+  font-display:swap;
+}
+@font-face{
+  font-family:"AlteZachen-Wide";
+  src:
+    url("AlteZachen-Wide.woff2") format("woff2"),
+    url("AlteZachen-Wide.woff") format("woff"),
+    url("AlteZachen-Wide.otf") format("opentype");
+  font-display:swap;
+}
+@font-face{
+  font-family:"AlteZachen-Random";
+  src:
+    url("AlteZachen-Random.woff2") format("woff2"),
+    url("AlteZachen-Random.woff") format("woff"),
+    url("AlteZachen-Random.otf") format("opentype");
+  font-display:swap;
+}
 
+/* ===== Base ===== */
 :root{
-  --red:#ff0000; --black:#000; --white:#fff;
-  --header-h:60px; --icon-h-desktop:28px; --icon-h-mobile:18px;
-  --grid-pad:6vw;
+  --red:#ff0000;
+  --black:#000;
+  --page-max:1400px;
 }
+html,body{margin:0;background:#fff;color:#000}
+body{font-family:"AlteZachen-Normal", system-ui, -apple-system, Segoe UI, Arial, sans-serif}
 
-/* Reset */
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:#fff;color:#000;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial;line-height:1.2;text-align:center}
-img{display:block;max-width:100%;height:auto}
-
-/* ================== STICKY HEADER ================== */
-.site-head{
-  position:fixed;top:0;left:0;right:0;z-index:1000;
+/* ===== Sticky header (פשוט, רק לוגו בימין) ===== */
+.site-header{
+  position:sticky; top:-1px; z-index:50;
   background:var(--red); border-bottom:1px solid #000;
-  transform:translateY(-110%); transition:transform .35s ease;
+  padding:8px 10px; display:flex; align-items:center; justify-content:flex-end;
 }
-.site-head.show{ transform:translateY(0) }
-.head-inner{
-  direction:ltr;
-  width:100%;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:6px 8px; gap:8px;
+.site-header .logo-link{display:inline-flex; align-items:center}
+.site-header img{height:28px; width:auto; display:block;}
+
+/* ===== HERO (תמונה במרכז, לגלילה אנכית) ===== */
+.hero-red{background:var(--red);}
+.hero-wrap{
+  max-width:min(92vw, var(--page-max));
+  margin-inline:auto;
+  padding-block: min(6vh, 80px) min(8vh, 120px);
 }
-.head-right{display:flex;align-items:center;justify-content:flex-end;flex:1}
-.head-logo{display:inline-flex;align-items:center;text-decoration:none;padding:2px 6px}
-.head-logo img{height:calc(var(--icon-h-desktop)*.95);width:auto;display:block} /* 95% */
-@media (max-width:600px){
-  .head-inner{padding:6px 8px}
-  .head-logo img{height:calc(var(--icon-h-mobile)*.95)} /* 95% גם במובייל */
-}
-
-/* ========= SECTIONS ========= */
-.section{
-  padding-block: clamp(40px,8vw,100px);
-  padding-inline: clamp(30px,9vw,100px);
-  max-width:min(1700px,95vw);
-  margin:0 auto;background:#fff;text-align:inherit;
-}
-.wrap{max-width:1420px;margin:0 auto}
-
-/* ========= HERO (אדום + תמונה) ========= */
-#heroRed{background:#ff0000;padding:0;margin:0;width:100vw}
-#heroRed .hero-media{display:block;margin:0 auto;width:min(92vw,1600px);max-width:92vw;height:auto;object-fit:contain}
-@media (max-width:767px){#heroRed .hero-media{width:100vw;max-width:100vw;height:auto}}
-/* סמן סוף ה־Hero לזיהוי ההדר */
-.hero-sentinel{height:1px}
-
-/* ========= HERO2 (לבן + תמונה) ========= */
-#hero2{background:#ffffff;padding:0;margin:0;width:100vw}
-#hero2 .hero-media{display:block;margin:0 auto;width:min(92vw,1600px);max-width:92vw;height:auto;object-fit:contain}
-@media (max-width:767px){#hero2 .hero-media{width:100vw;max-width:100vw;height:auto}}
-
-/* specimen blocks (קיים) */
-.huge{font-size:12vw;line-height:.7;margin:0}
-.big{font-size:9vw;line-height:.7;margin:.06em 0}
-.mid{font-size:6vw;line-height:.96;margin:.1em 0}
-@media (min-width:1200px){.huge{font-size:160px}.big{font-size:300px}.mid{font-size:120px}}
-.weight{font-size:24px;font-weight:700;margin-bottom:8px}
-@media (max-width:600px){.weight{font-size:14px;margin-bottom:4px}}
-
-/* ===== GLYPH GRID (כמו אצלך) ===== */
-.glyphs-shell{padding-left:var(--grid-pad);padding-right:var(--grid-pad)}
-.glyphs-wrap{display:flex;gap:16px;align-items:flex-start;direction:ltr}
-.preview-col{flex:0 0 38%;max-width:700px;min-width:300px;position:sticky;top:16px}
-.grid-col{flex:1 1 auto;min-width:320px}
-.cell.filler{background:#fff}.cell.filler .glyph{display:none}
-.preview-box{width:100%;height:0;padding-bottom:100%;border:1px solid #000;background:#fff;position:relative;overflow:hidden}
-.preview-glyph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#ff0000;font-family:"AlteZachen Normal","AlteZachen Wide";line-height:1;text-align:center;font-size:30vw;transform:translateY(-16%)}
-@media (min-width:1400px){.preview-glyph{font-size:600px}}
-.preview-meta{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font:13px/1.2 Arial,Helvetica,sans-serif;color:#000}
-.tabs{display:flex;flex-direction:row-reverse;border:1px solid #000;margin-top:8px}
-.tab{flex:1 1 33%;appearance:none;border:0;margin:0;padding:.7em 1.1em;background:#fff;color:#000;cursor:pointer;font-weight:700;font-size:18px;border-left:1px solid #000}
-.tab:last-child{border-left:0}.tab.active{background:#000;color:#fff}
-@media (min-width:1024px){.tab{font-size:20px}}
-.cat{margin-bottom:24px}
-.grid{--cell:var(--cellPx);display:inline-grid;grid-template-columns:repeat(var(--cols),var(--cell));grid-auto-rows:var(--cell);gap:1px;background:#000;padding:1px}
-.cell{width:var(--cell);height:var(--cell);background:#fff;display:flex;align-items:center;justify-content:center;user-select:none;-webkit-user-select:none}
-.glyph{color:#000;line-height:1;transform:translateY(-6%);font-family:"AlteZachen Normal";font-size:calc(var(--cell)*.62);transition:color .08s ease,background-color .08s ease}
-@media (hover:hover){.cell:hover .glyph{color:#fff}.cell:hover{background:#000}}
-.sepLine{height:16px}
-@media (max-width:600px){
-  .cat{margin-bottom:12px}.sepLine{height:10px}
-  .glyphs-wrap{display:block}.preview-col{display:none!important}.grid-col{width:100%;max-width:none}
-  :root{--grid-pad:4vw}
+.hero-img{
+  display:block; margin:0 auto;
+  width:min(88vw, 1400px); height:auto;
+  max-height:none; /* ניתן לגלול כדי לראות את כולה */
+  object-fit:contain;
 }
 
-/* Mobile tap preview */
-.touch-preview{position:fixed;left:0;top:0;width:0;height:0;display:none;border:1px solid #000;background:#fff;z-index:70;align-items:center;justify-content:center;touch-action:manipulation}
-.tp-glyph{color:#000;font-family:"AlteZachen Normal";line-height:1;transform:translateY(-16%)}
+/* ===== WHITE SECTION WRAPPER ===== */
+.white{background:#fff; padding: min(6vh,80px) clamp(12px,4vw,40px);}
 
-/* ===== INLINE TYPE TESTERS (במקום החלון) ===== */
-.section.inline-tt{
-  /* תופס את כל רוחב המסך בדסקטופ – בלי שוליים אופקיים */
-  max-width:100vw; width:100vw; padding-inline:0;
+/* ===== Diatype-style TYPE TESTER (reusable) ===== */
+.tester{
+  background:#e6e9ec;
+  border-radius:14px;
+  box-shadow: inset 0 0 0 1px #cfd5da;
+  padding: clamp(10px, 2vw, 18px);
+  margin-block: clamp(18px, 4vw, 44px);
 }
-.inline-tt{ text-align:right; }
+.tester .tt-controls{
+  display:flex; gap: clamp(8px,1.2vw,16px);
+  align-items:center; justify-content:space-between;
+  flex-wrap:wrap; margin-bottom: clamp(8px,1.6vw,18px);
+}
+.tester .tt-weights{display:flex; gap:8px; flex-wrap:wrap}
+.tester .tt-btn{
+  font-family:"AlteZachen-HalfWide", system-ui, sans-serif;
+  font-size: clamp(12px,1.25vw,16px);
+  line-height:1;
+  padding:8px 10px;
+  border-radius:8px;
+  background:#fff; color:#000;
+  border:1px solid #000; cursor:pointer;
+}
+.tester .tt-btn.active{background:var(--red); color:#fff; border-color:var(--red);}
+.tester .tt-slider{display:flex; align-items:center; gap:10px}
+.tester .tt-slider span{font:500 12px/1 system-ui, sans-serif; color:#333}
+.tester input[type="range"]{width:min(46vw, 420px)}
 
-/* שורת משקלים (גדול יותר + HalfWide) */
-.inline-tt .weights{
-  display:flex;justify-content:center;align-items:center;gap:16px;
-  font-family:"AlteZachen HalfWide","AlteZachen Normal",system-ui,sans-serif;
-  font-size:clamp(18px,2.2vw,34px); line-height:1;
-  margin-bottom: clamp(12px,2vw,20px);
-  user-select:none;
-}
-/* כפתורים — טקסט נקי (בלי מסגרות) */
-.inline-tt .weights button{
-  appearance:none;background:none;border:0;cursor:pointer;
-  color:#000;padding:0;margin:0;
-}
-.inline-tt .weights .sep{opacity:.6}
-.inline-tt .weights button.active{ color:#ff0000; }
+/* אזור הטקסט */
+.tester .tt-canvas{
+  --f: 180px;                /* נשלט ב-JS */
+  font-size: var(--f);
+  line-height: 0.92;         /* צפוף ו"חגיגי" */
+  font-family: "AlteZachen-Random", system-ui, sans-serif;
+  color:#000; background:#e6e9ec; border-radius:10px;
+  /* פדינג קטן מימין ומשמאל, כבקשתך */
+  padding-inline: clamp(6px,1.2vw,10px);
+  padding-block: clamp(8px,1.5vw,14px);
+  min-height: 48vh; outline:none;
 
-/* שורת הטקסט עצמה */
-.inline-tt .text{
-  outline:none;border:0;background:transparent;color:#000;
-  font-family:"AlteZachen Random","AlteZachen HalfWide","AlteZachen Normal",system-ui,sans-serif;
-  line-height:1.02; text-align:right; white-space:pre-wrap; word-break:break-word;
-  width:100%;
-  /* שים לב: אין padding אופקי בסקשן – זה ממש עד קצות המסך */
+  /* לא שוברים מילים/אותיות באמצע */
+  word-break: keep-all;
+  overflow-wrap: normal;
+  hyphens: manual;
+
+  column-gap: clamp(18px, 2vw, 28px);
+  column-fill: balance;
 }
 
-/* גדלים לדוגמה */
-.inline-tt .text.xl{ 
-  font-size: clamp(64px, 12vw, 260px);
-  line-height: 0.9; /* קטן יותר לבלוק XL הראשון */
-}
-.inline-tt .text.md{
-  font-size: clamp(22px, 3.4vw, 40px); 
-  line-height: 1.18;
-}
-
-/* בלוק טיפוגרפיה – בלי קווי מסגרת מעל/מתחת */
-.inline-tt .tt-row{
-  /* מבוטל: border-top/bottom */
-  margin-block: clamp(8px,2vw,18px);
-  padding-block: clamp(8px,1.2vw,16px);
-}
-
-/* מובייל – קצת התאמות */
-@media (max-width:600px){
-  .inline-tt .weights{ font-size:clamp(16px,5vw,24px); gap:12px }
-  .inline-tt .text.xl{ font-size: clamp(48px, 15vw, 200px) }
-  .inline-tt .text.md{ font-size: clamp(18px, 5vw, 28px) }
+/* מסכים צרים – קנבס מעט גבוה יותר כברירת־מחדל */
+@media (max-width: 700px){
+  .site-header img{height:24px}
+  .hero-wrap{padding-block: 40px 56px}
+  .tester .tt-canvas{min-height:58vh}
 }
 </style>
 </head>
 <body>
 
-<!-- ================== HEADER (רק לוגו, ללא כפתור טייפטסטר) ================== -->
-<header class="site-head" id="siteHead" aria-label="ראש האתר">
-  <div class="head-inner">
-    <div class="head-right">
-      <a class="head-logo" href="https://hafontia.com" target="_blank" rel="noopener" aria-label="הפונטיה">
-        <img src="logoheader.webp" alt="hafontia">
-      </a>
-    </div>
-  </div>
+<!-- ===== HEADER (לוגו בלבד) ===== -->
+<header class="site-header" aria-label="Header">
+  <a class="logo-link" href="https://hafontia.com" target="_blank" rel="noopener">
+    <img src="logoheader.webp" alt="הפונטיה — לינק" />
+  </a>
 </header>
 
-<!-- ================== HERO אדום ================== -->
-<section id="heroRed">
-  <img src="hero.webp" class="hero-media" alt="">
-</section>
-<div id="heroSentinel" class="hero-sentinel" aria-hidden="true"></div>
-
-<!-- ================== HERO2 לבן ================== -->
-<section id="hero2">
-  <img src="hero2.webp" class="hero-media" alt="">
-</section>
-
-<!-- ================== INLINE TYPE TESTERS ================== -->
-<section id="inline-tt" class="section inline-tt" aria-label="טייפטסטרים">
-  <!-- בלוק 1: גדול מאוד, דיפולט 'רנדום' -->
-  <div class="tt-row" data-tt>
-    <div class="weights" role="tablist" aria-label="Weights">
-      <button type="button" data-face="AlteZachen Normal">נורמל</button>
-      <span class="sep">|</span>
-      <button type="button" data-face="AlteZachen HalfWide">חצי־רחב</button>
-      <span class="sep">|</span>
-      <button type="button" data-face="AlteZachen Wide">רחב</button>
-      <span class="sep">|</span>
-      <button type="button" data-face="AlteZachen Random" class="active">רנדום</button>
-    </div>
-    <div class="text xl" contenteditable="true" spellcheck="false">אלטע זאכן</div>
-  </div>
-
-  <!-- בלוק 2: טקסט ~100 מילים, גודל בינוני, גם כאן דיפולט 'רנדום' -->
-  <div class="tt-row" data-tt>
-    <div class="weights" role="tablist" aria-label="Weights">
-      <button type="button" data-face="AlteZachen Normal">נורמל</button>
-      <span class="sep">|</span>
-      <button type="button" data-face="AlteZachen HalfWide">חצי־רחב</button>
-      <span class="sep">|</span>
-      <button type="button" data-face="AlteZachen Wide">רחב</button>
-      <span class="sep">|</span>
-      <button type="button" data-face="AlteZachen Random" class="active">רנדום</button>
-    </div>
-    <div class="text md" contenteditable="true" spellcheck="false">
-אלטע זאכן הוא פונט תצוגה נועז, שנולד מתוך מחקר של לטרינג מודפס וכרזות שנוצרו בארץ ישראל בראשית המאה העשרים. הקונטרסט, המתח בין הפנים לחוץ, והקצב של האותיות מייצרים טקסטורה חיה שמרגישה ידנית אך מדויקת. המשקלים נעים בין נורמל, חצי־רחב ורחב, ולצדם “רנדום” — מצב שמערבב ביניהם ומייצר וריאציה בלתי צפויה. הפונט מתאים לכותרות גדולות, כרזות, עטיפות ותצוגה דיגיטלית, ובעיקר לתוכן שמבקש להעביר נוכחות תרבותית מקומית עם טוויסט עכשווי.
-    </div>
+<!-- ===== HERO (אדום) ===== -->
+<section class="hero-red" aria-label="Hero">
+  <div class="hero-wrap">
+    <picture>
+      <source srcset="hero2.webp" type="image/webp" />
+      <img class="hero-img" src="Asset 1.webp" alt="אלטע זאכן — ראש העמוד" />
+    </picture>
   </div>
 </section>
 
-<!-- ================== GLYPH GRID (נשאר כרגיל) ================== -->
-<section class="section white glyphs-shell" id="glyphs">
-  <div class="glyphs-wrap">
-    <div class="preview-col">
-      <div class="preview-box"><div id="bigGlyph" class="preview-glyph" aria-live="polite">א</div></div>
-      <div class="preview-meta"><span id="glyphName">HEBREW LETTER ALEF</span><span id="glyphCode">U+05D0</span></div>
-      <div class="tabs" role="tablist" aria-label="Weights">
-        <button class="tab" data-face="AlteZachen Wide" style="font-family:'AlteZachen Wide'">רחב</button>
-        <button class="tab" data-face="AlteZachen HalfWide" style="font-family:'AlteZachen HalfWide'">חצי־רחב</button>
-        <button class="tab active" data-face="AlteZachen Normal" style="font-family:'AlteZachen Normal'">נורמל</button>
+<!-- ===== MAIN WHITE ===== -->
+<main class="white" aria-label="Main">
+
+  <!-- === TESTER #1 — Random (ברירת מחדל) === -->
+  <section class="tester" data-default-font="AlteZachen-Random">
+    <div class="tt-controls">
+      <div class="tt-weights">
+        <button class="tt-btn active" data-font="AlteZachen-Random">רנדום</button>
+        <button class="tt-btn" data-font="AlteZachen-Normal">נורמל</button>
+        <button class="tt-btn" data-font="AlteZachen-HalfWide">חצי־רחב</button>
+        <button class="tt-btn" data-font="AlteZachen-Wide">רחב</button>
       </div>
+      <label class="tt-slider">
+        <span>Size/Layout</span>
+        <input type="range" min="28" max="340" step="1" value="190" />
+      </label>
     </div>
-    <div class="grid-col" id="gridCol">
-      <div id="cats"></div>
+    <div class="tt-canvas" contenteditable="true">
+אלטע&nbsp;זאכן. טקסט נסיוני ארוך מאוד כדי לבחון פריסה דינמית בשלוש עמודות, בלי לחתוך מילים ולעדן את התחושה הגדולה והחגיגית של המשקל. זהו בלוק דמה שמכיל משפטים רבים במכוון: אפשר לכתוב על עיצוב שלטי תעמולה ישנים, על קופסאות ג׳לטין ועל כרזות בריאות—הכול נכנס. ככל שמקטינים את הגודל, יותר שורות נחשפות, ולבסוף התוכן נפרש לשתי עמודות ואז לשלוש. אפשר להדביק כאן טקסט משלכם, למחוק, לשנות, ולבדוק מה קורה ב־RTL לעומת LTR. הטייפטסטר הזה לא שובר מילה באמצע, שומר על ריווח עמודות מאוזן, ומבצע איזון ויזואלי בקצה הימני כדי שהשורה הראשונה לא תיחתך מוזר. המשיכו לגלול, שחקו עם הסליידר, ובדקו איך הטיפוגרפיה מגיבה.
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ================== HERO4 (חתימה) ================== -->
-<section id="heroRed">
-  <br><img src="hero4.webp" class="hero-media" alt="">
-  <div class="weight" style="font-family:'AlteZachen Random';color:#fff">HAFONTIA / ALON TAYAR (2025)©</div><br>
-</section>
+  <!-- === TESTER #2 — Normal === -->
+  <section class="tester" data-default-font="AlteZachen-Normal">
+    <div class="tt-controls">
+      <div class="tt-weights">
+        <button class="tt-btn" data-font="AlteZachen-Random">רנדום</button>
+        <button class="tt-btn active" data-font="AlteZachen-Normal">נורמל</button>
+        <button class="tt-btn" data-font="AlteZachen-HalfWide">חצי־רחב</button>
+        <button class="tt-btn" data-font="AlteZachen-Wide">רחב</button>
+      </div>
+      <label class="tt-slider">
+        <span>Size/Layout</span>
+        <input type="range" min="28" max="340" step="1" value="170" />
+      </label>
+    </div>
+    <div class="tt-canvas" contenteditable="true">
+אלטע&nbsp;זאכן. הנה רצף ארוך נוסף — פסקה אחר פסקה — שמטרתו להעמיס במכוון ולגרום לטקסט להתפצל לעמודות כאשר משנים את גודל הפונט. המערכת מאזנת בין עמודות באופן אוטומטי, והפדינג הקטן בשוליים מבטיח שהטקסט “נושם” אבל לא מאבד את המאסה. הקלידו, החליפו פסקאות, תוסיפו סימני פיסוק והדגשות; בחרו משקל אחר מלמעלה ושימו לב כיצד הביטוי משתנה. הרעיון הוא לייצר תחושת תנועה: גדול מאוד מציג מילים ספורות בפול־בליד, הקטנה הדרגתית חושפת יותר תוכן, ובנקודות המפנה הפריסה קופצת לשתי עמודות ואז לשלוש. כך אפשר לקבל תחושת סקאלה בזמן אמת, בדיוק כמו ברפרנס ששלחת.
+    </div>
+  </section>
 
-<!-- tap preview for mobile grid -->
-<div class="touch-preview" id="touchPreview" aria-hidden="true"><div class="tp-glyph" id="tpGlyph">א</div></div>
+  <!-- === TESTER #3 — HalfWide === -->
+  <section class="tester" data-default-font="AlteZachen-HalfWide">
+    <div class="tt-controls">
+      <div class="tt-weights">
+        <button class="tt-btn" data-font="AlteZachen-Random">רנדום</button>
+        <button class="tt-btn" data-font="AlteZachen-Normal">נורמל</button>
+        <button class="tt-btn active" data-font="AlteZachen-HalfWide">חצי־רחב</button>
+        <button class="tt-btn" data-font="AlteZachen-Wide">רחב</button>
+      </div>
+      <label class="tt-slider">
+        <span>Size/Layout</span>
+        <input type="range" min="28" max="340" step="1" value="180" />
+      </label>
+    </div>
+    <div class="tt-canvas" contenteditable="true">
+אלטע&nbsp;זאכן. בלוק טקסט מדגים שימוש במשקל חצי־רחב: שפה ישירה, אותיות בשרניות, ויכולת דרמטית בשילוט ותצוגה. כאן מופיע טקסט ארוך במיוחד כדי לדחוף את האלגוריתם לעבר שלוש עמודות בשלב מסוים. חשבו על זה כמו הדמיה של מגזין: כאשר המסר קצר — הוא צועק; כאשר התוכן מתארך — הוא הופך נרטיב קריא עם קצב נוח ומודולציה בין עמודות. היתרון בטסטר הזה שהוא לא מסתיר את מכניקת השבירה: הכול שקוף ומתרחש מול העיניים.
+    </div>
+  </section>
 
+  <!-- === TESTER #4 — Wide === -->
+  <section class="tester" data-default-font="AlteZachen-Wide">
+    <div class="tt-controls">
+      <div class="tt-weights">
+        <button class="tt-btn" data-font="AlteZachen-Random">רנדום</button>
+        <button class="tt-btn" data-font="AlteZachen-Normal">נורמל</button>
+        <button class="tt-btn" data-font="AlteZachen-HalfWide">חצי־רחב</button>
+        <button class="tt-btn active" data-font="AlteZachen-Wide">רחב</button>
+      </div>
+      <label class="tt-slider">
+        <span>Size/Layout</span>
+        <input type="range" min="28" max="340" step="1" value="200" />
+      </label>
+    </div>
+    <div class="tt-canvas" contenteditable="true">
+אלטע&nbsp;זאכן. דוגמה נוספת, הפעם במשקל רחב שמרגיש הכי פוסטרי. הקלידו טקסט משלכם ובחנו איך קווי המתאר, הקאט־אאוטים והמתחים בין קשתות לאלכסונים מגיבים לגודל. במעבר בין גדלים גדולים לקטנים, הטקסט משנה פאזה — משורת־אימפקט יחידה לבלוקים מרובי־טורים — בלי שברים בתווים ובלי קפיצות צורמות. אפשר לשלב כאן גם מספרים, סימנים ופיסוק כדי לבדוק מרקם.
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== JS: מחבר את כל ה־TESTER-ים ===== -->
 <script>
-/* ===== Header reveal only after the first red hero ===== */
-(()=>{ const head=document.getElementById('siteHead'); const sent=document.getElementById('heroSentinel');
-  if('IntersectionObserver' in window && head && sent){
-    const io=new IntersectionObserver(es=>{
-      es.forEach(e=>{ if(e.isIntersecting){ head.classList.add('show'); io.unobserve(sent); } });
-    },{threshold:0});
-    io.observe(sent);
-  } else { window.addEventListener('load',()=>head.classList.add('show')); }
-})();
+(function(){
+  const testers = document.querySelectorAll('.tester');
 
-/* ===== GLYPH GRID DATA ===== */
-const HEB1="אבגדהוזחטיכךלמםנןסעפףצץקרשת";
-const HEB2="אַ אָ אּ בּ גּ דּ הּ וּ וֹ זּ טּ יּ ךּ כּ לּ מּ נּ סּ ףּ פּ צּ קּ רּ שּ שׁ שׂ שּׁ שּׂ תּ";
-const LAT1="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const LAT2="Á Ă Â Ä À Ā Å Ã Æ Ć Ç Č Ď Đ É Ě Ê Ë È Ē Ė Ə Ğ Ġ Ģ Ĥ";
-const LAT3="Í Ĭ Î Ï Ì İ Į Ĵ Ķ Ĺ Ľ Ł Ń Ň Ñ Ó Ô Ö Ò Ō Õ Œ Þ Ŕ Ř Ŗ Ś Ş Ș ß Ť Ţ Ú Û Ü Ù Ū Ů Ű Ų Ŵ Ŷ Ÿ Ý Ź Ž Ż Ǐ Ĺ Ń";
-const CYR="А Б В Г Д Е Ё Ж З И Й К Л М Н О П Р С Т У Ф Х Ц Ч Ш Щ Ъ Ы Ь Э Ю Я Є Ї І Ґ";
-const NUM="0 1 2 3 4 5 6 7 8 9";
-const FRAC="½ ¼ ¾ ⅜ ⅝ ⅞";
-const CURR="¢ ¤ $ € ₽ ₪ £ ¥";
-const PUNC=". , ; : … ! ? ¿ • * # / \\ – — ― _ ( ) { } [ ] „ “ ” « » ‹ › ‚ ‘ ’";
-const MISC="☺ ☹ @ & ¶ © ® ℗ ™ ° | ¦";
-const GEOM="█ □ ▲ ▶ ▼ ◀ △ ○ ●";
-const ARROWS="↻ ↓ ↑ → ← ↗ ↖ ↘ ↙ ⤓ ⤒ ↔ ↕ ↤ ↥ ↦ ↧ ↰ ↱ ↲ ↳";
-const MATH="− × ÷ = ≠ > < ≥ ≤ ± ≈ ~ ¬ ∅ % ‰";
+  testers.forEach(tester=>{
+    const range   = tester.querySelector('input[type="range"]');
+    const canvas  = tester.querySelector('.tt-canvas');
+    const buttons = tester.querySelectorAll('.tt-btn');
+    const defFont = tester.getAttribute('data-default-font') || 'AlteZachen-Random';
 
-const CATS=[
-  { label:"Hebrew",  chunks:[HEB1, HEB2] },
-  { label:"Latin",   chunks:[LAT1, LAT2, LAT3] },
-  { label:"Cyrillic",chunks:[CYR] },
-  { label:"Everything", chunks:[
-      NUM,
-      { text:NUM, feat:'"onum" 1', variant:'oldstyle-nums' },
-      { text:NUM, feat:'"ss03" 1' },
-      { text:NUM, feat:'"ss04" 1' },
-      FRAC, CURR, PUNC, MISC, GEOM, ARROWS, MATH
-  ] }
-];
-
-/* ===== GLYPH GRID BUILD ===== */
-let currentFace="AlteZachen Normal";
-const catsHolder=document.getElementById('cats'), gridCol=document.getElementById('gridCol');
-const bigGlyph=document.getElementById('bigGlyph'), glyphName=document.getElementById('glyphName'), glyphCode=document.getElementById('glyphCode');
-
-function isMobile(){ return matchMedia('(max-width:600px)').matches; }
-function colsPerRow(){ return isMobile()?10:15; }
-function measureCell(){
-  const cols=colsPerRow();
-  const w=gridCol.clientWidth||innerWidth;
-  const borders=(cols+1)*1+2;
-  const px=Math.floor((w-borders)/cols);
-  document.documentElement.style.setProperty('--cellPx',px+'px');
-  return px;
-}
-function eachChar(str,cb){ for(let i=0;i<str.length;i++){ const ch=str[i]; if(ch===" "||ch==="\n"||ch==="\t") continue; cb(ch);} }
-function cellEl(ch,feat,variant){
-  const cell=document.createElement('div'); cell.className='cell';
-  const s=document.createElement('span'); s.className='glyph';
-  s.style.fontFamily='"'+currentFace+'",system-ui';
-  if(feat) s.style.fontFeatureSettings=feat;
-  if(variant==='oldstyle-nums') s.style.fontVariantNumeric='oldstyle-nums';
-  s.textContent=ch; cell.appendChild(s);
-  cell.addEventListener('mouseenter',()=>{ if(!isMobile()) showGlyph(ch,feat); });
-  cell.addEventListener('click',()=> onCellTap(cell,ch,feat));
-  return cell;
-}
-function buildCats(){
-  catsHolder.innerHTML="";
-  const cols=colsPerRow(); measureCell();
-  CATS.forEach((cat,ci)=>{
-    const wrap=document.createElement('div'); wrap.className='cat';
-    const grid=document.createElement('div'); grid.className='grid';
-    grid.style.setProperty('--cols',cols);
-    cat.chunks.forEach(chk=>{
-      const text=typeof chk==="object"?chk.text:chk;
-      const feat=typeof chk==="object"?chk.feat:"";
-      const variant=typeof chk==="object"?chk.variant:"";
-      eachChar(text,(ch)=> grid.appendChild( cellEl(ch,feat,variant) ));
+    // ברירת מחדל של משקל
+    canvas.style.fontFamily = `"${defFont}", system-ui, sans-serif`;
+    buttons.forEach(b=>{
+      b.classList.toggle('active', b.dataset.font === defFont);
+      b.addEventListener('click', ()=>{
+        buttons.forEach(x=>x.classList.remove('active'));
+        b.classList.add('active');
+        canvas.style.fontFamily = `"${b.dataset.font}", system-ui, sans-serif`;
+        keepFirstLine(canvas);
+      });
     });
-    const total=grid.children.length, rem= total % cols;
-    if(rem!==0){ for(let k=0;k<(cols-rem);k++){ const f=document.createElement('div'); f.className='cell filler'; grid.appendChild(f); } }
-    wrap.appendChild(grid); catsHolder.appendChild(wrap);
-    if(ci<CATS.length-1){ const sep=document.createElement('div'); sep.className='sepLine'; catsHolder.appendChild(sep); }
+
+    // גודל + לוגיקת עמודות
+    const applySize = (px)=>{
+      canvas.style.setProperty('--f', px + 'px');
+      let cols = 1;
+      if (px <= 150) cols = 2;
+      if (px <= 90)  cols = 3;
+      canvas.style.columnCount = cols;
+      keepFirstLine(canvas);
+    };
+    applySize(+range.value);
+    range.addEventListener('input', e=>applySize(+e.target.value));
+
+    // ריווח קטן בתחילת השורה למניעת חיתוך המילה/המילים הראשונות
+    function keepFirstLine(el){
+      const fs = parseFloat(getComputedStyle(el).fontSize)||0;
+      el.style.paddingInlineStart = Math.max(4, fs*0.1) + 'px';
+      el.style.paddingInlineEnd   = Math.max(4, fs*0.06) + 'px';
+    }
   });
-  showGlyph('א');
-}
-function rebuildFaces(){
-  document.querySelectorAll('.glyph').forEach(el=>{ el.style.fontFamily='"'+currentFace+'",system-ui'; });
-  const fs=bigGlyph.style.fontFeatureSettings||"normal";
-  bigGlyph.style.fontFamily='"'+currentFace+'","AlteZachen Wide",system-ui';
-  bigGlyph.style.fontFeatureSettings=fs;
-}
-
-/* big preview */
-function showGlyph(ch,feat){
-  if(bigGlyph){
-    bigGlyph.textContent=ch;
-    bigGlyph.style.fontFamily='"'+currentFace+'","AlteZachen Wide",system-ui';
-    bigGlyph.style.fontFeatureSettings=feat||"normal";
-  }
-  glyphName.textContent=nameOf(ch);
-  glyphCode.textContent=codeOf(ch);
-}
-const HEB_NAMES={"א":"HEBREW LETTER ALEF","ב":"HEBREW LETTER BET","ג":"HEBREW LETTER GIMEL","ד":"HEBREW LETTER DALET","ה":"HEBREW LETTER HE","ו":"HEBREW LETTER VAV","ז":"HEBREW LETTER ZAYIN","ח":"HEBREW LETTER HET","ט":"HEBREW LETTER TET","י":"HEBREW LETTER YOD","כ":"HEBREW LETTER KAF","ך":"HEBREW LETTER FINAL KAF","ל":"HEBREW LETTER LAMED","מ":"HEBREW LETTER MEM","ם":"HEBREW LETTER FINAL MEM","נ":"HEBREW LETTER NUN","ן":"HEBREW LETTER FINAL NUN","ס":"HEBREW LETTER SAMEKH","ע":"HEBREW LETTER AYIN","פ":"HEBREW LETTER PE","ף":"HEBREW LETTER FINAL PE","צ":"HEBREW LETTER TSADI","ץ":"HEBREW LETTER FINAL TSADI","ק":"HEBREW LETTER QOF","ר":"HEBREW LETTER RESH","ש":"HEBREW LETTER SHIN","ת":"HEBREW LETTER TAV"};
-function nameOf(ch){ if(HEB_NAMES[ch])return HEB_NAMES[ch]; const cp=ch.codePointAt(0); if(ch>='A'&&ch<='Z')return"LATIN CAPITAL LETTER "+ch; if(ch>='0'&&ch<='9')return"DIGIT "+ch; let h=cp.toString(16).toUpperCase(); while(h.length<4)h="0"+h; return"U+"+h }
-function codeOf(ch){ let h=ch.codePointAt(0).toString(16).toUpperCase(); while(h.length<4)h="0"+h; return"U+"+h }
-
-/* Mobile tap overlay */
-const overlay=document.getElementById('touchPreview'), tpGlyph=document.getElementById('tpGlyph');
-function hideOverlay(){ overlay.style.display='none'; overlay.setAttribute('aria-hidden','true'); }
-function onCellTap(cell,ch,feat){
-  if(!isMobile()) return;
-  const r=cell.getBoundingClientRect();
-  const size=Math.min(innerWidth*0.9, r.width*3.6);
-  let left=r.left+r.width/2-size/2, top=r.top+r.height/2-size/2;
-  left=Math.max(6,Math.min(left,innerWidth-size-6));
-  top =Math.max(6,Math.min(top ,innerHeight-size-6));
-  overlay.style.cssText='display:flex;left:'+left+'px;top:'+top+'px;width:'+size+'px;height:'+size+'px';
-  tpGlyph.textContent=ch; tpGlyph.style.fontFamily='"'+currentFace+'",system-ui'; tpGlyph.style.fontFeatureSettings=feat||'normal'; tpGlyph.style.fontSize=(size*0.76)+'px';
-  overlay.setAttribute('aria-hidden','false');
-}
-overlay.addEventListener('click',hideOverlay);
-addEventListener('scroll',()=>{ if(isMobile()) hideOverlay(); },{passive:true});
-
-/* tabs for big preview */
-document.querySelectorAll('.tabs .tab').forEach(t=>{
-  t.addEventListener('click',function(){
-    document.querySelectorAll('.tabs .tab').forEach(x=>x.classList.remove('active'));
-    this.classList.add('active'); currentFace=this.dataset.face; rebuildFaces();
-  });
-});
-
-/* ===== Build glyph grid on load/resize ===== */
-function colsPerRow(){ return matchMedia('(max-width:600px)').matches?10:15; }
-function measureCell(){
-  const cols=colsPerRow(); const w=gridCol.clientWidth||innerWidth;
-  const px=Math.floor((w-(cols+1)*1-2)/cols); document.documentElement.style.setProperty('--cellPx',px+'px'); return px;
-}
-addEventListener('resize',()=>{ measureCell(); buildCats(); });
-document.addEventListener('DOMContentLoaded',()=>{ measureCell(); buildCats(); });
-
-/* ===== INLINE TYPE TESTERS LOGIC ===== */
-function applyInlineWeight(row, face){
-  const txt=row.querySelector('.text');
-  txt.style.fontFamily = `"${face}","AlteZachen HalfWide","AlteZachen Normal",system-ui,sans-serif`;
-  row.querySelectorAll('.weights button').forEach(b=> b.classList.toggle('active', b.dataset.face===face));
-}
-document.querySelectorAll('[data-tt]').forEach(row=>{
-  // דיפולט: רנדום
-  applyInlineWeight(row,'AlteZachen Random');
-  row.querySelectorAll('.weights button').forEach(btn=>{
-    btn.addEventListener('click',()=> applyInlineWeight(row, btn.dataset.face));
-  });
-});
+})();
 </script>
+
 </body>
 </html>
