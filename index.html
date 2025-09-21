@@ -5,38 +5,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>אלטע זאכן — Specimen</title>
 
-<!-- ===== FONTS (root files, no folders) ===== -->
+<!-- ===== FONTS (root; no folders) ===== -->
 <style>
 @font-face{
   font-family:"AlteZachen-Normal";
-  src:
-    url("AlteZachen-Normal.woff2") format("woff2"),
-    url("AlteZachen-Normal.woff") format("woff"),
-    url("AlteZachen-Normal.otf") format("opentype");
+  src:url("AlteZachen-Normal.woff2") format("woff2"),
+      url("AlteZachen-Normal.woff") format("woff"),
+      url("AlteZachen-Normal.otf") format("opentype");
   font-display:swap;
 }
 @font-face{
   font-family:"AlteZachen-HalfWide";
-  src:
-    url("AlteZachen-HalfWide.woff2") format("woff2"),
-    url("AlteZachen-HalfWide.woff") format("woff"),
-    url("AlteZachen-HalfWide.otf") format("opentype");
+  src:url("AlteZachen-HalfWide.woff2") format("woff2"),
+      url("AlteZachen-HalfWide.woff") format("woff"),
+      url("AlteZachen-HalfWide.otf") format("opentype");
   font-display:swap;
 }
 @font-face{
   font-family:"AlteZachen-Wide";
-  src:
-    url("AlteZachen-Wide.woff2") format("woff2"),
-    url("AlteZachen-Wide.woff") format("woff"),
-    url("AlteZachen-Wide.otf") format("opentype");
+  src:url("AlteZachen-Wide.woff2") format("woff2"),
+      url("AlteZachen-Wide.woff") format("woff"),
+      url("AlteZachen-Wide.otf") format("opentype");
   font-display:swap;
 }
 @font-face{
   font-family:"AlteZachen-Random";
-  src:
-    url("AlteZachen-Random.woff2") format("woff2"),
-    url("AlteZachen-Random.woff") format("woff"),
-    url("AlteZachen-Random.otf") format("opentype");
+  src:url("AlteZachen-Random.woff2") format("woff2"),
+      url("AlteZachen-Random.woff") format("woff"),
+      url("AlteZachen-Random.otf") format("opentype");
   font-display:swap;
 }
 
@@ -45,11 +41,12 @@
   --red:#ff0000;
   --black:#000;
   --page-max:1400px;
+  --grey:#f2f4f6; /* בהיר יותר */
 }
 html,body{margin:0;background:#fff;color:#000}
 body{font-family:"AlteZachen-Normal", system-ui, -apple-system, Segoe UI, Arial, sans-serif}
 
-/* ===== Sticky header (פשוט, רק לוגו בימין) ===== */
+/* ===== Sticky header (לוגו בימין) ===== */
 .site-header{
   position:sticky; top:-1px; z-index:50;
   background:var(--red); border-bottom:1px solid #000;
@@ -58,28 +55,26 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, Segoe UI, Arial,
 .site-header .logo-link{display:inline-flex; align-items:center}
 .site-header img{height:28px; width:auto; display:block;}
 
-/* ===== HERO (תמונה במרכז, לגלילה אנכית) ===== */
+/* ===== HERO אדום ===== */
 .hero-red{background:var(--red);}
 .hero-wrap{
   max-width:min(92vw, var(--page-max));
   margin-inline:auto;
-  padding-block: min(6vh, 80px) min(8vh, 120px);
+  padding-block:min(6vh,80px) min(8vh,120px);
 }
 .hero-img{
   display:block; margin:0 auto;
-  width:min(88vw, 1400px); height:auto;
-  max-height:none; /* ניתן לגלול כדי לראות את כולה */
-  object-fit:contain;
+  width:min(88vw, 1400px); height:auto; object-fit:contain;
 }
 
-/* ===== WHITE SECTION WRAPPER ===== */
-.white{background:#fff; padding: min(6vh,80px) clamp(12px,4vw,40px);}
+/* ===== WHITE SECTION ===== */
+.white{background:#fff; padding:min(6vh,80px) clamp(12px,4vw,40px);}
 
-/* ===== Diatype-style TYPE TESTER (reusable) ===== */
+/* ===== Diatype-style TYPE TESTER (one instance) ===== */
 .tester{
-  background:#e6e9ec;
+  background:var(--grey);
   border-radius:14px;
-  box-shadow: inset 0 0 0 1px #cfd5da;
+  box-shadow: inset 0 0 0 1px #d9dee3;
   padding: clamp(10px, 2vw, 18px);
   margin-block: clamp(18px, 4vw, 44px);
 }
@@ -89,6 +84,8 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, Segoe UI, Arial,
   flex-wrap:wrap; margin-bottom: clamp(8px,1.6vw,18px);
 }
 .tester .tt-weights{display:flex; gap:8px; flex-wrap:wrap}
+
+/* כפתורי המשקלים — חצי רחב */
 .tester .tt-btn{
   font-family:"AlteZachen-HalfWide", system-ui, sans-serif;
   font-size: clamp(12px,1.25vw,16px);
@@ -99,23 +96,31 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, Segoe UI, Arial,
   border:1px solid #000; cursor:pointer;
 }
 .tester .tt-btn.active{background:var(--red); color:#fff; border-color:var(--red);}
+
+/* סליידר — קו שחור דק + עיגול שחור שטוח */
 .tester .tt-slider{display:flex; align-items:center; gap:10px}
 .tester .tt-slider span{font:500 12px/1 system-ui, sans-serif; color:#333}
-.tester input[type="range"]{width:min(46vw, 420px)}
+.tester input[type="range"]{width:min(46vw, 420px); -webkit-appearance:none; appearance:none; background:transparent;}
+/* track */
+.tester input[type="range"]::-webkit-slider-runnable-track{height:2px;background:#000;border-radius:2px}
+.tester input[type="range"]::-moz-range-track{height:2px;background:#000;border-radius:2px}
+/* thumb */
+.tester input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;border-radius:50%;background:#000;border:0;margin-top:-7px}
+.tester input[type="range"]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#000;border:0}
 
-/* אזור הטקסט */
+/* קנבס: גובה קבוע בחצי, גלילה פנימית */
 .tester .tt-canvas{
-  --f: 180px;                /* נשלט ב-JS */
+  --f: 180px;                 /* נשלט ב-JS */
   font-size: var(--f);
-  line-height: 0.92;         /* צפוף ו"חגיגי" */
+  line-height: 0.92;
   font-family: "AlteZachen-Random", system-ui, sans-serif;
-  color:#000; background:#e6e9ec; border-radius:10px;
-  /* פדינג קטן מימין ומשמאל, כבקשתך */
+  color:#000; background:var(--grey); border-radius:10px;
+
   padding-inline: clamp(6px,1.2vw,10px);
   padding-block: clamp(8px,1.5vw,14px);
-  min-height: 48vh; outline:none;
 
-  /* לא שוברים מילים/אותיות באמצע */
+  height: 24vh;              /* FIXED */
+  overflow: auto;            /* גלילה בתוך החלון */
   word-break: keep-all;
   overflow-wrap: normal;
   hyphens: manual;
@@ -124,24 +129,24 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, Segoe UI, Arial,
   column-fill: balance;
 }
 
-/* מסכים צרים – קנבס מעט גבוה יותר כברירת־מחדל */
+/* מובייל — קצת יותר גובה */
 @media (max-width: 700px){
   .site-header img{height:24px}
-  .hero-wrap{padding-block: 40px 56px}
-  .tester .tt-canvas{min-height:58vh}
+  .hero-wrap{padding-block:40px 56px}
+  .tester .tt-canvas{height:30vh}
 }
 </style>
 </head>
 <body>
 
-<!-- ===== HEADER (לוגו בלבד) ===== -->
+<!-- ===== HEADER ===== -->
 <header class="site-header" aria-label="Header">
   <a class="logo-link" href="https://hafontia.com" target="_blank" rel="noopener">
     <img src="logoheader.webp" alt="הפונטיה — לינק" />
   </a>
 </header>
 
-<!-- ===== HERO (אדום) ===== -->
+<!-- ===== HERO ===== -->
 <section class="hero-red" aria-label="Hero">
   <div class="hero-wrap">
     <picture>
@@ -151,129 +156,73 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, Segoe UI, Arial,
   </div>
 </section>
 
-<!-- ===== MAIN WHITE ===== -->
+<!-- ===== MAIN ===== -->
 <main class="white" aria-label="Main">
 
-  <!-- === TESTER #1 — Random (ברירת מחדל) === -->
+  <!-- === SINGLE TESTER === -->
   <section class="tester" data-default-font="AlteZachen-Random">
     <div class="tt-controls">
       <div class="tt-weights">
-        <button class="tt-btn active" data-font="AlteZachen-Random">רנדום</button>
+        <!-- הסדר נשאר, רק רנדום הועבר לצד השני -->
         <button class="tt-btn" data-font="AlteZachen-Normal">נורמל</button>
         <button class="tt-btn" data-font="AlteZachen-HalfWide">חצי־רחב</button>
         <button class="tt-btn" data-font="AlteZachen-Wide">רחב</button>
+        <button class="tt-btn active" data-font="AlteZachen-Random">רנדום</button>
       </div>
       <label class="tt-slider">
         <span>Size/Layout</span>
         <input type="range" min="28" max="340" step="1" value="190" />
       </label>
     </div>
-    <div class="tt-canvas" contenteditable="true">
-אלטע&nbsp;זאכן. טקסט נסיוני ארוך מאוד כדי לבחון פריסה דינמית בשלוש עמודות, בלי לחתוך מילים ולעדן את התחושה הגדולה והחגיגית של המשקל. זהו בלוק דמה שמכיל משפטים רבים במכוון: אפשר לכתוב על עיצוב שלטי תעמולה ישנים, על קופסאות ג׳לטין ועל כרזות בריאות—הכול נכנס. ככל שמקטינים את הגודל, יותר שורות נחשפות, ולבסוף התוכן נפרש לשתי עמודות ואז לשלוש. אפשר להדביק כאן טקסט משלכם, למחוק, לשנות, ולבדוק מה קורה ב־RTL לעומת LTR. הטייפטסטר הזה לא שובר מילה באמצע, שומר על ריווח עמודות מאוזן, ומבצע איזון ויזואלי בקצה הימני כדי שהשורה הראשונה לא תיחתך מוזר. המשיכו לגלול, שחקו עם הסליידר, ובדקו איך הטיפוגרפיה מגיבה.
-    </div>
-  </section>
 
-  <!-- === TESTER #2 — Normal === -->
-  <section class="tester" data-default-font="AlteZachen-Normal">
-    <div class="tt-controls">
-      <div class="tt-weights">
-        <button class="tt-btn" data-font="AlteZachen-Random">רנדום</button>
-        <button class="tt-btn active" data-font="AlteZachen-Normal">נורמל</button>
-        <button class="tt-btn" data-font="AlteZachen-HalfWide">חצי־רחב</button>
-        <button class="tt-btn" data-font="AlteZachen-Wide">רחב</button>
-      </div>
-      <label class="tt-slider">
-        <span>Size/Layout</span>
-        <input type="range" min="28" max="340" step="1" value="170" />
-      </label>
-    </div>
     <div class="tt-canvas" contenteditable="true">
-אלטע&nbsp;זאכן. הנה רצף ארוך נוסף — פסקה אחר פסקה — שמטרתו להעמיס במכוון ולגרום לטקסט להתפצל לעמודות כאשר משנים את גודל הפונט. המערכת מאזנת בין עמודות באופן אוטומטי, והפדינג הקטן בשוליים מבטיח שהטקסט “נושם” אבל לא מאבד את המאסה. הקלידו, החליפו פסקאות, תוסיפו סימני פיסוק והדגשות; בחרו משקל אחר מלמעלה ושימו לב כיצד הביטוי משתנה. הרעיון הוא לייצר תחושת תנועה: גדול מאוד מציג מילים ספורות בפול־בליד, הקטנה הדרגתית חושפת יותר תוכן, ובנקודות המפנה הפריסה קופצת לשתי עמודות ואז לשלוש. כך אפשר לקבל תחושת סקאלה בזמן אמת, בדיוק כמו ברפרנס ששלחת.
-    </div>
-  </section>
-
-  <!-- === TESTER #3 — HalfWide === -->
-  <section class="tester" data-default-font="AlteZachen-HalfWide">
-    <div class="tt-controls">
-      <div class="tt-weights">
-        <button class="tt-btn" data-font="AlteZachen-Random">רנדום</button>
-        <button class="tt-btn" data-font="AlteZachen-Normal">נורמל</button>
-        <button class="tt-btn active" data-font="AlteZachen-HalfWide">חצי־רחב</button>
-        <button class="tt-btn" data-font="AlteZachen-Wide">רחב</button>
-      </div>
-      <label class="tt-slider">
-        <span>Size/Layout</span>
-        <input type="range" min="28" max="340" step="1" value="180" />
-      </label>
-    </div>
-    <div class="tt-canvas" contenteditable="true">
-אלטע&nbsp;זאכן. בלוק טקסט מדגים שימוש במשקל חצי־רחב: שפה ישירה, אותיות בשרניות, ויכולת דרמטית בשילוט ותצוגה. כאן מופיע טקסט ארוך במיוחד כדי לדחוף את האלגוריתם לעבר שלוש עמודות בשלב מסוים. חשבו על זה כמו הדמיה של מגזין: כאשר המסר קצר — הוא צועק; כאשר התוכן מתארך — הוא הופך נרטיב קריא עם קצב נוח ומודולציה בין עמודות. היתרון בטסטר הזה שהוא לא מסתיר את מכניקת השבירה: הכול שקוף ומתרחש מול העיניים.
-    </div>
-  </section>
-
-  <!-- === TESTER #4 — Wide === -->
-  <section class="tester" data-default-font="AlteZachen-Wide">
-    <div class="tt-controls">
-      <div class="tt-weights">
-        <button class="tt-btn" data-font="AlteZachen-Random">רנדום</button>
-        <button class="tt-btn" data-font="AlteZachen-Normal">נורמל</button>
-        <button class="tt-btn" data-font="AlteZachen-HalfWide">חצי־רחב</button>
-        <button class="tt-btn active" data-font="AlteZachen-Wide">רחב</button>
-      </div>
-      <label class="tt-slider">
-        <span>Size/Layout</span>
-        <input type="range" min="28" max="340" step="1" value="200" />
-      </label>
-    </div>
-    <div class="tt-canvas" contenteditable="true">
-אלטע&nbsp;זאכן. דוגמה נוספת, הפעם במשקל רחב שמרגיש הכי פוסטרי. הקלידו טקסט משלכם ובחנו איך קווי המתאר, הקאט־אאוטים והמתחים בין קשתות לאלכסונים מגיבים לגודל. במעבר בין גדלים גדולים לקטנים, הטקסט משנה פאזה — משורת־אימפקט יחידה לבלוקים מרובי־טורים — בלי שברים בתווים ובלי קפיצות צורמות. אפשר לשלב כאן גם מספרים, סימנים ופיסוק כדי לבדוק מרקם.
+אלטע&nbsp;זאכן. טקסט נסיוני ארוך מאוד שמיועד לבחון פריסה דינמית בשלוש עמודות, ללא שבירת מילים וללא חיתוך של המילה הראשונה. ככל שמקטינים את הגודל, מופיע יותר תוכן; כאשר עוברים נקודות סף—הפריסה קופצת לשתי עמודות ואז לשלוש, עם איזון ויזואלי בין הטורים ושמירה על ריווח קטן בשוליים. הטקסט כאן ממשיך במכוון כדי למלא גלילה פנימית בחלון הקבוע: זה יכול להיות תיאור על כרזות ותוויות מתקופת המעבר, על חיתוך אותיות מהדפוס הישן, על תנועה בין שפה גבוהה לשפת רחוב, ועל המפגש בין עברית, לטינית וקירילית בתוך אותו משטח. אפשר להדביק כאן טקסט משלכם, לשנות משקל בלחיצת כפתור, ולשחק בסליידר עד שמוצאים את סקאלת הגודל המדויקת. עוד פסקה להארכה: הגישה כאן היא “להראות את המכניקה”—המשתמש רואה כיצד המערכת מפרקת משפטים לשורות, מחלקת לעמודות כשהגודל מצטמצם, ושומרת על קריאות גם במקרי קצה. אם תרצו, ניתן להוסיף סימני פיסוק, מספרים, וסימנים טיפוגרפיים רבים כדי לבדוק טקסטורות שונות. והכי חשוב: המילה הראשונה לא נשברת, הפידינג נשאר עדין, והחלון הקבוע מאפשר לבחון תנועה בתוך מסגרת יציבה.
     </div>
   </section>
 
 </main>
 
-<!-- ===== JS: מחבר את כל ה־TESTER-ים ===== -->
+<!-- ===== JS ===== -->
 <script>
 (function(){
-  const testers = document.querySelectorAll('.tester');
+  const tester = document.querySelector('.tester');
+  if(!tester) return;
 
-  testers.forEach(tester=>{
-    const range   = tester.querySelector('input[type="range"]');
-    const canvas  = tester.querySelector('.tt-canvas');
-    const buttons = tester.querySelectorAll('.tt-btn');
-    const defFont = tester.getAttribute('data-default-font') || 'AlteZachen-Random';
+  const range   = tester.querySelector('input[type="range"]');
+  const canvas  = tester.querySelector('.tt-canvas');
+  const buttons = tester.querySelectorAll('.tt-btn');
+  const defFont = tester.getAttribute('data-default-font') || 'AlteZachen-Random';
 
-    // ברירת מחדל של משקל
-    canvas.style.fontFamily = `"${defFont}", system-ui, sans-serif`;
-    buttons.forEach(b=>{
-      b.classList.toggle('active', b.dataset.font === defFont);
-      b.addEventListener('click', ()=>{
-        buttons.forEach(x=>x.classList.remove('active'));
-        b.classList.add('active');
-        canvas.style.fontFamily = `"${b.dataset.font}", system-ui, sans-serif`;
-        keepFirstLine(canvas);
-      });
-    });
-
-    // גודל + לוגיקת עמודות
-    const applySize = (px)=>{
-      canvas.style.setProperty('--f', px + 'px');
-      let cols = 1;
-      if (px <= 150) cols = 2;
-      if (px <= 90)  cols = 3;
-      canvas.style.columnCount = cols;
+  // ברירת מחדל של משקל
+  canvas.style.fontFamily = `"${defFont}", system-ui, sans-serif`;
+  buttons.forEach(b=>{
+    b.classList.toggle('active', b.dataset.font === defFont);
+    b.addEventListener('click', ()=>{
+      buttons.forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      canvas.style.fontFamily = `"${b.dataset.font}", system-ui, sans-serif`;
       keepFirstLine(canvas);
-    };
-    applySize(+range.value);
-    range.addEventListener('input', e=>applySize(+e.target.value));
-
-    // ריווח קטן בתחילת השורה למניעת חיתוך המילה/המילים הראשונות
-    function keepFirstLine(el){
-      const fs = parseFloat(getComputedStyle(el).fontSize)||0;
-      el.style.paddingInlineStart = Math.max(4, fs*0.1) + 'px';
-      el.style.paddingInlineEnd   = Math.max(4, fs*0.06) + 'px';
-    }
+    });
   });
+
+  // גודל + מעבר עמודות (החלון בגובה קבוע; הטקסט יגלול בפנים)
+  const applySize = (px)=>{
+    canvas.style.setProperty('--f', px + 'px');
+    let cols = 1;
+    if (px <= 150) cols = 2;
+    if (px <= 90)  cols = 3;
+    canvas.style.columnCount = cols;
+    keepFirstLine(canvas);
+  };
+  applySize(+range.value);
+  range.addEventListener('input', e=>applySize(+e.target.value));
+
+  // ריווח קטן בתחילת השורה כדי למנוע חיתוך המילה הראשונה
+  function keepFirstLine(el){
+    const fs = parseFloat(getComputedStyle(el).fontSize)||0;
+    el.style.paddingInlineStart = Math.max(4, fs*0.1) + 'px';
+    el.style.paddingInlineEnd   = Math.max(4, fs*0.06) + 'px';
+  }
 })();
 </script>
 
