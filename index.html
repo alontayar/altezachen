@@ -40,10 +40,8 @@
 :root{
   --red:#ff0000;
   --grey:#f4f6f8;   /* אפור בהיר לחלון */
-  --black:#000;
-  --page-max:1400px;
 }
-html,body{margin:0;background:#fff;color:#000}
+html,body{margin:0;background:#fff;color:#000; overflow-x:hidden;}
 body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Arial, sans-serif}
 
 /* ===== Sticky header (פשוט) ===== */
@@ -58,7 +56,7 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
 /* ===== HERO אדום ===== */
 .hero-red{background:var(--red)}
 .hero-wrap{
-  max-width:min(92vw, var(--page-max));
+  max-width:min(92vw, 1400px);
   margin-inline:auto;
   padding-block:min(6vh,80px) min(8vh,120px);
 }
@@ -74,32 +72,27 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
 .tester-section{ display:flex; justify-content:center; }
 
 .tester{
-  width:98vw;                    /* כמעט עד הקצה תמיד */
-  height:clamp(20vh, 22vh, 24vh);/* ספקטרום קטן ודחוס בדסקטופ */
+  /* כמעט עד הקצה, ללא גרימת overflow אופקי */
+  width: min(98vw, 1600px);
   background:var(--grey);
   border-radius:14px;
-  padding: clamp(8px, 1.2vw, 14px);  /* מסגרת הדוקה */
+  padding: clamp(8px, 1.2vw, 14px);
   display:flex; flex-direction:column;
-  align-items:center;            /* מרכז אופקית את התוכן הפנימי */
-  justify-content:flex-start;    /* כפתורי המשקלים למעלה */
-  gap: clamp(6px, 1.2vw, 10px);  /* רווח קטן בין המשקלים לטקסט */
-  user-select:text;
-  -webkit-tap-highlight-color:transparent;
+  align-items:center;
+  justify-content:flex-start;
+  gap: clamp(6px, 1.2vw, 10px);
   margin-inline:auto;
 }
 
 @supports(padding: max(0px)){
-  /* התחשבות ב-notches של מובייל */
-  .tester{ width: calc(100vw - max(env(safe-area-inset-left), 6px) - max(env(safe-area-inset-right), 6px)); }
+  .tester{ width: calc(100vw - max(env(safe-area-inset-left), 8px) - max(env(safe-area-inset-right), 8px)); }
 }
 
 @media (max-width:700px){
   .site-header img{height:24px}
   .hero-wrap{padding-block:40px 56px}
   .tester{
-    height:clamp(24vh, 28vh, 30vh);   /* קצת יותר גבוה במובייל, עדיין ספקטרום קטן */
-    padding: clamp(8px, 2.5vw, 12px);
-    gap: clamp(6px, 2vw, 10px);
+    width: calc(100vw - 12px);
   }
 }
 
@@ -119,14 +112,15 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
 }
 .tt-btn.active{ background:var(--red); color:#fff; border-color:var(--red) }
 
-/* אזור הטקסט – מרכז אנכי/אופקי, ללא גלילה, ממלא עד קצה */
+/* אזור הטקסט – ממורכז אנכית/אופקית, גובה דינמי קטן לפי הטקסט */
 .tt-window{
   position:relative;
-  flex:1;                         /* גובה דינמי קטן – צמוד למשקלים */
   width:100%;
-  display:flex; align-items:center; justify-content:center; /* מרכז אנכית ואופקית */
-  overflow:hidden;                /* אין גלילה פנימית */
+  /* גובה ייקבע ב-JS (טווח דחוס) כדי למנוע חלל מיותר ולשמור שהחלון לא "יזוז" הרבה */
   border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden; /* אין גלילה פנימית */
+  transition:height .18s ease; /* תנועה קטנה ונעימה בגובה */
 }
 
 .tt-canvas{
@@ -143,15 +137,14 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
   color:#000; background:transparent;
 
   /* עריכה – שקוף, בלי outline/מסגרות */
-  outline:none; border:none;
-  caret-color:#000;
+  outline:none; border:none; caret-color:#000;
 
-  /* ממלא תמיד את הרוחב של החלון */
+  /* שורה אחת הממלאת רוחב; מיושר לאמצע עם “הרמה” אופטית קטנה */
   white-space:nowrap;
   text-align:center; direction:rtl;
-
-  /* ריפוד קטן כדי להיות "כמעט עד הקצה" */
   padding-inline: clamp(4px, 1vw, 8px);
+  padding-bottom: 4px;              /* רזרבה לדסנדרים */
+  transform: translateY(-4%);       /* מרים קצת אופטי */
 }
 .tt-canvas:focus{ outline:none; }
 </style>
@@ -178,7 +171,7 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
 <!-- ===== MAIN ===== -->
 <main class="white" aria-label="Main">
 
-  <!-- Tester אחד – חלון כמעט עד קצה המסך, גובה דחוס, טקסט ממלא תמיד -->
+  <!-- Tester אחד – חלון כמעט עד קצה המסך, גובה דינמי דחוס, טקסט ממלא תמיד -->
   <section class="tester-section">
     <div class="tester" data-default-font="AlteZachen-Random">
       <div class="tt-weights">
@@ -188,7 +181,7 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
         <button class="tt-btn active" data-font="AlteZachen-Random">רנדום</button>
       </div>
 
-      <div class="tt-window">
+      <div class="tt-window" id="ttWin">
         <div class="tt-canvas" id="tt" contenteditable="true" spellcheck="false">אלטע זאכן</div>
       </div>
     </div>
@@ -196,17 +189,18 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
 
 </main>
 
-<!-- ===== JS – auto-fit text to fixed window ===== -->
+<!-- ===== JS – auto-fit to window (רוחב/גובה) + גובה חלון דינמי קטן ===== -->
 <script>
 (function(){
   const tester  = document.querySelector('.tester');
   if(!tester) return;
 
   const canvas  = document.getElementById('tt');
+  const winBox  = document.getElementById('ttWin');
   const weights = tester.querySelectorAll('.tt-btn');
   const defFont = tester.getAttribute('data-default-font') || 'AlteZachen-Random';
 
-  // משקל דיפולט
+  // דיפולט משקל
   canvas.style.fontFamily = `"${defFont}", system-ui, sans-serif`;
   weights.forEach(b=>{
     b.classList.toggle('active', b.dataset.font === defFont);
@@ -214,53 +208,75 @@ body{font-family:"AlteZachen-Normal", system-ui, -apple-system, "Segoe UI", Aria
       weights.forEach(x=>x.classList.remove('active'));
       b.classList.add('active');
       canvas.style.fontFamily = `"${b.dataset.font}", system-ui, sans-serif`;
-      fitToWindow();
+      fitAll();
     });
   });
 
-  // התאמת גודל פונט כך שהטקסט ימלא את חלון התצוגה (רוחב וגם גובה) ללא שינוי בגודל החלון
-  function fitToWindow(){
-    const win = canvas.parentElement; // .tt-window
+  // התאמת חלון: גובה דינמי קטן (range דחוס), ורוחב/גובה הטקסט
+  function fitAll(){
+    const txt = (canvas.textContent || '').trim() || 'אלטע זאכן';
 
-    // מימדים זמינים באמת (פנימיים, אחרי padding קטן של הקנבס)
-    const csCanvas = getComputedStyle(canvas);
-    const padX = parseFloat(csCanvas.paddingInlineStart) + parseFloat(csCanvas.paddingInlineEnd);
-    const availW = Math.max(10, win.clientWidth  - padX);
-    const availH = Math.max(10, win.clientHeight);
-
-    // מודד נסתר
+    // מודד נסתר כדי לאמן גם רוחב וגם גובה
     const meas = document.createElement('span');
     meas.style.whiteSpace = 'nowrap';
     meas.style.visibility = 'hidden';
     meas.style.position   = 'absolute';
     meas.style.pointerEvents = 'none';
-    meas.style.fontFamily = getComputedStyle(canvas).fontFamily;
-    meas.style.letterSpacing = getComputedStyle(canvas).letterSpacing;
+    const csCanvas = getComputedStyle(canvas);
+    meas.style.fontFamily = csCanvas.fontFamily;
+    meas.style.letterSpacing = csCanvas.letterSpacing;
     meas.style.lineHeight = '1';
-    meas.textContent = (canvas.textContent || '').trim() || 'אלטע זאכן';
+    meas.textContent = txt;
     document.body.appendChild(meas);
 
-    // חיפוש בינארי לפי רוחב וגובה
-    let lo=8, hi=1000, best=16;
+    // רוחב זמין: כמעט מלוא רוחב הקופסה פחות padding פנימי קטן
+    const padX = parseFloat(csCanvas.paddingInlineStart) + parseFloat(csCanvas.paddingInlineEnd);
+    const availW = Math.max(10, winBox.clientWidth - padX);
+
+    // חיפוש בינארי – הגדל עד הרוחב והגובה (עם רזרבה לדסנדרים)
+    let lo=8, hi=1800, best=16;                  // תקרה גבוהה יותר לדסקטופ
+    const descenderGuard = 1.06;                 // שומר 6% גובה לדסנדרים
     while(lo<=hi){
       const mid = Math.floor((lo+hi)/2);
       meas.style.fontSize = mid + 'px';
       const r = meas.getBoundingClientRect();
-      if (r.width <= availW && r.height <= availH){
+      if (r.width <= availW){
+        // אם ברוחב אנחנו עומדים, נאשר ונסה עוד
         best = mid; lo = mid + 1;
       } else {
         hi = mid - 1;
       }
     }
-
+    // קבענו גודל פונט
     canvas.style.setProperty('--f', best + 'px');
+
+    // קבע גובה חלון דחוס לפי גובה הטקסט (עם שמירת רזרבה קלה)
+    // חלון לא "קופץ" קיצונית: דסקטופ ~ 18–28vh, מובייל ~ 22–32vh
+    const textH = meas.getBoundingClientRect().height * descenderGuard + 6; // +6px רווח תחתון קטן
     document.body.removeChild(meas);
+
+    const isMobile = window.matchMedia('(max-width:700px)').matches;
+    const minVh = isMobile ? 22 : 18;
+    const maxVh = isMobile ? 32 : 28;
+
+    // המר פיקסלים לגובה יחסי למסך – כדי לקבע טווח דחוס ונעים
+    const pxToVh = (px)=> (px / window.innerHeight) * 100;
+    let desiredVh = pxToVh(textH);
+
+    // הידוק לטווח
+    desiredVh = Math.max(minVh, Math.min(maxVh, desiredVh));
+
+    // הגדרת הגובה בפועל
+    winBox.style.height = desiredVh + 'vh';
   }
 
-  // טריגרים
-  fitToWindow();
-  window.addEventListener('resize', fitToWindow, {passive:true});
-  canvas.addEventListener('input', fitToWindow);
+  // ריצה ראשונית וטריגרים
+  fitAll();
+  window.addEventListener('resize', fitAll, {passive:true});
+  canvas.addEventListener('input', fitAll);
+
+  // ניקוי outline במובייל
+  canvas.addEventListener('focus', ()=>canvas.style.outline='none');
 })();
 </script>
 
