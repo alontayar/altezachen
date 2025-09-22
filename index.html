@@ -367,6 +367,54 @@ a.tbtn:hover, a.tbtn:focus, a.tbtn:active{ text-decoration:none; }
 
 
 
+
+
+/* === Wider on desktop, safe on mobile (no clipping) === */
+.fdx4-wrap{
+  max-width: 100%;
+  padding-inline: clamp(10px, 2vw, 24px); /* מרחב נשימה בצדדים */
+}
+
+.fdx4-card{
+  width: min(1400px, 96vw);   /* רחב משמעותית */
+  box-sizing: border-box;     /* שלא יגלוש בגלל padding */
+}
+
+.fdx4-body{
+  min-height: 10vh;           /* פחות גובה מיותר */
+}
+
+.fdx4-edit{
+  /* טקסט רספונסיבי שנשבר יפה, שלא ייחתך */
+  font-size: clamp(36px, 7vw, 120px);
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width:600px){
+  .fdx4-head{ display:none }
+  .fdx4-card{
+    width: 100%;
+    max-width: 100%;
+    margin: 0;               /* מבטל מרכוז עם שוליים שחותכים */
+    border-radius: 0;        /* רשות: יושב עד קצה המסך */
+  }
+  .fdx4-body{ min-height: 0 }
+  .fdx4-edit{
+    font-size: clamp(28px, 8.5vw, 64px); /* לא קבוע 60px – נמתח לפי המסך */
+  }
+}
+
+
+
+
+
+
+
+
+
 </style>
 </head>
 <body>
