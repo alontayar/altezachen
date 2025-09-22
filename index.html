@@ -415,6 +415,18 @@ a.tbtn:hover, a.tbtn:focus, a.tbtn:active{ text-decoration:none; }
 
 
 
+/* גודל ברירת־מחדל לכרטיס (בפיקסלים, בלי יחידה) */
+.fdx4-card{ --fs: 72; }
+
+.fdx4-edit{
+  font-size: calc(var(--fs, 72) * 1px); /* הגודל נלקח מהמשתנה של הכרטיס */
+}
+
+
+
+
+
+
 </style>
 </head>
 <body>
@@ -451,14 +463,14 @@ a.tbtn:hover, a.tbtn:focus, a.tbtn:active{ text-decoration:none; }
 <section class="section" style="background:#fff; padding-top:0;">
   <div class="fdx4-wrap" id="fdx4">
     <!-- Normal -->
-    <div class="fdx4-card" data-face='"AlteZachen Normal", system-ui, sans-serif'>
+    <div class="fdx4-card" data-fs="140" data-face='"AlteZachen Normal", system-ui, sans-serif'>
       <div class="fdx4-head">
         <input class="fdx4-slider" type="range" min="24" max="240" value="120" step="1" aria-label="גודל">
       </div>
       <div class="fdx4-body">
         <div class="fdx4-edit" contenteditable="true" spellcheck="false"
              style="font-family:'AlteZachen Normal', system-ui, sans-serif; font-size:120px;">
-          קוסמים וזרדים עושים חמודים
+          שנה טובה! ☺
         </div>
       </div>
     </div>
