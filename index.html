@@ -266,26 +266,61 @@ img{display:block;max-width:100%;height:auto}
 a.tbtn{ text-decoration:none; }
 a.tbtn:hover, a.tbtn:focus, a.tbtn:active{ text-decoration:none; }
 
-/* ===== FDX–FOUR minimal testers ===== */
-.fdx4-wrap{max-width:min(1400px,96vw);margin:0 auto;padding:clamp(20px,4vw,48px) 0;display:grid;gap:clamp(16px,2.6vw,28px)}
-@media (min-width:1024px){ .fdx4-wrap{grid-template-columns:1fr 1fr} }
-
-.fdx4-card{
-  background:#e9edf2; /* האפור הבהיר */
-  border:none; border-radius:16px;
-  padding:clamp(12px,1.6vw,16px);
+/* ===== FDX–FOUR minimal testers (stacked, narrow, light) ===== */
+.fdx4-wrap{
+  /* עמודה אחת, רווח בין כרטיסים, ממורכז */
+  display:flex; flex-direction:column; gap:clamp(16px,2.6vw,28px);
+  max-width: min(980px, 92vw);   /* צר יותר */
+  margin: 0 auto;
+  padding: clamp(20px,4vw,48px) 0;
 }
 
-.fdx4-head{display:flex;justify-content:center;margin-bottom:8px}
-.fdx4-slider{width:min(48vw,420px);-webkit-appearance:none;appearance:none;background:transparent}
-.fdx4-slider::-webkit-slider-runnable-track{height:2px;background:#000}
-.fdx4-slider::-moz-range-track{height:2px;background:#000}
-.fdx4-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;border-radius:50%;background:#000;margin-top:-7px}
-.fdx4-slider::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#000;border:0}
+.fdx4-card{
+  background:#f2f4f7;            /* אפור בהיר יותר */
+  border:none; border-radius:16px;
+  padding: clamp(12px,1.6vw,16px);
+  width: min(760px, 86vw);        /* מלבן צר יחסית */
+  margin: 0 auto;                 /* למרכז כל כרטיס */
+}
 
-.fdx4-body{display:flex;align-items:center;justify-content:center;min-height:22vh}
+.fdx4-head{
+  display:flex; justify-content:center; align-items:center;
+  margin-bottom: 14px;            /* ריווח גדול יותר מהטקסט */
+}
+
+.fdx4-slider{
+  width: min(56vw, 420px);
+  -webkit-appearance:none; appearance:none;
+  background:transparent;
+  cursor: pointer;                /* יד על כל הסליידר */
+}
+.fdx4-slider::-webkit-slider-runnable-track{height:2px;background:#000; cursor:pointer}
+.fdx4-slider::-moz-range-track{height:2px;background:#000; cursor:pointer}
+
+/* thumb – שחור, אדום בהובר/אקטיב */
+.fdx4-slider::-webkit-slider-thumb{
+  -webkit-appearance:none; appearance:none;
+  width:16px; height:16px; border-radius:50%;
+  background:#000; margin-top:-7px; cursor:pointer;
+}
+.fdx4-slider:hover::-webkit-slider-thumb,
+.fdx4-slider:active::-webkit-slider-thumb{ background:#ff0000 }
+
+.fdx4-slider::-moz-range-thumb{
+  width:16px; height:16px; border-radius:50%;
+  background:#000; border:0; cursor:pointer;
+}
+/* בפיירפוקס אין :hover על ה-thumb עצמו, אז מוסיפים על ה-input */
+.fdx4-slider:hover::-moz-range-thumb,
+.fdx4-slider:active::-moz-range-thumb{ background:#ff0000 }
+
+.fdx4-body{
+  display:flex; align-items:center; justify-content:center;
+  min-height: 22vh;               /* נשאיר מרחב נעים לטקסט */
+}
+
 .fdx4-edit{
-  outline:none;border:0;margin:0;padding:0;
+  outline:none; border:0; margin:0; padding:0;
   width:100%;
   text-align:center; direction:rtl; white-space:normal; word-break:break-word;
   line-height:1; letter-spacing:0;
@@ -294,10 +329,11 @@ a.tbtn:hover, a.tbtn:focus, a.tbtn:active{ text-decoration:none; }
   -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
 }
 
-/* מובייל: אין שינוי גודל – אין סליידר, גודל נעול ל-60px */
+/* מובייל: אין סליידר, גודל נעול — וגם הכרטיסים נשארים צרים וערוכים בטור */
 @media (max-width:600px){
-  .fdx4-head{display:none}
-  .fdx4-edit{font-size:60px !important}
+  .fdx4-head{ display:none }
+  .fdx4-edit{ font-size:60px !important }
+  .fdx4-card{ width: 92vw }       /* טיפה רחב יותר במובייל כדי למלא יפה */
 }
 
 
