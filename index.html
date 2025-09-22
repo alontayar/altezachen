@@ -415,47 +415,6 @@ a.tbtn:hover, a.tbtn:focus, a.tbtn:active{ text-decoration:none; }
 
 
 
-/* === Dynamic font-size by slider (forces precedence) === */
-.fdx4-card{ --fs: 72; }  /* ערך פתיחה לכל כרטיס */
-
-.fdx4-card .fdx4-edit{
-  font-size: calc(var(--fs, 72) * 1px) !important; /* מנצח הגדרות קודמות */
-  letter-spacing: normal;
-  font-kerning: normal;
-  font-feature-settings: "kern" 1, "liga" 1;
-}
-
-
-
-
-
-
-
-/* ===== Desktop / default: slider שולט חופשי ===== */
-.fdx4-card{ --fs: 72; }  /* פתיחה לכל כרטיס; אפשר לשנות ב-data-fs */
-
-.fdx4-card .fdx4-edit{
-  font-size: calc(var(--fs, 72) * 1px); /* slider קובע בפיקסלים */
-  letter-spacing: normal;
-  font-kerning: normal;
-  font-feature-settings: "kern" 1, "liga" 1;
-  overflow-wrap: anywhere;
-  hyphens: auto;
-  line-height: 1.05;
-}
-
-/* ===== Mobile: מגבילים לפי רוחב מסך כדי שלא ייחתך ===== */
-@media (max-width:600px){
-  .fdx4-card .fdx4-edit{
-    /* לא קטן מ-22px, לא גדול מ~8.8vw, ועדיין מכובד ע"י ה-slider אם הוא קטן מזה */
-    font-size: clamp(22px, 8.8vw, calc(var(--fs, 72) * 1px)) !important;
-    line-height: 1.1;
-  }
-  /* אם יש לך כלל קודם שקבע font-size קבוע במובייל – הוא עכשיו מנוצח */
-}
-
-
-
 
 
 
@@ -495,7 +454,7 @@ a.tbtn:hover, a.tbtn:focus, a.tbtn:active{ text-decoration:none; }
 <section class="section" style="background:#fff; padding-top:0;">
   <div class="fdx4-wrap" id="fdx4">
     <!-- Normal -->
-    <div class="fdx4-card" data-fs="220" data-face='"AlteZachen Normal", system-ui, sans-serif'>
+    <div class="fdx4-card" data-face='"AlteZachen Normal", system-ui, sans-serif'>
       <div class="fdx4-head">
         <input class="fdx4-slider" type="range" min="24" max="240" value="120" step="1" aria-label="גודל">
       </div>
@@ -962,26 +921,6 @@ function codeOf(ch){ let h=ch.codePointAt(0).toString(16).toUpperCase(); while(h
 
 
 
-
-<script>
-document.querySelectorAll('.fdx4-card').forEach(card => {
-  const slider = card.querySelector('.fdx4-slider');
-  const start = parseFloat(card.dataset.fs) || 72;
-
-  // קבע ערך פתיחה
-  card.style.setProperty('--fs', start);
-
-  if (slider) {
-    slider.value = start;
-    slider.addEventListener('input', e => {
-      const v = Math.max(1, parseFloat(e.target.value) || 1); // ביטוח נגד NaN/0
-      card.style.setProperty('--fs', v);
-      // דיבאג: ראה בפועל שהפונט משתנה
-      // console.log('fs now =', getComputedStyle(card.querySelector('.fdx4-edit')).fontSize);
-    });
-  }
-});
-</script>
 
 
 
