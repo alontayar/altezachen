@@ -266,59 +266,61 @@ img{display:block;max-width:100%;height:auto}
 a.tbtn{ text-decoration:none; }
 a.tbtn:hover, a.tbtn:focus, a.tbtn:active{ text-decoration:none; }
 
-/* ========== INLINE TYPE TESTER (NEW) ========== */
-/* שמות ייחודיים כדי לא להתנגש עם .tester המודאלי */
-.inline-tester-section{ display:flex; justify-content:center; }
-.inline-tester{
-  width:min(98vw,1600px);
-  margin-inline:auto;
-  background:#e9edf2;              /* אפור עדין */
-  border-radius:16px;
-  padding:clamp(10px,1.6vw,16px);
-  display:flex; flex-direction:column; gap:var(--inline-gap,8px);
-  box-sizing:border-box;
+/* ========== FDX SAMPLER (no external deps) ========== */
+.fdx-wrap{max-width:min(1400px,96vw);margin:0 auto;padding:clamp(24px,4vw,48px) 0}
+.fdx-bar{
+  display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;
+  border:1px solid #000;border-radius:10px;padding:10px;background:#fff
 }
-.inline-weights{
-  display:flex; justify-content:center; align-items:center; gap:10px; flex-wrap:wrap;
-}
-.inline-weight-btn{
-  font-family:"AlteZachen HalfWide", system-ui, sans-serif;
-  font-size:clamp(12px,1.2vw,16px);
-  line-height:1; padding:9px 12px;
-  border:1px solid #000; border-radius:8px;
-  background:#fff; color:#000; cursor:pointer; user-select:none;
-}
-.inline-weight-btn.active{ background:#ff0000; color:#fff; border-color:#ff0000; }
+.fdx-group{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 
-.inline-window{
-  width:100%; border-radius:12px; overflow:hidden;
-  display:flex; align-items:center; justify-content:center;
-  transition:height .16s ease;
+.fdx-btn{
+  appearance:none;cursor:pointer;border:1px solid #000;background:#fff;color:#000;
+  padding:.5em .9em;border-radius:8px;font-family:"AlteZachen HalfWide",system-ui,sans-serif;
+  font-size:14px;line-height:1
 }
-.inline-text{
-  --f:180px;
-  font-size:var(--f);
-  line-height:1;
-  font-kerning:normal;
-  font-feature-settings:"kern" 1, "liga" 1;
-  -webkit-font-smoothing:antialiased;
-  text-rendering:optimizeLegibility;
+.fdx-btn.is-active{background:#ff0000;color:#fff;border-color:#ff0000}
 
-  font-family:"AlteZachen Random", system-ui, sans-serif;
-  color:#000; background:transparent;
+.fdx-slider{display:flex;align-items:center;gap:8px}
+.fdx-slider input[type=range]{width:min(42vw,340px);-webkit-appearance:none;appearance:none;background:transparent}
+.fdx-slider input[type=range]::-webkit-slider-runnable-track{height:2px;background:#000}
+.fdx-slider input[type=range]::-moz-range-track{height:2px;background:#000}
+.fdx-slider input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;border-radius:50%;background:#000;margin-top:-7px}
+.fdx-slider input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#000;border:0}
 
-  outline:none; border:none; caret-color:#000;
-  white-space:nowrap; text-align:center; direction:rtl;
-
-  display:block; max-width:100%;
-  padding-inline:clamp(4px,1vw,8px);
-  padding-bottom:10px;
-  transform:translateY(-2%);
+.fdx-mode{
+  display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center;margin-top:12px
 }
+.fdx-mode .fdx-tab{border:1px solid #000;background:#fff;color:#000;border-radius:20px;padding:.4em .9em;cursor:pointer;font-family:Arial,sans-serif;font-size:12px}
+.fdx-mode .fdx-tab.is-active{background:#000;color:#fff}
+
+.fdx-stage{margin-top:16px;border:1px solid #000;border-radius:16px;overflow:hidden;background:#fff}
+.fdx-stage-inner{padding:clamp(16px,3vw,28px);text-align:center}
+
+.fdx-edit{
+  outline:none;border:0;width:100%;white-space:pre-wrap;word-break:break-word;
+  font-size:clamp(42px,9vw,220px);line-height:1;letter-spacing:0;
+  font-family:"AlteZachen Random",system-ui,sans-serif;color:#000;
+  margin:0; padding:0
+}
+
+/* waterfall */
+.fdx-waterfall{display:flex;flex-direction:column;gap:14px;text-align:center}
+.fdx-w-row{line-height:1}
+
+.fdx-meta{
+  display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:10px;
+  font:12px/1.2 Arial,Helvetica,sans-serif;color:#000
+}
+
+/* mobile tweaks */
 @media (max-width:600px){
-  .inline-tester{ width:calc(100vw - 12px); }
-  .inline-weight-btn{ font-size:clamp(12px,3.8vw,15px); padding:8px 10px; }
+  .fdx-bar{gap:8px}
+  .fdx-btn{font-size:13px}
+  .fdx-slider input[type=range]{width:72vw}
+  .fdx-edit{font-size:clamp(42px,18vw,320px)}
 }
+
 </style>
 </head>
 <body>
@@ -351,21 +353,68 @@ a.tbtn:hover, a.tbtn:focus, a.tbtn:active{ text-decoration:none; }
   <img src="hero2.webp" class="hero-media" alt="">
 </section>
 
-<!-- ========= INLINE TYPE TESTER (inserted here) ========= -->
-<section class="inline-tester-section">
-  <div class="inline-tester" id="inlineTester" data-default-font="AlteZachen Random" aria-label="טייפ־טסטר">
-    <div class="inline-weights" role="tablist" aria-label="משקלים">
-      <button class="inline-weight-btn" role="tab" aria-selected="false" data-font="AlteZachen Normal">נורמל</button>
-      <button class="inline-weight-btn" role="tab" aria-selected="false" data-font="AlteZachen HalfWide">חצי־רחב</button>
-      <button class="inline-weight-btn" role="tab" aria-selected="false" data-font="AlteZachen Wide">רחב</button>
-      <button class="inline-weight-btn active" role="tab" aria-selected="true"  data-font="AlteZachen Random">רנדום</button>
+<!-- ============ FDX SAMPLER (custom Fontdue-like) ============ -->
+<section id="fdx-sampler" class="section" style="background:#fff;padding-top:0;">
+  <div class="fdx-wrap">
+    <!-- פס בקרה -->
+    <div class="fdx-bar" dir="rtl">
+      <div class="fdx-group" id="fdxWeights">
+        <button class="fdx-btn is-active" data-face="AlteZachen Normal">נורמל</button>
+        <button class="fdx-btn" data-face="AlteZachen HalfWide">חצי־רחב</button>
+        <button class="fdx-btn" data-face="AlteZachen Wide">רחב</button>
+        <button class="fdx-btn" data-face="AlteZachen Random">רנדום</button>
+      </div>
+
+      <div class="fdx-group fdx-slider">
+        <span style="font:12px Arial">A</span>
+        <input id="fdxSize" type="range" min="28" max="240" value="120" step="1" aria-label="גודל">
+        <span style="font:16px Arial">A</span>
+      </div>
+
+      <div class="fdx-group fdx-slider">
+        <span style="font:12px Arial">LH</span>
+        <input id="fdxLH" type="range" min="80" max="140" value="100" step="1" aria-label="מרווח שורות">
+        <span style="font:12px Arial">%</span>
+      </div>
+
+      <div class="fdx-group fdx-slider">
+        <span style="font:12px Arial">TRK</span>
+        <input id="fdxTrack" type="range" min="-40" max="60" value="0" step="1" aria-label="מרווח אותיות">
+        <span style="font:12px Arial">px</span>
+      </div>
     </div>
-    <div class="inline-window" id="inlineWin">
-      <div id="inlineTxt" class="inline-text" contenteditable="true" spellcheck="false" aria-label="עריכת טקסט">אלטע זאכן</div>
+
+    <!-- מצבי תצוגה -->
+    <div class="fdx-mode" id="fdxModes">
+      <button class="fdx-tab is-active" data-mode="edit">עריכה</button>
+      <button class="fdx-tab" data-mode="wf">Waterfall</button>
+      <button class="fdx-tab" data-mode="samples">טקסט לדוגמה</button>
+    </div>
+
+    <!-- במת התצוגה -->
+    <div class="fdx-stage">
+      <div class="fdx-stage-inner" id="fdxStage">
+        <!-- מצב עריכה -->
+        <div id="fdxPane-edit">
+          <div class="fdx-edit" id="fdxEdit" contenteditable="true" spellcheck="false" dir="rtl">אלטע זאכן</div>
+          <div class="fdx-meta" id="fdxMeta"></div>
+        </div>
+
+        <!-- מצב ווטרפול -->
+        <div id="fdxPane-wf" style="display:none">
+          <div class="fdx-waterfall" id="fdxWF"></div>
+        </div>
+
+        <!-- מצב טקסטים לדוגמה -->
+        <div id="fdxPane-samples" style="display:none">
+          <div class="fdx-waterfall" id="fdxSamp"></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
-<!-- ========= /INLINE TYPE TESTER ========= -->
+<!-- ============ /FDX SAMPLER ============ -->
+
 
 <!-- ================== SPECIMEN BLOCKS ================== -->
 <section class="section white spec">
@@ -731,5 +780,157 @@ function codeOf(ch){ let h=ch.codePointAt(0).toString(16).toUpperCase(); while(h
   txt.addEventListener('focus', ()=> txt.style.outline='none');
 })();
 </script>
+
+
+<script>
+(()=>{
+
+  // ——— הגדרות בסיס ———
+  const faces = {
+    "AlteZachen Normal":   '"AlteZachen Normal", system-ui, sans-serif',
+    "AlteZachen HalfWide": '"AlteZachen HalfWide", system-ui, sans-serif',
+    "AlteZachen Wide":     '"AlteZachen Wide", system-ui, sans-serif',
+    "AlteZachen Random":   '"AlteZachen Random", system-ui, sans-serif'
+  };
+
+  const el = {
+    weights: document.getElementById('fdxWeights'),
+    size:    document.getElementById('fdxSize'),
+    lh:      document.getElementById('fdxLH'),
+    track:   document.getElementById('fdxTrack'),
+    modes:   document.getElementById('fdxModes'),
+    stage:   document.getElementById('fdxStage'),
+    edit:    document.getElementById('fdxEdit'),
+    meta:    document.getElementById('fdxMeta'),
+    paneEdit:document.getElementById('fdxPane-edit'),
+    paneWF:  document.getElementById('fdxPane-wf'),
+    paneS:   document.getElementById('fdxPane-samples'),
+    wfBox:   document.getElementById('fdxWF'),
+    sampBox: document.getElementById('fdxSamp')
+  };
+
+  // ——— סטייט ———
+  let currentFace = 'AlteZachen Random'; // דיפולט
+  let currentMode = 'edit';
+
+  // ——— עזר: החלת סגנון על אלמנט(ים) ———
+  function applyStyle(target, fSize, lHeightPct, trackingPx, faceName){
+    const fam = faces[faceName] || faces['AlteZachen Random'];
+    const lh  = (lHeightPct/100).toFixed(3);
+    if (Array.isArray(target)){
+      target.forEach(t=>{
+        t.style.fontFamily   = fam;
+        t.style.fontSize     = fSize+'px';
+        t.style.lineHeight   = lh;
+        t.style.letterSpacing= trackingPx+'px';
+      });
+    } else {
+      target.style.fontFamily   = fam;
+      target.style.fontSize     = fSize+'px';
+      target.style.lineHeight   = lh;
+      target.style.letterSpacing= trackingPx+'px';
+    }
+  }
+
+  // ——— משקל ———
+  el.weights.addEventListener('click', (e)=>{
+    const b = e.target.closest('button[data-face]');
+    if(!b) return;
+    el.weights.querySelectorAll('button').forEach(x=>x.classList.remove('is-active'));
+    b.classList.add('is-active');
+    currentFace = b.getAttribute('data-face');
+    render();
+  });
+
+  // ——— מצבים ———
+  el.modes.addEventListener('click',(e)=>{
+    const t=e.target.closest('button[data-mode]'); if(!t) return;
+    el.modes.querySelectorAll('button').forEach(x=>x.classList.remove('is-active'));
+    t.classList.add('is-active');
+    currentMode=t.getAttribute('data-mode');
+    el.paneEdit.style.display = (currentMode==='edit')?'':'none';
+    el.paneWF.style.display   = (currentMode==='wf')?'':'none';
+    el.paneS.style.display    = (currentMode==='samples')?'':'none';
+    render(true);
+  });
+
+  // ——— ווטרפול (גדלים יורדים) ———
+  const wfSteps = [220,180,140,120,96,72,60,48,36,30,24,20,18,16,14,12].map(n=>Math.max(12, n));
+  function buildWF(container, text){
+    container.innerHTML='';
+    wfSteps.forEach(sz=>{
+      const row=document.createElement('div');
+      row.className='fdx-w-row';
+      row.textContent = text;
+      container.appendChild(row);
+    });
+  }
+
+  // ——— דוגמאות טקסט ———
+  const SAMPLES = [
+    'אלטע זאכן — טקסט לדוגמה. יידיש, עברית, סימנים, ומספרים 0123456789.',
+    'IN 1920, MANDATORY PALESTINE (פלשתינה/ישראל) WAS ESTABLISHED…',
+    'Rag-and-bone man · Sabrina Carpenter · ₪ € $ ½ ¼ ¾',
+  ];
+  function buildSamples(container){
+    container.innerHTML='';
+    SAMPLES.forEach((t,i)=>{
+      const row=document.createElement('div');
+      row.className='fdx-w-row';
+      row.style.fontSize = (i===0? 64 : i===1? 40 : 28)+'px';
+      row.textContent = t;
+      container.appendChild(row);
+    });
+  }
+
+  // ——— מטא קטנה (מידות) ———
+  function updateMeta(){
+    el.meta.textContent = `${currentFace.replace('AlteZachen ','')}`
+      + ' • ' + el.size.value + 'px'
+      + ' • LH ' + el.lh.value + '%'
+      + ' • TRK ' + el.track.value + 'px';
+  }
+
+  // ——— רנדר ראשי ———
+  function render(rebuild=false){
+    const fSize = parseInt(el.size.value,10);
+    const lhPct = parseInt(el.lh.value,10);
+    const trk   = parseInt(el.track.value,10);
+
+    if(currentMode==='edit'){
+      applyStyle(el.edit, fSize, lhPct, trk, currentFace);
+      updateMeta();
+    }else if(currentMode==='wf'){
+      if(rebuild) buildWF(el.wfBox, el.edit.textContent.trim() || 'אלטע זאכן');
+      const rows = Array.from(el.wfBox.children);
+      rows.forEach((r,i)=> applyStyle(r, wfSteps[i] || 16, lhPct, trk, currentFace));
+    }else if(currentMode==='samples'){
+      if(rebuild) buildSamples(el.sampBox);
+      const rows = Array.from(el.sampBox.children);
+      rows.forEach(r=> applyStyle(r, parseInt(getComputedStyle(r).fontSize), lhPct, trk, currentFace));
+    }
+  }
+
+  // ——— מאזינים ———
+  ['input','change'].forEach(ev=>{
+    el.size.addEventListener(ev, ()=>render());
+    el.lh.addEventListener(ev,  ()=>render());
+    el.track.addEventListener(ev,()=>render());
+  });
+  el.edit.addEventListener('input', ()=>{ if(currentMode==='wf') render(true); else render(); });
+
+  // INIT
+  buildWF(el.wfBox, el.edit.textContent.trim());
+  buildSamples(el.sampBox);
+  render(true);
+
+  // התאמות רספונסיביות — בקטנה
+  addEventListener('resize', ()=>render());
+})();
+</script>
+
+
+
+
 </body>
 </html>
