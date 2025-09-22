@@ -266,75 +266,68 @@ img{display:block;max-width:100%;height:auto}
 a.tbtn{ text-decoration:none; }
 a.tbtn:hover, a.tbtn:focus, a.tbtn:active{ text-decoration:none; }
 
-/* ===== FDX–FOUR minimal testers (stacked, narrow, light) ===== */
-.fdx4-wrap{
-  /* עמודה אחת, רווח בין כרטיסים, ממורכז */
-  display:flex; flex-direction:column; gap:clamp(16px,2.6vw,28px);
-  max-width: min(980px, 92vw);   /* צר יותר */
-  margin: 0 auto;
-  padding: clamp(20px,4vw,48px) 0;
-}
+<script>
+(()=> {
+  const root = document.getElementById('fdx4');
+  if(!root) return;
 
-.fdx4-card{
-  background:#f2f4f7;            /* אפור בהיר יותר */
-  border:none; border-radius:16px;
-  padding: clamp(12px,1.6vw,16px);
-  width: min(760px, 86vw);        /* מלבן צר יחסית */
-  margin: 0 auto;                 /* למרכז כל כרטיס */
-}
+  const isMobile = () => matchMedia('(max-width:600px)').matches;
 
-.fdx4-head{
-  display:flex; justify-content:center; align-items:center;
-  margin-bottom: 14px;            /* ריווח גדול יותר מהטקסט */
-}
+  function fitOneLine(editEl){
+    // מחשב גודל פונט כך שהטקסט ייכנס בשורה אחת בתוך הכרטיס
+    const card = editEl.closest('.fdx4-card');
+    const maxW = card.clientWidth - 24;  // מרווח בטיחות קטן
+    let size   = Math.min(parseFloat(getComputedStyle(editEl).fontSize) || 120, 220);
+    editEl.style.fontSize = size + 'px';
 
-.fdx4-slider{
-  width: min(56vw, 420px);
-  -webkit-appearance:none; appearance:none;
-  background:transparent;
-  cursor: pointer;                /* יד על כל הסליידר */
-}
-.fdx4-slider::-webkit-slider-runnable-track{height:2px;background:#000; cursor:pointer}
-.fdx4-slider::-moz-range-track{height:2px;background:#000; cursor:pointer}
+    // אם לא נכנס – נקטין עד שיכנס, מינימום 24px
+    let guard = 180;
+    while (guard-- && editEl.scrollWidth > maxW && size > 24){
+      size -= 2;
+      editEl.style.fontSize = size + 'px';
+    }
+    return size;
+  }
 
-/* thumb – שחור, אדום בהובר/אקטיב */
-.fdx4-slider::-webkit-slider-thumb{
-  -webkit-appearance:none; appearance:none;
-  width:16px; height:16px; border-radius:50%;
-  background:#000; margin-top:-7px; cursor:pointer;
-}
-.fdx4-slider:hover::-webkit-slider-thumb,
-.fdx4-slider:active::-webkit-slider-thumb{ background:#ff0000 }
+  root.querySelectorAll('.fdx4-card').forEach(card => {
+    const slider = card.querySelector('.fdx4-slider');
+    const edit   = card.querySelector('.fdx4-edit');
+    const face   = card.getAttribute('data-face') || getComputedStyle(edit).fontFamily;
+    edit.style.fontFamily = face;
 
-.fdx4-slider::-moz-range-thumb{
-  width:16px; height:16px; border-radius:50%;
-  background:#000; border:0; cursor:pointer;
-}
-/* בפיירפוקס אין :hover על ה-thumb עצמו, אז מוסיפים על ה-input */
-.fdx4-slider:hover::-moz-range-thumb,
-.fdx4-slider:active::-moz-range-thumb{ background:#ff0000 }
+    function bindDesktop(){
+      if(!slider) return;
+      slider.disabled = false;
+      // אם קיימת ערך בסליידר – השתמש בו; אחרת שמור על הנוכחי
+      const v = slider.value || 120;
+      edit.style.fontSize = v + 'px';
+      // שמירה על שורה אחת בדסקטופ: אם הערך הנוכחי שובֵר שורה – תן טיפ קטן למשתמש
+      if (edit.scrollWidth > (card.clientWidth - 24)){
+        // הצעה: אפשר להקטין מעט כדי להחזיר לשורה אחת
+        edit.style.fontSize = (v - 4) + 'px';
+      }
+      slider.oninput = () => { edit.style.fontSize = slider.value + 'px'; };
+    }
 
-.fdx4-body{
-  display:flex; align-items:center; justify-content:center;
-  min-height: 22vh;               /* נשאיר מרחב נעים לטקסט */
-}
+    function bindMobile(){
+      if(slider){ slider.oninput = null; slider.disabled = true; }
+      // חישוב אוטומטי כך שהטקסט תמיד בשורה אחת
+      fitOneLine(edit);
+    }
 
-.fdx4-edit{
-  outline:none; border:0; margin:0; padding:0;
-  width:100%;
-  text-align:center; direction:rtl; white-space:normal; word-break:break-word;
-  line-height:1; letter-spacing:0;
-  color:#000; background:transparent;
-  font-feature-settings:"kern" 1, "liga" 1;
-  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
-}
+    function apply(){
+      if(isMobile()) bindMobile(); else bindDesktop();
+    }
+    apply();
 
-/* מובייל: אין סליידר, גודל נעול — וגם הכרטיסים נשארים צרים וערוכים בטור */
-@media (max-width:600px){
-  .fdx4-head{ display:none }
-  .fdx4-edit{ font-size:60px !important }
-  .fdx4-card{ width: 92vw }       /* טיפה רחב יותר במובייל כדי למלא יפה */
-}
+    // שינוי גודל חלון / שינוי טקסט → להתאים מחדש
+    addEventListener('resize', apply, {passive:true});
+    edit.addEventListener('input', ()=>{
+      if(isMobile()) fitOneLine(edit);
+    });
+  });
+})();
+</script>
 
 
 </style>
