@@ -415,11 +415,14 @@ a.tbtn:hover, a.tbtn:focus, a.tbtn:active{ text-decoration:none; }
 
 
 
-/* גודל ברירת־מחדל לכרטיס (בפיקסלים, בלי יחידה) */
-.fdx4-card{ --fs: 72; }
+/* === Dynamic font-size by slider (forces precedence) === */
+.fdx4-card{ --fs: 72; }  /* ערך פתיחה לכל כרטיס */
 
-.fdx4-edit{
-  font-size: calc(var(--fs, 72) * 1px); /* הגודל נלקח מהמשתנה של הכרטיס */
+.fdx4-card .fdx4-edit{
+  font-size: calc(var(--fs, 72) * 1px) !important; /* מנצח הגדרות קודמות */
+  letter-spacing: normal;
+  font-kerning: normal;
+  font-feature-settings: "kern" 1, "liga" 1;
 }
 
 
@@ -934,16 +937,23 @@ function codeOf(ch){ let h=ch.codePointAt(0).toString(16).toUpperCase(); while(h
 <script>
 document.querySelectorAll('.fdx4-card').forEach(card => {
   const slider = card.querySelector('.fdx4-slider');
-  const start = parseFloat(card.dataset.fs) || 72;   // גודל פתיחה מה-HTML
-  card.style.setProperty('--fs', start);             // החלת הגודל על הכרטיס
+  const start = parseFloat(card.dataset.fs) || 72;
+
+  // קבע ערך פתיחה
+  card.style.setProperty('--fs', start);
+
   if (slider) {
-    slider.value = start;                            // הסליידר משקף את ההתחלה
+    slider.value = start;
     slider.addEventListener('input', e => {
-      card.style.setProperty('--fs', e.target.value);
+      const v = Math.max(1, parseFloat(e.target.value) || 1); // ביטוח נגד NaN/0
+      card.style.setProperty('--fs', v);
+      // דיבאג: ראה בפועל שהפונט משתנה
+      // console.log('fs now =', getComputedStyle(card.querySelector('.fdx4-edit')).fontSize);
     });
   }
 });
 </script>
+
 
 
 
