@@ -343,6 +343,28 @@ a.tbtn:hover, a.tbtn:focus, a.tbtn:active{ text-decoration:none; }
 
 
 
+/* === OVERRIDES: wider cards + a bit less height === */
+.fdx4-wrap{
+  max-width: min(1200px, 96vw);   /* מאפשר לכל הכרטיסים להתרחב יותר */
+}
+
+.fdx4-card{
+  width: clamp(680px, 82vw, 1200px); /* יותר wide במקום min(600px,46vw) */
+  padding: clamp(8px, 1vw, 12px);    /* טיפה פחות padding = פחות height חזותי */
+}
+
+.fdx4-body{
+  min-height: 12vh;  /* היה 22vh – זה מה שהגביה את המלבנים */
+}
+
+/* אם תרצה אפילו פחות גובה, אפשר גם: */
+/* .fdx4-body{ min-height: 0 }  */
+
+
+
+
+
+
 
 
 </style>
