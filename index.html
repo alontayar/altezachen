@@ -430,6 +430,35 @@ a.tbtn:hover, a.tbtn:focus, a.tbtn:active{ text-decoration:none; }
 
 
 
+
+/* ===== Desktop / default: slider שולט חופשי ===== */
+.fdx4-card{ --fs: 72; }  /* פתיחה לכל כרטיס; אפשר לשנות ב-data-fs */
+
+.fdx4-card .fdx4-edit{
+  font-size: calc(var(--fs, 72) * 1px); /* slider קובע בפיקסלים */
+  letter-spacing: normal;
+  font-kerning: normal;
+  font-feature-settings: "kern" 1, "liga" 1;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  line-height: 1.05;
+}
+
+/* ===== Mobile: מגבילים לפי רוחב מסך כדי שלא ייחתך ===== */
+@media (max-width:600px){
+  .fdx4-card .fdx4-edit{
+    /* לא קטן מ-22px, לא גדול מ~8.8vw, ועדיין מכובד ע"י ה-slider אם הוא קטן מזה */
+    font-size: clamp(22px, 8.8vw, calc(var(--fs, 72) * 1px)) !important;
+    line-height: 1.1;
+  }
+  /* אם יש לך כלל קודם שקבע font-size קבוע במובייל – הוא עכשיו מנוצח */
+}
+
+
+
+
+
+
 </style>
 </head>
 <body>
