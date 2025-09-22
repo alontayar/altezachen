@@ -340,6 +340,70 @@ a.tbtn:hover, a.tbtn:focus, a.tbtn:active{ text-decoration:none; }
 
 
 
+
+
+/* ===== FDX4: full-bleed (ימין↔שמאל), מלבן צר (נמוך) ===== */
+
+/* הסקשן של הטסטרים: למלא את רוחב ה־viewport ולהתעלם ממגבלות ה־container */
+.fdx4-section{
+  /* אם הבלוק יושב בתוך .section קיימת — זה עוקף אותה */
+  width: 100vw;
+  margin-left: calc(50% - 50vw);   /* full-bleed מהימין לשמאל */
+  margin-right: calc(50% - 50vw);
+  padding-inline: clamp(8px, 2vw, 16px);  /* שוליים קטנים מהקצוות */
+  padding-block: clamp(12px, 3vw, 28px);
+}
+
+/* העטיפה: בלי max-width, 100% רוחב */
+.fdx4-wrap{
+  max-width: none !important;
+  width: 100% !important;
+  padding: 0;                /* אין padding אופקי נוסף */
+  gap: clamp(14px, 2vw, 24px);
+}
+
+/* כל כרטיס: 100% רוחב, בלי מרווחי "מרכז" */
+.fdx4-card{
+  width: 100% !important;
+  margin: 0 !important;
+  background: #f5f7fa;       /* אפור בהיר יותר כמו שביקשת */
+  border: none;
+  border-radius: 16px;
+  padding: clamp(10px, 1.2vw, 14px);
+}
+
+/* גוף הכרטיס: מלבן נמוך (צר) – לא ריבוע */
+.fdx4-body{
+  min-height: 0;
+  height: clamp(90px, 12vh, 150px); /* שלוט בגובה כאן */
+  display:flex; align-items:center; justify-content:center;
+}
+
+/* טקסט בשורה אחת (לא נשבר בדיפולט) */
+.fdx4-edit{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
+}
+
+/* סליידר: ריווח קטן מהטקסט + יד על hover */
+.fdx4-head{ margin-bottom: 18px; }
+.fdx4-slider{ cursor: pointer; }
+
+/* מובייל: עדיין full-bleed, גובה טיפה קטן יותר */
+@media (max-width: 600px){
+  .fdx4-section{ padding-inline: clamp(8px, 3vw, 14px); }
+  .fdx4-card{ padding: clamp(8px, 2.2vw, 12px); }
+  .fdx4-body{ height: clamp(72px, 11vh, 120px); }
+}
+
+
+
+
+
+
+
+
 </style>
 </head>
 <body>
