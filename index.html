@@ -931,5 +931,23 @@ function codeOf(ch){ let h=ch.codePointAt(0).toString(16).toUpperCase(); while(h
 
 
 
+<script>
+document.querySelectorAll('.fdx4-card').forEach(card => {
+  const slider = card.querySelector('.fdx4-slider');
+  const start = parseFloat(card.dataset.fs) || 72;   // גודל פתיחה מה-HTML
+  card.style.setProperty('--fs', start);             // החלת הגודל על הכרטיס
+  if (slider) {
+    slider.value = start;                            // הסליידר משקף את ההתחלה
+    slider.addEventListener('input', e => {
+      card.style.setProperty('--fs', e.target.value);
+    });
+  }
+});
+</script>
+
+
+
+
+
 </body>
 </html>
