@@ -9,16 +9,14 @@
 
 <!-- Preload fonts -->
 <link rel="preload" href="AlteZachen-Wide.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="AlteZachen-HalfWide.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="AlteZachen-Normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="AlteZachen-Random.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="AlteZachen-Mix.woff2" as="font" type="font/woff2" crossorigin>
 
 <style>
 /* ===== FONTS ===== */
 @font-face{font-family:"AlteZachen Normal";   src:url("AlteZachen-Normal.woff2") format("woff2"),url("AlteZachen-Normal.woff") format("woff");font-display:swap}
-@font-face{font-family:"AlteZachen HalfWide"; src:url("AlteZachen-HalfWide.woff2") format("woff2"),url("AlteZachen-HalfWide.woff") format("woff");font-display:swap}
 @font-face{font-family:"AlteZachen Wide";     src:url("AlteZachen-Wide.woff2") format("woff2"),url("AlteZachen-Wide.woff") format("woff");font-display:swap}
-@font-face{font-family:"AlteZachen Random";   src:url("AlteZachen-Random.woff2") format("woff2"),url("AlteZachen-Random.woff") format("woff");font-display:swap}
+@font-face{font-family:"AlteZachen Mix";   src:url("AlteZachen-Mix.woff2") format("woff2"),url("AlteZachen-Mix.woff") format("woff");font-display:swap}
 
 :root{
   --red:#ff0000; --black:#000; --white:#fff;
@@ -220,7 +218,7 @@ img{display:block;max-width:100%;height:auto}
   .tweights{display:none}
   .m-weights{
     display:flex;gap:10px;justify-content:center;align-items:center;
-    font-family:"AlteZachen HalfWide"; font-size:22px; line-height:1;
+    font-family:"AlteZachen Mix"; font-size:22px; line-height:1;
     padding:2px 0;
   }
   .m-weights button{background:none;border:0;color:#fff;cursor:pointer;padding:0}
@@ -471,19 +469,6 @@ a.tbtn:hover, a.tbtn:focus, a.tbtn:active{ text-decoration:none; }
       </div>
     </div>
 
-    <!-- HalfWide -->
-    <div class="fdx4-card" data-face='"AlteZachen HalfWide", system-ui, sans-serif'>
-      <div class="fdx4-head">
-        <input class="fdx4-slider" type="range" min="24" max="240" value="120" step="1" aria-label="גודל">
-      </div>
-      <div class="fdx4-body">
-        <div class="fdx4-edit" contenteditable="true" spellcheck="false"
-             style="font-family:'AlteZachen HalfWide', system-ui, sans-serif; font-size:120px;">
-         ½ רחב
-        </div>
-      </div>
-    </div>
-
     <!-- Wide -->
     <div class="fdx4-card" data-face='"AlteZachen Wide", system-ui, sans-serif'>
       <div class="fdx4-head">
@@ -497,15 +482,15 @@ a.tbtn:hover, a.tbtn:focus, a.tbtn:active{ text-decoration:none; }
       </div>
     </div>
 
-    <!-- Random -->
-    <div class="fdx4-card" data-face='"AlteZachen Random", system-ui, sans-serif'>
+    <!-- Mix -->
+    <div class="fdx4-card" data-face='"AlteZachen Mix", system-ui, sans-serif'>
       <div class="fdx4-head">
         <input class="fdx4-slider" type="range" min="24" max="240" value="120" step="1" aria-label="גודל">
       </div>
       <div class="fdx4-body">
         <div class="fdx4-edit" contenteditable="true" spellcheck="false"
-             style="font-family:'AlteZachen Random', system-ui, sans-serif; font-size:120px;">
-          ¡רנדום!
+             style="font-family:'AlteZachen Mix', system-ui, sans-serif; font-size:120px;">
+          ¡מיקס!
         </div>
       </div>
     </div>
@@ -525,14 +510,7 @@ a.tbtn:hover, a.tbtn:focus, a.tbtn:active{ text-decoration:none; }
   </div>
 </section>
 
-<section class="section white spec">
-  <div class="wrap">
-    <div class="weight" style="font-family:'AlteZachen HalfWide'">חצי רחב</div>
-
-    <div class="mid"  style="font-family:'AlteZachen HalfWide'">
-הכינוי דבק ברוכלים הסוחרים במוצרי חשמל, ריהוט, כלי בית משומשים וכדומה.   </div>
-  </div>
-</section>
+  
 
 <section class="section white spec">
   <div class="wrap">
@@ -545,8 +523,8 @@ a.tbtn:hover, a.tbtn:focus, a.tbtn:active{ text-decoration:none; }
 
 <section class="section white spec">
   <div class="wrap">
-    <div class="weight" style="font-family:'AlteZachen Random'">רנדום</div>
-    <div class="mid" style="font-family:'AlteZachen Random'">
+    <div class="weight" style="font-family:'AlteZachen Mix'">מיקס</div>
+    <div class="mid" style="font-family:'AlteZachen Mix'">
  הכינוי דבק בהם שכן זו הייתה קריאתם המסורתית בעודם עוברים בין בתי קהל לקוחותיהם ומצהירים על מרכולתם בקולי קולות .</div>
   </div>
 </section>
@@ -565,9 +543,8 @@ a.tbtn:hover, a.tbtn:focus, a.tbtn:active{ text-decoration:none; }
       <div class="preview-box"><div id="bigGlyph" class="preview-glyph" aria-live="polite">א</div></div>
       <div class="preview-meta"><span id="glyphName">HEBREW LETTER ALEF</span><span id="glyphCode">U+05D0</span></div>
       <div class="tabs" role="tablist" aria-label="Weights">
-        <button class="tab"        data-face="AlteZachen Wide"     style="font-family:'AlteZachen Wide'">רחב</button>
-        <button class="tab"        data-face="AlteZachen HalfWide" style="font-family:'AlteZachen HalfWide'">חצי־רחב</button>
         <button class="tab active" data-face="AlteZachen Normal"   style="font-family:'AlteZachen Normal'">נורמל</button>
+        <button class="tab"        data-face="AlteZachen Wide"     style="font-family:'AlteZachen Wide'">רחב</button>
       </div>
     </div>
     <div class="grid-col" id="gridCol">
@@ -579,7 +556,7 @@ a.tbtn:hover, a.tbtn:focus, a.tbtn:active{ text-decoration:none; }
 <section id="hero" class="hero-landing">
   <br><br>
   <img src="hero4.webp" class="hero-media" alt="">
-  <div class="weightt" style="font-family:'AlteZachen Random'">HAFONTIA/ALON TAYAR (2025)©</div>
+  <div class="weightt" style="font-family:'AlteZachen Mix'">HAFONTIA/ALON TAYAR (2025)©</div>
   <br><br>
 </section>
 
@@ -593,18 +570,15 @@ a.tbtn:hover, a.tbtn:focus, a.tbtn:active{ text-decoration:none; }
       <div class="tbar-weights">
         <div class="tweights" id="testerWeights">
           <button class="tbtn" data-face="AlteZachen Normal">נורמל</button>
-          <button class="tbtn" data-face="AlteZachen HalfWide">חצי־רחב</button>
           <button class="tbtn" data-face="AlteZachen Wide">רחב</button>
-          <button class="tbtn active" data-face="AlteZachen Random">רנדום</button>
+          <button class="tbtn active" data-face="AlteZachen Mix">מיקס</button>
         </div>
         <div class="m-weights" id="mWeights">
           <button data-face="AlteZachen Normal">נורמל</button>
           <span class="sep">|</span>
-          <button data-face="AlteZachen HalfWide">חצי־רחב</button>
-          <span class="sep">|</span>
           <button data-face="AlteZachen Wide">רחב</button>
           <span class="sep">|</span>
-          <button data-face="AlteZachen Random" class="active">רנדום</button>
+          <button data-face="AlteZachen Mix" class="active">מיקס</button>
         </div>
       </div>
       <div class="tbar-buy">
@@ -819,7 +793,7 @@ function codeOf(ch){ let h=ch.codePointAt(0).toString(16).toUpperCase(); while(h
   const txt  = document.getElementById('inlineTxt');
   const win  = document.getElementById('inlineWin');
   const btns = Array.from(wrap.querySelectorAll('.inline-weight-btn'));
-  const defF = wrap.getAttribute('data-default-font') || 'AlteZachen Random';
+  const defF = wrap.getAttribute('data-default-font') || 'AlteZachen Mix';
   const mql  = window.matchMedia('(max-width:700px)');
   const FONT_MAX_DESKTOP=1500, FONT_MAX_MOBILE=520;
 
