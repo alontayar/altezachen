@@ -470,7 +470,41 @@ img, video, canvas { display:block; max-width:100%; height:auto; }
 
   
 
+/* --- GLYPH GRID: let the sticky preview behave --- */
+/* הסקשן של הגריד: אל תסתום את הציר האנכי */
+.glyphgrid-section {           /* שים את המחלקה על סקשן הגליף-גריד */
+  overflow-y: visible !important;
+  /* עוד אפשר להשאיר את מניעת הסקרול האופקי */
+  overflow-x: clip;
+}
 
+/* העטיפה שמחזיקה את שתי העמודות (גריד + פריוויו) – אל תגדירו overflow/transform */
+.glyphgrid-shell {
+  overflow: visible !important;
+  transform: none !important;     /* אם בטעות היה translateZ/scale וכו' */
+  will-change: auto !important;
+}
+
+/* הקופסה של הפריוויו הגדול – ודא שהיא sticky, לא fixed */
+.glyph-preview {
+  position: sticky !important;
+  top: clamp(16px, 6vh, 48px);    /* מרחק מהטופ; כוון לפי הטעם */
+  align-self: start;              /* אם זה בתוך CSS Grid */
+  height: auto;                   /* לא “מתוח” לגובה מיותר */
+}
+
+/* רק בניידים – אל תשתמש ב-sticky (כך עבד קודם) */
+@media (max-width: 900px){
+  .glyph-preview { position: static !important; }
+}
+
+
+
+
+
+
+
+  
 
 
 </style>
