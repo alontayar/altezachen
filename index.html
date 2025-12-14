@@ -429,7 +429,46 @@ a.tbtn:hover, a.tbtn:focus, a.tbtn:active{ text-decoration:none; }
 
 
 
+/* --- stop sideways scroll (global) --- */
+html, body { overflow-x: hidden; }
 
+/* תמונות ווידאו לא יחרגו מהרוחב */
+img, video, canvas { display:block; max-width:100%; height:auto; }
+
+/* קופסאות מדויקות */
+*, *::before, *::after { box-sizing: border-box; }
+
+/* כל סקשן “מלא־מסך” שלא חייב להיות 100vw – שלא יחרוג */
+.section { overflow-x: clip; }
+
+/* אם יש אצלך אלמנטים שהגדרת להם width:100vw (למשל hero/טסטרים) –
+   עדיף 100% כדי לא לייצר גלילה אופקית בגלל רוחב סרגל הגלילה */
+.hero-landing .hero-media { width:100%; }
+
+/* גרסת full-bleed נקייה בלי גלילה אופקית */
+.full-bleed {
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  width: 100vw;
+  overflow-x: clip; /* מונע פס גלילה */
+}
+
+/* אם יש לך את בלוק ה־FDX4 שהוצאנו ל־full-bleed מוקדם יותר,
+   ודא שהוא לא מייצר גלילה: */
+.fdx4-section { overflow-x: clip; }
+
+
+
+
+
+
+
+
+
+  
 
 
 
