@@ -469,34 +469,40 @@ img, video, canvas { display:block; max-width:100%; height:auto; }
 
 
   
+/* ==== GLYPH GRID sticky fix (desktop) ==== */
 
-/* --- GLYPH GRID: let the sticky preview behave --- */
-/* הסקשן של הגריד: אל תסתום את הציר האנכי */
-.glyphgrid-section {           /* שים את המחלקה על סקשן הגליף-גריד */
+/* הסקשן של הגריד: אל תחסום גלילה אנכית; שמור על מניעת גלילה אופקית */
+.section.glyphs-shell{
   overflow-y: visible !important;
-  /* עוד אפשר להשאיר את מניעת הסקרול האופקי */
   overflow-x: clip;
 }
 
-/* העטיפה שמחזיקה את שתי העמודות (גריד + פריוויו) – אל תגדירו overflow/transform */
-.glyphgrid-shell {
+/* העטיפה של שתי העמודות: בלי overflow ובלי transform כדי לא לשבור sticky */
+.glyphs-wrap{
   overflow: visible !important;
-  transform: none !important;     /* אם בטעות היה translateZ/scale וכו' */
+  transform: none !important;
   will-change: auto !important;
 }
 
-/* הקופסה של הפריוויו הגדול – ודא שהיא sticky, לא fixed */
-.glyph-preview {
-  position: sticky !important;
-  top: clamp(16px, 6vh, 48px);    /* מרחק מהטופ; כוון לפי הטעם */
-  align-self: start;              /* אם זה בתוך CSS Grid */
-  height: auto;                   /* לא “מתוח” לגובה מיותר */
+/* העמודה של הפריוויו הגדול – היא האלמנט ה־sticky */
+.preview-col{
+  position: sticky;
+  top: clamp(16px, 6vh, 48px);  /* מרחק מראש המסך */
+  align-self: start;            /* אם הגריד משתמש ב-align-items */
+  height: max-content;          /* שיקבע גובה לפי התוכן */
 }
 
-/* רק בניידים – אל תשתמש ב-sticky (כך עבד קודם) */
+/* בטלפונים/טאבלטים – לא sticky */
 @media (max-width: 900px){
-  .glyph-preview { position: static !important; }
+  .preview-col{
+    position: static !important;
+    top: auto !important;
+  }
 }
+
+/* שמירה כללית: התיבה הפנימית לא תקבל position:fixed בטעות */
+.preview-box{ position: relative; }
+
 
 
 
