@@ -468,40 +468,42 @@ img, video, canvas { display:block; max-width:100%; height:auto; }
 
 
 
-  
-/* ==== GLYPH GRID sticky fix (desktop) ==== */
+/* ==== GLYPH GRID — sticky that actually releases ==== */
 
-/* הסקשן של הגריד: אל תחסום גלילה אנכית; שמור על מניעת גלילה אופקית */
-.section.glyphs-shell{
-  overflow-y: visible !important;
-  overflow-x: clip;
+/* הסקשן הוא ה"תחום" של ה-sticky */
+.section.white.glyphs-shell{
+  position: relative;
+  overflow-y: visible !important; /* שלא יחסום את הציר האנכי */
+  overflow-x: clip;               /* עדיין חוסם גלילה אופקית */
 }
 
-/* העטיפה של שתי העמודות: בלי overflow ובלי transform כדי לא לשבור sticky */
+/* שתי העמודות: בלי overflow/transform/contain ששוברים sticky */
 .glyphs-wrap{
   overflow: visible !important;
   transform: none !important;
+  contain: none !important;
   will-change: auto !important;
+
+  /* לוודא יישור למעלה אם זה grid אצלך */
+  align-items: start;
 }
 
-/* העמודה של הפריוויו הגדול – היא האלמנט ה־sticky */
+/* אל תשימי sticky על כל העמודה; נשים אותו על הקופסה הפנימית */
 .preview-col{
-  position: sticky;
-  top: clamp(16px, 6vh, 48px);  /* מרחק מראש המסך */
-  align-self: start;            /* אם הגריד משתמש ב-align-items */
-  height: max-content;          /* שיקבע גובה לפי התוכן */
+  align-self: start;
 }
 
-/* בטלפונים/טאבלטים – לא sticky */
-@media (max-width: 900px){
-  .preview-col{
-    position: static !important;
-    top: auto !important;
-  }
+/* הסטיקי האמיתי – הקופסה שמחזיקה את הגליף הגדול */
+.preview-box{
+  position: sticky !important;
+  top: clamp(16px, 6vh, 64px);   /* מרחק מהטופ, כוונן לפי ההדר */
+  margin-top: 0;                 /* מרג'ינים יכולים להטריל sticky */
 }
 
-/* שמירה כללית: התיבה הפנימית לא תקבל position:fixed בטעות */
-.preview-box{ position: relative; }
+/* לוודא שהגליף עצמו לא "fixed" בשוגג */
+.preview-glyph{
+  position: static !important;
+}
 
 
 
@@ -1058,6 +1060,56 @@ function codeOf(ch){ let h=ch.codePointAt(0).toString(16).toUpperCase(); while(h
 
 
 
+<script>
+(()=> {
+  const section = document.querySelector('.section.white.glyphs-shell');
+  const box     = document.querySelector('.preview-box');
+  if (!section || !box) return;
+
+  // אם הדפדפן מיישם sticky כמו שצריך — לא עושים כלום
+  const pos = getComputedStyle(box).position;
+  if (pos.includes('sticky')) return;
+
+  // הופכים את ה-section לכלי ייחוס
+  section.style.position = section.style.position || 'relative';
+
+  const TOP = Math.max(16, Math.floor(window.innerHeight * 0.06)); // כמו ה-CSS
+
+  function onScroll() {
+    const sRect = section.getBoundingClientRect();
+    const sTop  = sRect.top;
+    const sBottom = sRect.bottom;
+    const boxH = box.offsetHeight;
+
+    // בתוך הסקשן: למעלה קבוע
+    if (sTop <= TOP && sBottom - boxH >= TOP) {
+      box.style.position = 'fixed';
+      box.style.top = TOP + 'px';
+      box.style.bottom = '';
+      box.style.left = '';
+      box.style.right = '';
+    }
+    // לפני שמגיעים לסקשן: מצב רגיל
+    else if (sTop > TOP) {
+      box.style.position = 'relative';
+      box.style.top = '';
+      box.style.bottom = '';
+    }
+    // עברנו את תחתית הסקשן: "נדבק" לתחתית הסקשן
+    else {
+      box.style.position = 'absolute';
+      box.style.top = (section.offsetHeight - boxH) + 'px';
+      box.style.bottom = '';
+      box.style.left = '0';
+      box.style.right = '0';
+    }
+  }
+
+  addEventListener('scroll', onScroll, {passive:true});
+  addEventListener('resize', onScroll, {passive:true});
+  onScroll();
+})();
+</script>
 
 
 
