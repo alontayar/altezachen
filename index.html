@@ -430,21 +430,6 @@ a.tbtn:hover, a.tbtn:focus, a.tbtn:active{ text-decoration:none; }
 
 
 
-/* Stop sideways scroll globally, בלי לגעת ב-containers של הגריד */
-html, body { overflow-x: hidden; }
-
-/* תמונות/וידאו לא חורגים לרוחב */
-img, video, canvas { display:block; max-width:100%; height:auto; }
-
-/* הימנעו מ-100vw שגורם לגלילה בגלל רוחב סרגל הגלילה */
-.hero-landing .hero-media { width:100%; }
-
-/* אם יש אלמנטים full-bleed שחייבים רוחב-חלון, השתמשו ב-100dvw */
-@supports (width: 100dvw) {
-  .full-bleed, .fdx4-section, .hero-landing.full-bleed {
-    width:100dvw;
-  }
-}
 
 
 
