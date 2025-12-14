@@ -467,43 +467,51 @@ img, video, canvas { display:block; max-width:100%; height:auto; }
 
 
 
+/* ===== GLYPH GRID — enforce real sticky on desktop ===== */
 
-/* ==== GLYPH GRID — sticky that actually releases ==== */
-
-/* הסקשן הוא ה"תחום" של ה-sticky */
+/* הסקשן עצמו – לא לחסום אנכית */
 .section.white.glyphs-shell{
   position: relative;
-  overflow-y: visible !important; /* שלא יחסום את הציר האנכי */
-  overflow-x: clip;               /* עדיין חוסם גלילה אופקית */
+  overflow-y: visible !important;
+  overflow-x: clip;
 }
 
-/* שתי העמודות: בלי overflow/transform/contain ששוברים sticky */
+/* שתי העמודות: גריד תקין, בלי שוברי-sticky */
 .glyphs-wrap{
+  display: grid !important;
+  grid-template-columns: minmax(320px, 420px) 1fr; /* עמודת פריוויו קבועה + גריד גמיש */
+  gap: clamp(16px, 3vw, 28px);
+  align-items: start;
   overflow: visible !important;
   transform: none !important;
   contain: none !important;
   will-change: auto !important;
-
-  /* לוודא יישור למעלה אם זה grid אצלך */
-  align-items: start;
 }
 
-/* אל תשימי sticky על כל העמודה; נשים אותו על הקופסה הפנימית */
+/* עמודת הפריוויו = sticky */
 .preview-col{
-  align-self: start;
-}
-
-/* הסטיקי האמיתי – הקופסה שמחזיקה את הגליף הגדול */
-.preview-box{
   position: sticky !important;
-  top: clamp(16px, 6vh, 64px);   /* מרחק מהטופ, כוונן לפי ההדר */
-  margin-top: 0;                 /* מרג'ינים יכולים להטריל sticky */
+  top: clamp(72px, 8vh, 96px) !important; /* אם יש header קבוע – זה מרווח מעליו */
+  align-self: start !important;
+  height: max-content;
 }
 
-/* לוודא שהגליף עצמו לא "fixed" בשוגג */
-.preview-glyph{
+/* הקופסה/הגליף בפנים לא משנים position */
+.preview-box, .preview-glyph{
   position: static !important;
 }
+
+/* מובייל: בלי sticky */
+@media (max-width: 900px){
+  .glyphs-wrap{
+    display: block !important;
+  }
+  .preview-col{
+    position: static !important;
+    top: auto !important;
+  }
+}
+
 
 
 
