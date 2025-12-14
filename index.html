@@ -429,6 +429,110 @@ a.tbtn:hover, a.tbtn:focus, a.tbtn:active{ text-decoration:none; }
 
 
 
+  /* === Alte Zachen — SNAKE (RTL) === */
+@font-face{
+  font-family:"AlteZachen Mix";
+  src: url("AlteZachen-Mix.woff2") format("woff2"),
+       url("AlteZachen-Random.woff2") format("woff2"); /* fallback */
+  font-display: swap;
+}
+
+:root{
+  --az-red:#ff0000; --az-black:#000; --az-white:#fff;
+}
+
+#az-snake{
+  background:var(--az-white);
+  padding:clamp(20px,4vw,40px) clamp(12px,3vw,24px);
+  border-top:1px solid var(--az-black);
+  direction:rtl;
+  font-family:"AlteZachen Mix", system-ui, sans-serif;
+}
+#az-snake h2{
+  margin:0 0 12px; font-weight:400; font-size:clamp(18px,2vw,24px);
+  color:var(--az-black); text-align:center;
+}
+
+.az-snake-wrap{
+  max-width:min(1100px,96vw); margin:0 auto;
+  display:grid; gap:16px;
+}
+
+.az-board{
+  position:relative;
+  aspect-ratio: 16 / 9;               /* widescreen board that scales */
+  border:1px solid var(--az-black);
+  background:var(--az-white);
+  overflow:hidden;
+}
+
+.az-grid{
+  position:absolute; inset:0; display:grid;
+  /* grid size set by JS via CSS variables */
+  grid-template-columns: repeat(var(--cols, 18), 1fr);
+  grid-template-rows: repeat(var(--rows, 11), 1fr);
+}
+
+.az-cell{
+  display:flex; align-items:center; justify-content:center;
+  border:1px solid rgba(0,0,0,.06);
+  font-size: clamp(18px, 3.4vw, 40px);
+  line-height:1; user-select:none;
+  transition: transform .06s ease;
+}
+
+.az-cell.snake{ color:var(--az-black); }
+.az-cell.food{ color:var(--az-red); }
+
+.az-ui{
+  display:flex; justify-content:space-between; align-items:center;
+  gap:12px; flex-wrap:wrap;
+}
+.az-score{ font-size:clamp(14px,1.6vw,18px); color:var(--az-black); }
+
+.az-cta{
+  display:flex; gap:10px; align-items:center;
+}
+.az-btn{
+  appearance:none; cursor:pointer;
+  background:var(--az-white); color:var(--az-black);
+  border:1px solid var(--az-black);
+  padding:.55em .9em; border-radius:8px;
+  font-family:"AlteZachen Mix", system-ui, sans-serif;
+  font-size:clamp(14px,1.6vw,18px);
+}
+.az-btn:hover{ background:var(--az-black); color:var(--az-white); }
+.az-btn.primary{ background:var(--az-black); color:var(--az-white); }
+.az-btn.primary:hover{ background:var(--az-white); color:var(--az-black); }
+
+.az-gameover{
+  position:absolute; inset:0; display:none; place-items:center;
+  background: rgba(255,0,0,.07);
+  backdrop-filter: blur(1px);
+}
+.az-gameover.show{ display:grid; }
+.az-card{
+  background:var(--az-white); border:1px solid var(--az-black); border-radius:12px;
+  padding:18px 20px; text-align:center; max-width: 90%;
+}
+.az-card h3{ margin:0 0 8px; font-weight:400; }
+.az-flash{ animation: azFlash .25s linear 0s 3 alternate; }
+@keyframes azFlash{
+  from{ background:var(--az-white); }
+  to  { background:var(--az-red); }
+}
+
+/* mobile tweaks */
+@media (max-width:600px){
+  .az-cell{ font-size: clamp(18px, 5.5vw, 34px); }
+  .az-ui{ gap:8px }
+}
+
+/* END OF SNAKE GAME */
+
+
+
+
 
 </style>
 </head>
@@ -579,6 +683,46 @@ a.tbtn:hover, a.tbtn:focus, a.tbtn:active{ text-decoration:none; }
   </div>
 </section>
 
+
+
+
+
+
+
+<section id="az-snake">
+  <div class="az-snake-wrap">
+    <h2>אלטע זאכן — Snake</h2>
+
+    <div class="az-board" id="azBoard">
+      <div class="az-grid" id="azGrid" style="--cols:18; --rows:11;"></div>
+
+      <div class="az-gameover" id="azOver" aria-live="polite">
+        <div class="az-card">
+          <h3>החמצתם 😵</h3>
+          <p style="margin:0 0 10px">הכל הופך אדום לשנייה…</p>
+          <button class="az-btn primary" id="azRestart">שחקו שוב</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="az-ui">
+      <div class="az-score" id="azScore">נקודות: 0</div>
+      <div class="az-cta">
+        <button class="az-btn" id="azAgain">שחקו שוב</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
+  
 <section id="hero" class="hero-landing">
   <br><br>
   <img src="hero4.webp" class="hero-media" alt="">
@@ -948,6 +1092,220 @@ function codeOf(ch){ let h=ch.codePointAt(0).toString(16).toUpperCase(); while(h
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script>
+(()=>{
+  // ===== Config
+  const letters = Array.from("אלטעזאכן"); // snake glyph cycle
+  const foods   = Array.from("₪•©®™½¼¾…!?%&@#◯●▲■↺↗↘⇐⇒⇌"); // red goodies
+  const TICK    = 120; // ms per step
+  const START   = 6;   // start length
+  // grid sizes (responsive)
+  const DESK = {cols: 18, rows: 11};
+  const MOB  = {cols: 12, rows: 12};
+
+  // ===== DOM
+  const gridEl = document.getElementById('azGrid');
+  const board  = document.getElementById('azBoard');
+  const overEl = document.getElementById('azOver');
+  const scoreEl= document.getElementById('azScore');
+  const again  = document.getElementById('azAgain');
+  const restart= document.getElementById('azRestart');
+
+  // ===== State
+  let COLS=DESK.cols, ROWS=DESK.rows;
+  let snake, dir, nextDir, food, score, timer, cells;
+
+  // build grid cells
+  function buildGrid(){
+    // responsive grid size
+    if (matchMedia('(max-width:600px)').matches){
+      COLS=MOB.cols; ROWS=MOB.rows;
+    } else {
+      COLS=DESK.cols; ROWS=DESK.rows;
+    }
+    gridEl.style.setProperty('--cols', COLS);
+    gridEl.style.setProperty('--rows', ROWS);
+    gridEl.innerHTML = '';
+    cells = [];
+    for(let i=0;i<ROWS*COLS;i++){
+      const d=document.createElement('div');
+      d.className='az-cell';
+      gridEl.appendChild(d);
+      cells.push(d);
+    }
+  }
+
+  // helpers
+  const idx = (x,y)=> y*COLS + x;
+  const rnd = (n)=> Math.floor(Math.random()*n);
+  const inSnake = (x,y)=> snake.some(p=>p.x===x && p.y===y);
+
+  function placeFood(){
+    let x,y;
+    do{ x=rnd(COLS); y=rnd(ROWS); }while(inSnake(x,y));
+    food={x,y, ch: foods[rnd(foods.length)]};
+  }
+
+  function draw(){
+    // clear
+    for(const c of cells){ c.textContent=''; c.classList.remove('snake','food'); }
+
+    // draw food
+    const f = cells[idx(food.x, food.y)];
+    f.textContent = food.ch;
+    f.classList.add('food');
+
+    // draw snake RTL letters
+    for(let i=0;i<snake.length;i++){
+      const {x,y}=snake[i];
+      const c = cells[idx(x,y)];
+      c.textContent = letters[i % letters.length];
+      c.classList.add('snake');
+    }
+
+    scoreEl.textContent = 'נקודות: ' + (score||0);
+  }
+
+  function step(){
+    const head = snake[0];
+    // rtl default: moving left when dir='L'
+    let vx=0, vy=0;
+    if(nextDir==='L') {vx=-1}
+    if(nextDir==='R') {vx=+1}
+    if(nextDir==='U') {vy=-1}
+    if(nextDir==='D') {vy=+1}
+    // block 180° turns
+    if (snake.length>1){
+      const neck = snake[1];
+      if (head.x+vx===neck.x && head.y+vy===neck.y){
+        // ignore illegal reversal
+        ({vx,vy} = ({L:[-1,0],R:[1,0],U:[0,-1],D:[0,1]})[dir]);
+      } else {
+        dir=nextDir;
+      }
+    } else {
+      dir=nextDir;
+    }
+
+    const nx = (head.x + vx + COLS) % COLS;
+    const ny = (head.y + vy + ROWS) % ROWS;
+
+    // collide with self?
+    if (inSnake(nx, ny)){
+      lose();
+      return;
+    }
+    // move
+    snake.unshift({x:nx,y:ny});
+    // eat?
+    if (nx===food.x && ny===food.y){
+      score++;
+      placeFood();
+    } else {
+      snake.pop();
+    }
+    draw();
+  }
+
+  function lose(){
+    clearInterval(timer);
+    timer=null;
+    // flash red
+    board.classList.add('az-flash');
+    setTimeout(()=> board.classList.remove('az-flash'), 350);
+    overEl.classList.add('show');
+  }
+
+  function start(){
+    overEl.classList.remove('show');
+    score=0;
+    // start in middle, move RTL (left)
+    const cx = Math.floor(COLS*0.7), cy = Math.floor(ROWS/2);
+    snake=[];
+    for(let i=0;i<START;i++){ snake.push({x:(cx+i)%COLS, y:cy}); }
+    dir='L'; nextDir='L';
+    placeFood();
+    draw();
+    if (timer) clearInterval(timer);
+    timer=setInterval(step, TICK);
+  }
+
+  // controls: arrows, WASD, HJKL; RTL default is Left
+  addEventListener('keydown', (e)=>{
+    const k = e.key;
+    if (k==='ArrowLeft' || k==='a' || k==='A' || k==='h' || k==='H') nextDir='L';
+    if (k==='ArrowRight'|| k==='d' || k==='D' || k==='l' || k==='L') nextDir='R';
+    if (k==='ArrowUp'   || k==='w' || k==='W' || k==='k' || k==='K') nextDir='U';
+    if (k==='ArrowDown' || k==='s' || k==='S' || k==='j' || k==='J') nextDir='D';
+  });
+
+  // touch (swipe)
+  let sx=0, sy=0;
+  gridEl.addEventListener('touchstart', (e)=>{ const t=e.touches[0]; sx=t.clientX; sy=t.clientY; }, {passive:true});
+  gridEl.addEventListener('touchmove', (e)=>{
+    if (!sx && !sy) return;
+    const t=e.touches[0];
+    const dx=t.clientX-sx, dy=t.clientY-sy;
+    if (Math.abs(dx)>24 || Math.abs(dy)>24){
+      if (Math.abs(dx) > Math.abs(dy)){
+        nextDir = dx<0 ? 'L' : 'R';
+      } else {
+        nextDir = dy<0 ? 'U' : 'D';
+      }
+      sx=sy=0;
+    }
+  }, {passive:true});
+
+  again.addEventListener('click', start);
+  restart.addEventListener('click', start);
+
+  // responsive rebuild on resize/orientation
+  const rebuild = ()=>{
+    const oldCols=COLS, oldRows=ROWS;
+    buildGrid();
+    if (oldCols!==COLS || oldRows!==ROWS){
+      // reset game on size change
+      start();
+    } else {
+      draw();
+    }
+  };
+
+  addEventListener('resize', rebuild);
+  addEventListener('orientationchange', rebuild);
+
+  // init
+  buildGrid();
+  start();
+})();
+</script>
+
+
+
+
+
+
+
+
+
+
+  
 
 
 </body>
