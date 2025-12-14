@@ -444,8 +444,16 @@ a.tbtn:hover, a.tbtn:focus, a.tbtn:active{ text-decoration:none; }
 
 <!-- ================== HERO IMAGE ================== -->
 <section id="hero" class="hero-landing">
-  <img src="hero.webp" class="hero-media" alt="">
+  <picture>
+    <!-- mobile first -->
+    <source srcset="hero.webp" media="(max-width: 600px)" type="image/webp" />
+    <!-- desktop / default -->
+    <source srcset="hero-desktop.webp" media="(min-width: 601px)" type="image/webp" />
+    <!-- fallback (keeps your existing class/styles) -->
+    <img src="hero-desktop.webp" class="hero-media" alt="Alte Zachen — hero" loading="eager" decoding="async" />
+  </picture>
 </section>
+
 
 <!-- ================== HERO2 IMAGE ================== -->
 <section id="hero" class="hero-landingg">
