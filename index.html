@@ -429,24 +429,30 @@ a.tbtn:hover, a.tbtn:focus, a.tbtn:active{ text-decoration:none; }
 
 
 
-/* Tight, default spacing for the inline testers */
-.fdx4-card .fdx4-edit{
-  letter-spacing: 0 !important;     /* מאפס כל טרקינג גלובלי */
-  word-spacing: 0;                   /* ליתר ביטחון */
-  font-kerning: normal;              /* מפעיל קרנינג מהפונט */
-  font-variant-ligatures: discretionary-ligatures; /* לשמור dlig כשצריך */
-  font-feature-settings: "kern" 1, "liga" 1, "dlig" 1;
+/* === Fix wide letter spacing in testers === */
+/* 1) Normalize tracking/kerning + disable auto optical/contextual tweaks */
+.fdx4-edit{
+  letter-spacing: 0 !important;      /* no tracking */
+  word-spacing: 0 !important;
+  font-kerning: normal !important;    /* use OT kern table */
+  font-variant-ligatures: discretionary-ligatures;
+  font-feature-settings:
+    "kern" 1, "liga" 1, "dlig" 1, "calt" 0 !important; /* no CALT just in case */
+  font-optical-sizing: none !important;
+  font-synthesis: none !important;    /* don’t fake bold/italic */
+  text-rendering: auto;               /* avoid over-aggresive shaping hints */
 }
 
-/* אם יש טקסט עברי בלבד – אפשר לצמצם לרק העברית */
-.fdx4-card .fdx4-edit[dir="rtl"]{
+/* 2) Make sure we’re actually using your font face on each card */
+.fdx4-card[data-face="AlteZachen Normal"] .fdx4-edit{ font-family:"AlteZachen Normal", sans-serif !important; }
+.fdx4-card[data-face="AlteZachen HalfWide"] .fdx4-edit{ font-family:"AlteZachen HalfWide", sans-serif !important; }
+.fdx4-card[data-face="AlteZachen Wide"] .fdx4-edit{ font-family:"AlteZachen Wide", sans-serif !important; }
+.fdx4-card[data-face="AlteZachen Random"] .fdx4-edit{ font-family:"AlteZachen Random", sans-serif !important; }
+
+/* 3) In case some global container applies tracking—neutralize inheritance */
+.fdx4-wrap, .fdx4-card{
   letter-spacing: 0 !important;
-  word-spacing: 0;
-}
-
-/* במידה והוגדר איפשהו גלובלי letter-spacing */
-body, .section, .fdx4-wrap{
-  letter-spacing: 0; /* לא חובה, אבל עוזר לנקות ירושה */
+  word-spacing: 0 !important;
 }
 
 
