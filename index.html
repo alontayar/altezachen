@@ -429,6 +429,31 @@ a.tbtn:hover, a.tbtn:focus, a.tbtn:active{ text-decoration:none; }
 
 
 
+/* Tight, default spacing for the inline testers */
+.fdx4-card .fdx4-edit{
+  letter-spacing: 0 !important;     /* מאפס כל טרקינג גלובלי */
+  word-spacing: 0;                   /* ליתר ביטחון */
+  font-kerning: normal;              /* מפעיל קרנינג מהפונט */
+  font-variant-ligatures: discretionary-ligatures; /* לשמור dlig כשצריך */
+  font-feature-settings: "kern" 1, "liga" 1, "dlig" 1;
+}
+
+/* אם יש טקסט עברי בלבד – אפשר לצמצם לרק העברית */
+.fdx4-card .fdx4-edit[dir="rtl"]{
+  letter-spacing: 0 !important;
+  word-spacing: 0;
+}
+
+/* במידה והוגדר איפשהו גלובלי letter-spacing */
+body, .section, .fdx4-wrap{
+  letter-spacing: 0; /* לא חובה, אבל עוזר לנקות ירושה */
+}
+
+
+
+
+
+  
 
 
 
@@ -558,7 +583,7 @@ a.tbtn:hover, a.tbtn:focus, a.tbtn:active{ text-decoration:none; }
   <div class="wrap">
     <div class="weight" style="font-family:'AlteZachen Mix'">מיקס</div>
     <div class="mid" style="font-family:'AlteZachen Mix'">
- אלטע זאכן, הם קראו, בעודם נוסעים ברחוב ומצהירים על מרכולתם בקולי קולות.</div>
+ ״אלטע זאכן״, הם קראו, בעודם נוסעים ברחוב ומצהירים על מרכולתם בקולי קולות.</div>
   </div>
 </section>
 <br><br>
